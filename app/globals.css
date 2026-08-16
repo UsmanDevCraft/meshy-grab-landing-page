@@ -1,1 +1,80 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer base {
+    :root {
+        --lime: #C5F955;
+        --pink: #FF3E8F;
+        --deep-black: #181818;
+        --bg-page: #0B0B0B;
+        --bg-card: #101010;
+        --bg-elevated: #141414;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        html {
+            scroll-behavior: auto;
+        }
+
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+        }
+    }
+
+    body {
+        @apply bg-bg-page text-text-primary antialiased;
+    }
+
+    :focus:not(:focus-visible) {
+        outline: none;
+    }
+
+    :focus-visible {
+        outline: 2px solid #C5F955;
+        outline-offset: 2px;
+    }
+}
+
+@layer components {
+    .btn {
+        @apply inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl text-[0.9375rem] font-semibold transition-all duration-300 whitespace-nowrap;
+    }
+
+    .btn-primary {
+        @apply bg-lime text-deep-black shadow-[0_4px_20px_rgba(197, 249, 85, 0.25)];
+    }
+
+    .btn-primary:hover {
+        @apply -translate-y-0.5 shadow-[0_8px_30px_rgba(197, 249, 85, 0.4)];
+    }
+
+    .btn-secondary {
+        @apply bg-transparent text-text-primary border border-border-subtle;
+    }
+
+    .btn-secondary:hover {
+        @apply border-lime text-lime bg-lime/5;
+    }
+
+    .section-padding {
+        @apply py-24 md:py-16;
+    }
+
+    .reveal {
+        @apply opacity-0 translate-y-8 transition-all duration-700 ease-out;
+    }
+
+    .reveal.visible {
+        @apply opacity-100 translate-y-0;
+    }
+}
