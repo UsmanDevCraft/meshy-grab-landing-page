@@ -57,13 +57,13 @@ export default function Navbar() {
           >
             Privacy
           </Link>
-          <a
+          <Link
             href="/#get"
             onClick={(e) => handleAnchorClick(e, "/#get")}
             className="btn btn-primary !py-2.5 !px-5 !text-sm"
           >
             Get MeshyGrab
-          </a>
+          </Link>
         </div>
 
         <button
@@ -115,13 +115,13 @@ export default function Navbar() {
           >
             Privacy Policy
           </Link>
-          <a
+          <Link
             href="/#get"
             onClick={(e) => handleAnchorClick(e, "/#get")}
             className="btn btn-primary text-center mt-2"
           >
             Get MeshyGrab
-          </a>
+          </Link>
         </div>
       )}
     </nav>

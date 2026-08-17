@@ -36,30 +36,30 @@ export default function Footer({ minimal = false }: FooterProps) {
               Product
             </h4>
             <div className="flex flex-col gap-3">
-              <a
+              <Link
                 href="/#features"
                 className="text-sm text-text-secondary hover:text-lime transition-colors"
               >
                 Features
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/#how-it-works"
                 className="text-sm text-text-secondary hover:text-lime transition-colors"
               >
                 How It Works
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/#pricing"
                 className="text-sm text-text-secondary hover:text-lime transition-colors"
               >
                 Pricing
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/#faq"
                 className="text-sm text-text-secondary hover:text-lime transition-colors"
               >
                 FAQ
-              </a>
+              </Link>
             </div>
           </div>
 
