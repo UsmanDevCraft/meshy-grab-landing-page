@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from "react";
 import Link from "next/link";
+import { motion } from "motion/react";
+import CometCard from "@/components/ui/CometCard";
 
 function Particles() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -14,44 +16,99 @@ function Particles() {
     const count = 20;
 
     for (let i = 0; i < count; i++) {
-      const p = document.createElement("div");
-      p.className = "absolute w-[3px] h-[3px] bg-lime rounded-full opacity-0";
-      p.style.left = `${Math.random() * 100}%`;
-      p.style.top = `${Math.random() * 100}%`;
-      p.style.setProperty("--dx", `${(Math.random() - 0.5) * 200}px`);
-      p.style.setProperty("--dy", `${(Math.random() - 0.5) * 200}px`);
-      p.style.animation = `particle-drift ${10 + Math.random() * 10}s ease-in-out infinite`;
-      p.style.animationDelay = `${Math.random() * 15}s`;
-      container.appendChild(p);
-      particles.push(p);
+      const particle = document.createElement("div");
+
+      particle.className =
+        "absolute h-[3px] w-[3px] rounded-full bg-lime opacity-0";
+
+      particle.style.left = `${Math.random() * 100}%`;
+      particle.style.top = `${Math.random() * 100}%`;
+
+      particle.style.setProperty("--dx", `${(Math.random() - 0.5) * 200}px`);
+
+      particle.style.setProperty("--dy", `${(Math.random() - 0.5) * 200}px`);
+
+      particle.style.animation = `particle-drift ${10 + Math.random() * 10}s ease-in-out infinite`;
+
+      particle.style.animationDelay = `${Math.random() * 15}s`;
+
+      container.appendChild(particle);
+      particles.push(particle);
     }
 
     return () => {
-      particles.forEach((p) => p.remove());
+      particles.forEach((particle) => particle.remove());
     };
   }, []);
 
   return (
-    <div ref={containerRef} className="absolute inset-0 pointer-events-none" />
+    <div ref={containerRef} className="pointer-events-none absolute inset-0" />
   );
 }
 
 export default function HeroSection() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.muted = true;
+
+    const playVideo = async () => {
+      try {
+        await video.play();
+      } catch {
+        // Some browsers may still require user interaction.
+      }
+    };
+
+    playVideo();
+  }, []);
+
   return (
     <section
       id="get"
-      className="min-h-screen flex items-center pt-36 pb-20 relative overflow-hidden"
+      className="
+        relative
+        min-h-screen
+        w-full
+        overflow-hidden
+        border-b
+        border-white/5
+        pt-24
+        pb-16
+        sm:pt-28
+        sm:pb-20
+        md:pt-32
+      "
     >
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] opacity-15">
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        {/* Rotating mesh grid */}
+        <div
+          className="
+            absolute
+            left-1/2
+            top-[38%]
+            h-[420px]
+            w-[420px]
+            -translate-x-1/2
+            -translate-y-1/2
+            opacity-15
+            sm:h-[520px]
+            sm:w-[520px]
+            md:h-[600px]
+            md:w-[600px]
+          "
+        >
           <svg
-            className="w-full h-full animate-mesh-rotate"
+            className="h-full w-full animate-mesh-rotate"
             viewBox="0 0 400 400"
             fill="none"
           >
             <defs>
               <pattern
-                id="grid"
+                id="hero-grid"
                 width="40"
                 height="40"
                 patternUnits="userSpaceOnUse"
@@ -64,7 +121,9 @@ export default function HeroSection() {
                 />
               </pattern>
             </defs>
-            <rect width="400" height="400" fill="url(#grid)" />
+
+            <rect width="400" height="400" fill="url(#hero-grid)" />
+
             <circle
               cx="200"
               cy="200"
@@ -73,6 +132,7 @@ export default function HeroSection() {
               stroke="rgba(255,62,143,0.1)"
               strokeWidth="0.5"
             />
+
             <circle
               cx="200"
               cy="200"
@@ -81,6 +141,7 @@ export default function HeroSection() {
               stroke="rgba(197,249,85,0.1)"
               strokeWidth="0.5"
             />
+
             <circle
               cx="200"
               cy="200"
@@ -91,20 +152,212 @@ export default function HeroSection() {
             />
           </svg>
         </div>
-        <div className="absolute top-[20%] right-[10%] w-[400px] h-[400px] bg-gradient-radial-lime animate-pulse-glow" />
+
+        {/* Lime glow */}
         <div
-          className="absolute bottom-[20%] left-[10%] w-[300px] h-[300px] bg-gradient-radial-pink animate-pulse-glow"
+          className="
+            absolute
+            right-[-120px]
+            top-[8%]
+            h-[300px]
+            w-[300px]
+            bg-gradient-radial-lime
+            opacity-60
+            animate-pulse-glow
+            sm:right-0
+            sm:h-[400px]
+            sm:w-[400px]
+          "
+        />
+
+        {/* Pink glow */}
+        <div
+          className="
+            absolute
+            bottom-[8%]
+            left-[-120px]
+            h-[280px]
+            w-[280px]
+            bg-gradient-radial-pink
+            opacity-50
+            animate-pulse-glow
+            sm:left-0
+            sm:h-[350px]
+            sm:w-[350px]
+          "
           style={{ animationDelay: "2s" }}
         />
+
         <Particles />
+
+        {/* Central atmospheric glow */}
+        <div
+          className="
+            absolute
+            inset-0
+            bg-[radial-gradient(circle_at_50%_25%,rgba(197,249,85,0.035),transparent_42%)]
+          "
+        />
       </div>
 
-      <div className="container mx-auto max-w-6xl px-6 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <div className="max-w-xl">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-lime/5 border border-lime/20 rounded-full text-xs font-medium text-lime mb-6">
+      <div
+        className="
+          relative
+          z-10
+          mx-auto
+          flex
+          w-full
+          max-w-7xl
+          flex-col
+          items-center
+          px-4
+          text-center
+          sm:px-6
+          md:px-8
+        "
+      >
+        <motion.div
+          className="w-full"
+          initial={{ opacity: 0, y: 60 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: 0.8,
+            ease: "easeOut",
+          }}
+        >
+          <CometCard
+            className="mx-auto w-full max-w-[1080px]"
+            rotateDepth={10}
+            translateDepth={12}
+            glareOpacity={0.18}
+            scaleFactor={1.018}
+          >
+            <div
+              className="
+                relative
+                overflow-hidden
+                rounded-xl
+                border
+                border-white/10
+                bg-black/40
+                shadow-[0_25px_80px_rgba(0,0,0,0.45)]
+                sm:rounded-2xl
+                sm:shadow-[0_30px_100px_rgba(0,0,0,0.45)]
+              "
+            >
+              {/* Ambient glow behind video */}
+              <div
+                aria-hidden="true"
+                className="
+                  absolute
+                  -inset-10
+                  -z-10
+                  bg-[radial-gradient(ellipse_at_center,rgba(197,249,85,0.14),transparent_65%)]
+                  blur-3xl
+                "
+              />
+
+              <video
+                ref={videoRef}
+                autoPlay
+                muted
+                controls
+                playsInline
+                preload="auto"
+                width={1080}
+                height={675}
+                src="/videos/meshy_grab_demo.mp4"
+                aria-label="MeshyGrab demonstration"
+                className="
+                  block
+                  aspect-video
+                  h-auto
+                  w-full
+                  object-cover
+                "
+              />
+
+              {/* Cinematic bottom fade */}
+              <div
+                aria-hidden="true"
+                className="
+                  pointer-events-none
+                  absolute
+                  inset-x-0
+                  bottom-0
+                  h-[32%]
+                  bg-gradient-to-b
+                  from-transparent
+                  via-[#050505]/35
+                  to-[#050505]
+                  sm:h-[36%]
+                "
+              />
+
+              {/* Subtle vignette */}
+              <div
+                aria-hidden="true"
+                className="
+                  pointer-events-none
+                  absolute
+                  inset-0
+                  bg-[radial-gradient(ellipse_at_center,transparent_42%,rgba(0,0,0,0.22)_100%)]
+                "
+              />
+            </div>
+          </CometCard>
+        </motion.div>
+
+        <div
+          className="
+            relative
+            z-10
+            -mt-1
+            flex
+            max-w-3xl
+            flex-col
+            items-center
+            px-1
+            sm:-mt-4
+            md:-mt-7
+          "
+        >
+          {/* Badge */}
+
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.45,
+              delay: 0.45,
+            }}
+            whileHover={{
+              y: -2,
+              scale: 1.01,
+            }}
+            className="mb-5 sm:mb-6"
+          >
+            <div
+              className="
+                inline-flex
+                items-center
+                gap-2
+                rounded-full
+                border
+                border-lime/20
+                bg-lime/5
+                px-3
+                py-1.5
+                text-[11px]
+                font-medium
+                text-lime
+                backdrop-blur-sm
+                sm:px-3.5
+                sm:text-xs
+              "
+            >
               <svg
-                className="w-3.5 h-3.5"
+                className="h-3.5 w-3.5"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -114,149 +367,178 @@ export default function HeroSection() {
               </svg>
               Chrome Extension for Meshy Users
             </div>
+          </motion.div>
 
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.05] tracking-tight mb-5">
-              You generated the model.
-              <br />
-              <span className="bg-gradient-lime-pink bg-clip-text text-transparent bg-[length:200%_200%] animate-gradient-shift">
-                Now get the file.
-              </span>
-            </h1>
+          {/* Headline */}
 
-            <p className="text-lg text-text-secondary leading-relaxed mb-8 max-w-md">
-              MeshyGrab is a lightweight Chrome extension that lets you preview
-              and download the 3D models you&apos;ve generated in Meshy.
-            </p>
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.5,
+              delay: 0.58,
+            }}
+            className="
+              max-w-4xl
+              text-[2.6rem]
+              font-extrabold
+              leading-[1.02]
+              tracking-[-0.035em]
+              sm:text-5xl
+              md:text-6xl
+              lg:text-7xl
+            "
+          >
+            You generated the model.
+            <br />
+            <span
+              className="
+                bg-[linear-gradient(90deg,#C5F955_0%,#FF3E8F_100%)]
+                bg-[length:200%_200%]
+                bg-clip-text
+                text-transparent
+                animate-gradient-shift
+              "
+            >
+              Now get the file.
+            </span>
+          </motion.h1>
 
-            <div className="flex flex-wrap gap-4 mb-5">
-              <Link href="/#pricing" className="btn btn-primary">
-                Get MeshyGrab
-                <svg
-                  className="w-4 h-4"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
-              </Link>
-              <Link href="/#how-it-works" className="btn btn-secondary">
-                See How It Works
-              </Link>
-            </div>
+          {/* Description */}
 
-            <p className="text-xs text-text-muted">
-              Independent third-party extension for Meshy users.
-            </p>
-          </div>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.5,
+              delay: 0.72,
+            }}
+            className="
+              mt-5
+              max-w-xl
+              px-2
+              text-[15px]
+              leading-relaxed
+              text-text-secondary
+              sm:mt-6
+              sm:text-base
+              md:text-lg
+            "
+          >
+            MeshyGrab is a lightweight Chrome extension that lets you preview
+            and download the 3D models you&apos;ve generated in Meshy.
+          </motion.p>
 
-          <div className="relative flex items-center justify-center order-first lg:order-last">
-            <div className="relative w-[300px] h-[300px] md:w-[400px] md:h-[400px]">
-              <div className="absolute top-1/2 left-1/2 w-[220px] h-[220px] md:w-[280px] md:h-[280px] border border-lime/15 rounded-full animate-mesh-rotate-fast" />
-              <div className="absolute top-1/2 left-1/2 w-[260px] h-[260px] md:w-[340px] md:h-[340px] border border-pink/10 rounded-full animate-mesh-rotate-slow" />
+          {/* CTA */}
 
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140px] h-[140px] md:w-[180px] md:h-[180px] animate-float">
-                <svg
-                  className="w-full h-full drop-shadow-[0_0_30px_rgba(197,249,85,0.3)]"
-                  viewBox="0 0 200 200"
-                  fill="none"
-                >
-                  <defs>
-                    <linearGradient
-                      id="cubeGrad"
-                      x1="0%"
-                      y1="0%"
-                      x2="100%"
-                      y2="100%"
-                    >
-                      <stop offset="0%" stopColor="#C5F955" stopOpacity="0.9" />
-                      <stop
-                        offset="100%"
-                        stopColor="#FF3E8F"
-                        stopOpacity="0.6"
-                      />
-                    </linearGradient>
-                    <linearGradient
-                      id="cubeGrad2"
-                      x1="0%"
-                      y1="0%"
-                      x2="100%"
-                      y2="100%"
-                    >
-                      <stop offset="0%" stopColor="#C5F955" stopOpacity="0.4" />
-                      <stop
-                        offset="100%"
-                        stopColor="#FF3E8F"
-                        stopOpacity="0.2"
-                      />
-                    </linearGradient>
-                  </defs>
-                  <path
-                    d="M60 80 L100 60 L140 80 L140 130 L100 150 L60 130 Z"
-                    fill="url(#cubeGrad2)"
-                    stroke="url(#cubeGrad)"
-                    strokeWidth="1.5"
-                  />
-                  <path
-                    d="M60 80 L100 100 L140 80"
-                    fill="none"
-                    stroke="url(#cubeGrad)"
-                    strokeWidth="1"
-                    opacity="0.6"
-                  />
-                  <path
-                    d="M100 100 L100 150"
-                    fill="none"
-                    stroke="url(#cubeGrad)"
-                    strokeWidth="1"
-                    opacity="0.6"
-                  />
-                  <path
-                    d="M75 90 L100 80 L125 90 L125 120 L100 130 L75 120 Z"
-                    fill="none"
-                    stroke="url(#cubeGrad)"
-                    strokeWidth="0.8"
-                    opacity="0.4"
-                  />
-                  <circle cx="100" cy="60" r="3" fill="#C5F955" opacity="0.8" />
-                  <circle cx="60" cy="80" r="2" fill="#C5F955" opacity="0.6" />
-                  <circle cx="140" cy="80" r="2" fill="#FF3E8F" opacity="0.6" />
-                  <circle
-                    cx="100"
-                    cy="150"
-                    r="3"
-                    fill="#FF3E8F"
-                    opacity="0.8"
-                  />
-                </svg>
-              </div>
-
-              <div
-                className="absolute bottom-[60px] left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-float"
-                style={{ animationDelay: "1s" }}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.5,
+              delay: 0.86,
+            }}
+            className="
+              mt-7
+              flex
+              w-full
+              flex-col
+              items-center
+              gap-3
+              sm:mt-8
+              sm:w-auto
+              sm:flex-row
+            "
+          >
+            <Link
+              href="/#pricing"
+              className="btn btn-primary group w-full sm:w-auto"
+            >
+              Get MeshyGrab
+              <svg
+                className="
+                  h-4
+                  w-4
+                  transition-transform
+                  duration-200
+                  group-hover:translate-x-0.5
+                "
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
-                <svg
-                  className="w-6 h-6 text-lime"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M12 5v14M5 12l7 7 7-7" />
-                </svg>
-                <span className="text-xs text-text-muted uppercase tracking-widest font-mono">
-                  GLB FILE
-                </span>
-              </div>
-            </div>
-          </div>
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </Link>
+
+            <Link
+              href="/#how-it-works"
+              className="btn btn-secondary w-full sm:w-auto"
+            >
+              See How It Works
+            </Link>
+          </motion.div>
+
+          {/* Disclaimer */}
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{
+              duration: 0.5,
+              delay: 1.05,
+            }}
+            className="mt-5 text-[11px] text-text-muted sm:text-xs"
+          >
+            Independent third-party extension for Meshy users.
+          </motion.p>
         </div>
       </div>
+
+      <motion.div
+        aria-hidden="true"
+        className="
+          absolute
+          bottom-5
+          left-1/2
+          hidden
+          -translate-x-1/2
+          sm:block
+        "
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{
+          delay: 1.4,
+          duration: 0.7,
+        }}
+      >
+        <motion.div
+          className="
+            flex
+            h-8
+            w-5
+            items-start
+            justify-center
+            rounded-full
+            border
+            border-text-muted/30
+            p-1.5
+          "
+          animate={{
+            y: [0, 5, 0],
+          }}
+          transition={{
+            duration: 1.5,
+            repeat: Number.POSITIVE_INFINITY,
+            ease: "easeInOut",
+          }}
+        >
+          <div className="h-1.5 w-1 rounded-full bg-text-muted/50" />
+        </motion.div>
+      </motion.div>
     </section>
   );
 }
