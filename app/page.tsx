@@ -6,8 +6,10 @@ import ProblemSection from "@/components/sections/ProblemSection";
 import StepsSection from "@/components/sections/StepsSection";
 import PreviewSection from "@/components/sections/PreviewSection";
 import FeaturesSection from "@/components/sections/FeaturesSection";
+import AudienceSection from "@/components/sections/AudienceSection";
 import PrivacySection from "@/components/sections/PrivacySection";
 import PricingSection from "@/components/sections/PricingSection";
+import MoneySection from "@/components/sections/MoneySection";
 import FAQSection from "@/components/sections/FAQSection";
 import FinalCTA from "@/components/sections/FinalCTA";
 
@@ -22,8 +24,10 @@ export default function HomePage() {
         <StepsSection />
         <PreviewSection />
         <FeaturesSection />
-        <PrivacySection />
+        <AudienceSection />
         <PricingSection />
+        <MoneySection />
+        <PrivacySection />
         <FAQSection />
         <FinalCTA />
       </main>

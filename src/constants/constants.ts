@@ -1,35 +1,31 @@
 export const faqs = [
   {
     q: "What is MeshyGrab?",
-    a: "MeshyGrab is an independent browser extension designed to make downloading generated Meshy models as GLB files easier. It provides a simple interface for grabbing your 3D models without needing to understand APIs or manage tokens.",
+    a: "MeshyGrab is a Chrome extension that helps Meshy users preview and download the 3D models they've generated as GLB files.",
   },
   {
-    q: "Is MeshyGrab an official Meshy product?",
-    a: "No. MeshyGrab is an independent third-party product and is not affiliated with, endorsed by, or sponsored by Meshy. Meshy and its trademarks remain the property of their respective owners.",
+    q: "Does MeshyGrab generate 3D models?",
+    a: "No. MeshyGrab does not generate models. You create your model in Meshy, and MeshyGrab focuses on helping you access and download the generated model.",
   },
   {
-    q: "Do I need a Meshy API key?",
-    a: "The product is designed not to require users to manually provide an API token. MeshyGrab handles the technical integration so you can focus on downloading your models.",
-  },
-  {
-    q: "What file format does MeshyGrab download?",
-    a: "GLB. This is the standard binary format for glTF 3D models, widely supported by 3D software, game engines, and web viewers.",
+    q: "What does MeshyGrab download?",
+    a: "MeshyGrab is designed to download generated Meshy models as GLB files.",
   },
   {
     q: "How many free downloads do I get?",
-    a: "The current plan provides 2 free model downloads. After that, you can upgrade to Pro for unlimited downloads.",
+    a: "The Free plan includes 2 downloads.",
   },
   {
-    q: "What does Pro include?",
-    a: "Pro provides unlimited downloads for the current monthly subscription price of $0.99/month. You also get continued access to all MeshyGrab features without usage limits.",
+    q: "How much is Pro?",
+    a: "Pro is $0.99/month and provides unlimited downloads.",
   },
   {
-    q: "Does MeshyGrab store my 3D models?",
-    a: "No. The backend is used for entitlement and usage accounting only. The actual model download remains client-side, meaning the file goes directly from Meshy to your device.",
+    q: "Do I need to provide a Meshy API key?",
+    a: "MeshyGrab is designed so users do not need to manually configure or provide a Meshy API token.",
   },
   {
-    q: "Can I cancel Pro?",
-    a: "Yes. You can cancel your Pro subscription at any time through your payment provider. Your access will continue until the end of the current billing period.",
+    q: "Is MeshyGrab an official Meshy product?",
+    a: "No. MeshyGrab is an independent third-party product and is not affiliated with, endorsed by, or sponsored by Meshy.",
   },
 ];
 
@@ -46,11 +42,11 @@ export const plans = [
     price: "$0",
     period: "",
     features: [
-      "2 model downloads",
+      "2 free downloads",
       "No subscription required",
-      "Core MeshyGrab functionality",
+      "Model preview before download",
     ],
-    cta: "Start Free",
+    cta: "Try MeshyGrab Free",
     primary: false,
   },
   {
@@ -60,50 +56,85 @@ export const plans = [
     period: "/month",
     features: [
       "Unlimited downloads",
-      "No free-download limit",
-      "Continued access to MeshyGrab",
+      "Simple monthly subscription",
+      "Full extension functionality",
     ],
     cta: "Get Pro",
     primary: true,
   },
 ];
 
-export const checks_privacy = [
-  "MeshyGrab does not ask for your Meshy password",
-  "No manual API token required from users",
-  "Backend used for entitlement and usage accounting only",
-  "GLB download remains client-side",
-  "Only collect information required to operate the service",
+export const valueProps = [
+  {
+    title: "Download what you generated",
+    desc: "Get the model you've already created in Meshy.",
+  },
+  {
+    title: "Preview before downloading",
+    desc: "See the available model preview before starting the download.",
+  },
+  {
+    title: "Simple Chrome extension",
+    desc: "No complicated setup or developer workflow.",
+  },
+  {
+    title: "No manual API-token setup",
+    desc: "The product is designed around a simple user workflow rather than requiring users to manually configure API credentials.",
+  },
+  {
+    title: "2 free downloads",
+    desc: "Try the product without subscribing.",
+  },
+  {
+    title: "Unlimited with Pro",
+    desc: "Upgrade to Pro for unlimited downloads.",
+  },
 ];
 
-export const problems = [
-  "Understanding APIs",
-  "Managing tokens",
-  "Copying complicated URLs",
-  "Dealing with technical workflows",
+export const audienceList = [
+  "3D creators",
+  "Game developers",
+  "Indie developers",
+  "Designers",
+  "Prototyping workflows",
+  "3D printing workflows",
+  "Creators experimenting with AI-generated 3D assets",
+];
+
+export const checks_privacy = [
+  "Independent third-party extension",
+  "Does not ask users to manually provide their Meshy API token",
+  "Backend exists for registration, entitlement & subscription accounting",
+  "Actual model download remains client-side",
 ];
 
 export const steps = [
   {
     num: "1",
     title: "Generate",
-    desc: "Create your 3D model in Meshy using text prompts, images, or sketch-to-3D.",
+    desc: "Create your 3D model in Meshy.",
   },
   {
     num: "2",
     title: "Select",
-    desc: "Open the model in your Meshy workspace and view it in the preview.",
+    desc: "Open and select the generated model in your Meshy workspace.",
   },
   {
     num: "3",
     title: "Grab",
-    desc: "Open MeshyGrab and download the GLB file directly to your device.",
+    desc: "Open MeshyGrab while viewing your model.",
+  },
+  {
+    num: "4",
+    title: "Download",
+    desc: "Preview the available model and download it as a GLB file.",
   },
 ];
 
 export const navLinks = [
-  { href: "/#features", label: "Features" },
   { href: "/#how-it-works", label: "How It Works" },
+  { href: "/#features", label: "Benefits" },
+  { href: "/#audience", label: "Who It's For" },
   { href: "/#pricing", label: "Pricing" },
   { href: "/#faq", label: "FAQ" },
 ];

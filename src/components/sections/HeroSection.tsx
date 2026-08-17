@@ -112,20 +112,20 @@ export default function HeroSection() {
               >
                 <polyline points="20 6 9 17 4 12" />
               </svg>
-              Independent browser extension
+              Chrome Extension for Meshy Users
             </div>
 
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.05] tracking-tight mb-5">
-              Your Meshy models.
+              You generated the model.
               <br />
               <span className="bg-gradient-lime-pink bg-clip-text text-transparent bg-[length:200%_200%] animate-gradient-shift">
-                One click away.
+                Now get the file.
               </span>
             </h1>
 
             <p className="text-lg text-text-secondary leading-relaxed mb-8 max-w-md">
-              MeshyGrab is a lightweight browser extension that makes
-              downloading your generated Meshy 3D models as GLB files simple.
+              MeshyGrab is a lightweight Chrome extension that lets you preview
+              and download the 3D models you&apos;ve generated in Meshy.
             </p>
 
             <div className="flex flex-wrap gap-4 mb-5">
@@ -144,7 +144,7 @@ export default function HeroSection() {
                 </svg>
               </Link>
               <Link href="/#how-it-works" className="btn btn-secondary">
-                See how it works
+                See How It Works
               </Link>
             </div>
 
@@ -249,8 +249,8 @@ export default function HeroSection() {
                 >
                   <path d="M12 5v14M5 12l7 7 7-7" />
                 </svg>
-                <span className="text-xs text-text-muted uppercase tracking-widest">
-                  GLB
+                <span className="text-xs text-text-muted uppercase tracking-widest font-mono">
+                  GLB FILE
                 </span>
               </div>
             </div>

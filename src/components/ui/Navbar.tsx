@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { navLinks } from "@/constants/constants";
+import Image from "next/image";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -38,7 +39,14 @@ export default function Navbar() {
       aria-label="Main navigation"
     >
       <div className="container mx-auto max-w-6xl px-6 flex items-center justify-between">
-        <Link href="/"></Link>
+        <Link href="/">
+          <Image
+            src="/apple-touch-icon.png"
+            alt="MeshyGrab Logo"
+            width={50}
+            height={50}
+          />
+        </Link>
 
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (

@@ -6,12 +6,15 @@ import { faqs } from "@/constants/constants";
 
 export default function FAQSection() {
   const headerRef = useScrollReveal<HTMLDivElement>();
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
     <section id="faq" className="section-padding bg-bg-elevated">
       <div className="container mx-auto max-w-6xl px-6">
         <div ref={headerRef} className="reveal text-center mb-16">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-lime/10 border border-lime/20 rounded-full text-xs font-semibold text-lime mb-4">
+            Product Questions
+          </div>
           <h2 className="text-3xl md:text-4xl lg:text-[3.5rem] font-bold leading-[1.1] tracking-tight mb-4">
             Frequently Asked Questions
           </h2>
@@ -27,7 +30,7 @@ export default function FAQSection() {
               faq={faq}
               isOpen={openIndex === i}
               onToggle={() => setOpenIndex(openIndex === i ? null : i)}
-              delay={i * 50}
+              delay={i * 40}
             />
           ))}
         </div>
@@ -52,7 +55,7 @@ function FAQItem({
   return (
     <div
       ref={ref}
-      className="reveal bg-bg-card border border-border-subtle rounded-2xl overflow-hidden transition-colors duration-300 hover:border-lime/10"
+      className="reveal bg-bg-card border border-border-subtle rounded-2xl overflow-hidden transition-colors duration-300 hover:border-lime/20"
       style={{ transitionDelay: `${delay}ms` }}
     >
       <button

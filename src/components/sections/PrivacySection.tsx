@@ -36,14 +36,25 @@ export default function PrivacySection() {
           </div>
 
           <div ref={textRef} className="reveal">
-            <h2 className="text-3xl md:text-4xl lg:text-[3.5rem] font-bold leading-[1.1] tracking-tight mb-4">
-              Your models stay yours.
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-lime/10 border border-lime/20 rounded-full text-xs font-semibold text-lime mb-4">
+              Privacy & Infrastructure Transparency
+            </div>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-[1.1] tracking-tight mb-4">
+              Clear & honest privacy stance
             </h2>
             <p className="text-lg text-text-secondary leading-relaxed mt-4">
-              We believe in being honest about what data is used and why.
-              MeshyGrab is designed with privacy in mind.
+              MeshyGrab is an independent third-party Chrome extension. You do
+              not need to manually supply a Meshy API token.
             </p>
-            <div className="mt-8 flex flex-col gap-3.5">
+
+            <p className="text-sm text-text-secondary leading-relaxed mt-4">
+              Our minimal backend infrastructure exists primarily for
+              installation registration, download entitlement, free-download
+              accounting, subscription status, and usage tracking. The actual
+              model file download remains client-side.
+            </p>
+
+            <div className="mt-6 flex flex-col gap-3">
               {checks.map((c) => (
                 <div
                   key={c}
@@ -64,6 +75,7 @@ export default function PrivacySection() {
                 </div>
               ))}
             </div>
+
             <Link href="/privacy-policy" className="btn btn-secondary mt-8">
               Read our Privacy Policy
               <svg

@@ -1,6 +1,7 @@
 "use client";
 
 import { FooterProps } from "@/types/types";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function Footer({ minimal = false }: FooterProps) {
@@ -25,7 +26,14 @@ export default function Footer({ minimal = false }: FooterProps) {
       <div className="container mx-auto max-w-6xl px-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           <div className="max-w-[280px]">
-            <Link href="/"></Link>
+            <Link href="/">
+              <Image
+                src="/apple-touch-icon.png"
+                alt="MeshyGrab Logo"
+                width={50}
+                height={50}
+              />
+            </Link>
             <p className="text-sm text-text-muted leading-relaxed">
               Simple model downloads, without the friction.
             </p>

@@ -14,12 +14,12 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
 
   title: {
-    default: "MeshyGrab — Free & Low-Cost Meshy 3D GLB Downloader",
+    default: "MeshyGrab — Preview & Download Meshy 3D Models as GLB",
     template: "%s | MeshyGrab",
   },
 
   description:
-    "Bypass expensive download limits on Meshy AI. Download your generated 3D models as GLB files instantly with MeshyGrab. Free trial available, then $0.99/mo.",
+    "MeshyGrab is a Chrome extension that helps Meshy users preview and download the 3D models they've generated as GLB files. 2 free downloads, then $0.99/month.",
 
   applicationName: "MeshyGrab",
 
@@ -34,17 +34,25 @@ export const metadata: Metadata = {
   publisher: "MeshyGrab",
 
   keywords: [
-    "Meshy",
     "MeshyGrab",
-    "Meshy free download GLB",
+    "Meshy",
+    "Meshy model downloader",
     "Meshy 3D model downloader",
-    "download Meshy models without paying",
+    "download Meshy models",
+    "download Meshy 3D models",
+    "Meshy download",
+    "Meshy GLB",
     "Meshy GLB downloader",
     "download Meshy model as GLB",
-    "Meshy GLB exporter",
-    "AI 3D model downloader",
+    "Meshy model download",
+    "Meshy model preview",
+    "Meshy model exporter",
+    "Meshy export",
     "Meshy Chrome extension",
+    "Meshy browser extension",
+    "3D model downloader",
     "3D model GLB download",
+    "AI 3D model downloader",
   ],
 
   alternates: {
@@ -56,24 +64,24 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: siteUrl,
     siteName: "MeshyGrab",
-    title: "MeshyGrab — Download Meshy 3D Models as GLB easily",
+    title: "MeshyGrab — Preview & Download Meshy 3D Models as GLB",
     description:
-      "Get your AI-generated Meshy 3D models directly as GLB files. 2 free downloads, then unlimited for just $0.99/month.",
+      "MeshyGrab is a Chrome extension that helps Meshy users preview and download the 3D models they've generated as GLB files.",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "MeshyGrab — Download Meshy 3D Models as GLB",
+        alt: "MeshyGrab — Preview & Download Meshy 3D Models as GLB",
       },
     ],
   },
 
   twitter: {
     card: "summary_large_image",
-    title: "MeshyGrab — Download Meshy 3D Models as GLB easily",
+    title: "MeshyGrab — Preview & Download Meshy 3D Models as GLB",
     description:
-      "Get your AI-generated Meshy 3D models directly as GLB files. 2 free downloads, then unlimited for $0.99/month.",
+      "MeshyGrab is a Chrome extension that helps Meshy users preview and download the 3D models they've generated as GLB files.",
     images: ["/og-image.png"],
   },
 
@@ -120,7 +128,7 @@ export default function RootLayout({
         "2 free downloads, then unlimited downloads for $0.99/month.",
     },
     description:
-      "MeshyGrab allows creators to quickly download generated 3D models from Meshy workspace directly as GLB files.",
+      "MeshyGrab is a Chrome extension that helps Meshy users preview and download the 3D models they've generated as GLB files.",
     url: siteUrl,
   };
 
