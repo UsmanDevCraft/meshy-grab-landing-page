@@ -2,14 +2,7 @@
 
 import Link from "next/link";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
-
-const checks = [
-  "MeshyGrab does not ask for your Meshy password",
-  "No manual API token required from users",
-  "Backend used for entitlement and usage accounting only",
-  "GLB download remains client-side",
-  "Only collect information required to operate the service",
-];
+import { checks_privacy as checks } from "@/constants/constants";
 
 export default function PrivacySection() {
   const visualRef = useScrollReveal<HTMLDivElement>();
@@ -71,7 +64,7 @@ export default function PrivacySection() {
                 </div>
               ))}
             </div>
-            <Link href="/privacy" className="btn btn-secondary mt-8">
+            <Link href="/privacy-policy" className="btn btn-secondary mt-8">
               Read our Privacy Policy
               <svg
                 className="w-4 h-4"

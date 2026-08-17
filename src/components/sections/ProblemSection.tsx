@@ -1,13 +1,7 @@
 "use client";
 
 import { useScrollReveal } from "@/hooks/useScrollReveal";
-
-const problems = [
-  "Understanding APIs",
-  "Managing tokens",
-  "Copying complicated URLs",
-  "Dealing with technical workflows",
-];
+import { problems } from "@/constants/constants";
 
 export default function ProblemSection() {
   const textRef = useScrollReveal<HTMLDivElement>();

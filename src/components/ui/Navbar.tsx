@@ -2,13 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-
-const navLinks = [
-  { href: "/#features", label: "Features" },
-  { href: "/#how-it-works", label: "How It Works" },
-  { href: "/#pricing", label: "Pricing" },
-  { href: "/#faq", label: "FAQ" },
-];
+import { navLinks } from "@/constants/constants";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -58,7 +52,7 @@ export default function Navbar() {
             </a>
           ))}
           <Link
-            href="/privacy"
+            href="/privacy-policy"
             className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors"
           >
             Privacy
@@ -115,7 +109,7 @@ export default function Navbar() {
             </a>
           ))}
           <Link
-            href="/privacy"
+            href="/privacy-policy"
             className="py-3 text-base font-medium text-text-secondary border-b border-border-subtle"
             onClick={() => setMobileOpen(false)}
           >

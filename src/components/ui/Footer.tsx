@@ -1,10 +1,7 @@
 "use client";
 
+import { FooterProps } from "@/types/types";
 import Link from "next/link";
-
-interface FooterProps {
-  minimal?: boolean;
-}
 
 export default function Footer({ minimal = false }: FooterProps) {
   if (minimal) {
@@ -72,7 +69,7 @@ export default function Footer({ minimal = false }: FooterProps) {
             </h4>
             <div className="flex flex-col gap-3">
               <Link
-                href="/privacy"
+                href="/privacy-policy"
                 className="text-sm text-text-secondary hover:text-lime transition-colors"
               >
                 Privacy Policy

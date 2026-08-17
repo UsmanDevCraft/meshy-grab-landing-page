@@ -1,12 +1,7 @@
 "use client";
 
 import { useScrollReveal } from "@/hooks/useScrollReveal";
-
-const checks = [
-  "Model preview before download",
-  "GLB format confirmation",
-  "Download entitlement tracking",
-];
+import { checks } from "@/constants/constants";
 
 export default function PreviewSection() {
   const textRef = useScrollReveal<HTMLDivElement>();

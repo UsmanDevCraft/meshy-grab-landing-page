@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Navbar from "@/components/ui/Navbar";
 import Footer from "@/components/ui/Footer";
 import Link from "next/link";
 import OpenExtensionButton from "@/components/ui/OpenExtensionButton";
@@ -12,7 +11,6 @@ export const metadata: Metadata = {
 export default function ThanksPage() {
   return (
     <>
-      <Navbar />
       <main
         id="main-content"
         className="min-h-screen flex items-center justify-center pt-24 pb-16"

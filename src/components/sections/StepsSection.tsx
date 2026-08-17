@@ -1,24 +1,7 @@
 "use client";
 
 import { useScrollReveal } from "@/hooks/useScrollReveal";
-
-const steps = [
-  {
-    num: "1",
-    title: "Generate",
-    desc: "Create your 3D model in Meshy using text prompts, images, or sketch-to-3D.",
-  },
-  {
-    num: "2",
-    title: "Select",
-    desc: "Open the model in your Meshy workspace and view it in the preview.",
-  },
-  {
-    num: "3",
-    title: "Grab",
-    desc: "Open MeshyGrab and download the GLB file directly to your device.",
-  },
-];
+import { steps } from "@/constants/constants";
 
 export default function StepsSection() {
   const headerRef = useScrollReveal<HTMLDivElement>();

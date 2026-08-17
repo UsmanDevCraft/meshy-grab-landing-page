@@ -1,35 +1,7 @@
 "use client";
 
 import { useScrollReveal } from "@/hooks/useScrollReveal";
-
-const plans = [
-  {
-    name: "Free",
-    badge: "Free",
-    price: "$0",
-    period: "",
-    features: [
-      "2 model downloads",
-      "No subscription required",
-      "Core MeshyGrab functionality",
-    ],
-    cta: "Start Free",
-    primary: false,
-  },
-  {
-    name: "Pro",
-    badge: "Pro",
-    price: "$0.99",
-    period: "/month",
-    features: [
-      "Unlimited downloads",
-      "No free-download limit",
-      "Continued access to MeshyGrab",
-    ],
-    cta: "Get Pro",
-    primary: true,
-  },
-];
+import { plans } from "@/constants/constants";
 
 export default function PricingSection() {
   const headerRef = useScrollReveal<HTMLDivElement>();
