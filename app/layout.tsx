@@ -77,6 +77,10 @@ export const metadata: Metadata = {
     ],
   },
 
+  verification: {
+    google: "9PbdoRzqApvTZ5ax4Vx_RVhsUe9OWlDNIfVNPKlw1ho",
+  },
+
   twitter: {
     card: "summary_large_image",
     title: "MeshyGrab — Preview & Download Meshy 3D Models as GLB",
