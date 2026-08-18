@@ -37,16 +37,18 @@ function StepCard({ step, delay }: { step: (typeof steps)[0]; delay: number }) {
   return (
     <div
       ref={ref}
-      className="reveal relative text-left p-8 bg-bg-card border border-border-subtle rounded-[20px] transition-all duration-300 hover:border-lime/30 hover:shadow-[0_0_30px_rgba(197,249,85,0.1)] hover:-translate-y-1"
+      className="reveal h-full"
       style={{ transitionDelay: `${delay}ms` }}
     >
-      <div className="w-12 h-12 bg-lime text-deep-black rounded-xl flex items-center justify-center text-lg font-extrabold mb-6 font-mono">
-        {step.num}
+      <div className="h-full relative text-left p-8 bg-bg-card border border-border-subtle rounded-[20px] transition-all duration-200 ease-out hover:border-lime/30 hover:shadow-[0_0_30px_rgba(197,249,85,0.15)] hover:-translate-y-1">
+        <div className="w-12 h-12 bg-lime text-deep-black rounded-xl flex items-center justify-center text-lg font-extrabold mb-6 font-mono">
+          {step.num}
+        </div>
+        <h3 className="text-xl font-bold mb-2.5">{step.title}</h3>
+        <p className="text-[0.9375rem] text-text-secondary leading-relaxed">
+          {step.desc}
+        </p>
       </div>
-      <h3 className="text-xl font-bold mb-2.5">{step.title}</h3>
-      <p className="text-[0.9375rem] text-text-secondary leading-relaxed">
-        {step.desc}
-      </p>
     </div>
   );
 }

@@ -137,14 +137,16 @@ function FeatureCard({
   return (
     <div
       ref={ref}
-      className="reveal relative p-8 bg-bg-card border border-border-subtle rounded-[20px] transition-all duration-300 hover:-translate-y-1 hover:border-lime/20 hover:shadow-[0_20px_60px_rgba(0,0,0,0.3),0_0_30px_rgba(197,249,85,0.12)] group"
+      className="reveal h-full"
       style={{ transitionDelay: `${delay}ms` }}
     >
-      <div className="w-12 h-12 bg-lime/5 rounded-xl flex items-center justify-center mb-5 group-hover:bg-lime/10 transition-colors">
-        <div className="w-6 h-6 text-lime">{icon}</div>
+      <div className="h-full relative p-8 bg-bg-card border border-border-subtle rounded-[20px] transition-all duration-200 ease-out hover:-translate-y-1 hover:border-lime/30 hover:shadow-[0_20px_60px_rgba(0,0,0,0.3),0_0_30px_rgba(197,249,85,0.12)] group">
+        <div className="w-12 h-12 bg-lime/5 rounded-xl flex items-center justify-center mb-5 group-hover:bg-lime/10 transition-colors">
+          <div className="w-6 h-6 text-lime">{icon}</div>
+        </div>
+        <h3 className="text-lg font-bold mb-2.5">{title}</h3>
+        <p className="text-sm text-text-secondary leading-relaxed">{desc}</p>
       </div>
-      <h3 className="text-lg font-bold mb-2.5">{title}</h3>
-      <p className="text-sm text-text-secondary leading-relaxed">{desc}</p>
     </div>
   );
 }

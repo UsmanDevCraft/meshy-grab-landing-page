@@ -53,39 +53,39 @@ function FAQItem({
   const ref = useScrollReveal<HTMLDivElement>();
 
   return (
-    <div
-      ref={ref}
-      className="reveal bg-bg-card border border-border-subtle rounded-2xl overflow-hidden transition-colors duration-300 hover:border-lime/20"
-      style={{ transitionDelay: `${delay}ms` }}
-    >
-      <button
-        className="w-full flex items-center justify-between p-5 text-left text-base font-semibold text-text-primary hover:text-lime transition-colors"
-        onClick={onToggle}
-        aria-expanded={isOpen}
-      >
-        {faq.q}
-        <svg
-          className={`w-5 h-5 text-text-muted flex-shrink-0 ml-4 transition-all duration-300 ${isOpen ? "rotate-180 text-lime" : ""}`}
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+    <div ref={ref} className="reveal" style={{ transitionDelay: `${delay}ms` }}>
+      <div className="bg-bg-card border border-border-subtle rounded-2xl overflow-hidden transition-colors duration-300 hover:border-lime/20">
+        <button
+          className="w-full flex items-center justify-between p-5 text-left text-base font-semibold text-text-primary hover:text-lime transition-colors cursor-pointer"
+          onClick={onToggle}
+          aria-expanded={isOpen}
         >
-          <polyline points="6 9 12 15 18 9" />
-        </svg>
-      </button>
-      <div
-        className="overflow-hidden transition-all duration-300"
-        style={{
-          maxHeight: isOpen ? "300px" : "0px",
-          padding: isOpen ? "0 20px 20px" : "0 20px",
-        }}
-      >
-        <p className="text-[0.9375rem] text-text-secondary leading-relaxed">
-          {faq.a}
-        </p>
+          {faq.q}
+          <svg
+            className={`w-5 h-5 text-text-muted flex-shrink-0 ml-4 transition-transform duration-300 ${isOpen ? "rotate-180 text-lime" : ""}`}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </button>
+        <div
+          className={`grid transition-[grid-template-rows,padding,opacity] duration-300 ease-in-out ${
+            isOpen
+              ? "grid-rows-[1fr] opacity-100 pb-5 px-5"
+              : "grid-rows-[0fr] opacity-0 pb-0 px-5"
+          }`}
+        >
+          <div className="overflow-hidden min-h-0">
+            <p className="text-[0.9375rem] text-text-secondary leading-relaxed">
+              {faq.a}
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

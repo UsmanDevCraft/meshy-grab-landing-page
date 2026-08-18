@@ -1,6 +1,11 @@
+import dynamic from "next/dynamic";
 import Navbar from "@/components/ui/Navbar";
 import Footer from "@/components/ui/Footer";
-import HeroSection from "@/components/sections/HeroSection";
+import HeroShimmer from "@/components/sections/HeroShimmer";
+
+const HeroSection = dynamic(() => import("@/components/sections/HeroSection"), {
+  loading: () => <HeroShimmer />,
+});
 import TrustStrip from "@/components/ui/TrustStrip";
 import ProblemSection from "@/components/sections/ProblemSection";
 import StepsSection from "@/components/sections/StepsSection";

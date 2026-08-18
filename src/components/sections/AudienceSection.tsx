@@ -45,23 +45,25 @@ function AudienceCard({ title, delay }: { title: string; delay: number }) {
   return (
     <div
       ref={ref}
-      className="reveal p-5 bg-bg-card border border-border-subtle rounded-2xl flex items-center gap-3 transition-all duration-300 hover:border-lime/20 hover:-translate-y-0.5"
+      className="reveal h-full"
       style={{ transitionDelay: `${delay}ms` }}
     >
-      <div className="w-8 h-8 rounded-lg bg-lime/10 flex items-center justify-center flex-shrink-0 text-lime">
-        <svg
-          className="w-4 h-4"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <polyline points="20 6 9 17 4 12" />
-        </svg>
+      <div className="h-full p-5 bg-bg-card border border-border-subtle rounded-2xl flex items-center gap-3 transition-all duration-200 ease-out hover:border-lime/30 hover:shadow-[0_0_20px_rgba(197,249,85,0.12)] hover:-translate-y-0.5">
+        <div className="w-8 h-8 rounded-lg bg-lime/10 flex items-center justify-center flex-shrink-0 text-lime">
+          <svg
+            className="w-4 h-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+        </div>
+        <span className="text-sm font-semibold text-text-primary">{title}</span>
       </div>
-      <span className="text-sm font-semibold text-text-primary">{title}</span>
     </div>
   );
 }

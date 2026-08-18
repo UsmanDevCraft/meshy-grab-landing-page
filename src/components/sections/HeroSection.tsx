@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { motion } from "motion/react";
 import CometCard from "@/components/ui/CometCard";
@@ -48,12 +48,17 @@ function Particles() {
 
 export default function HeroSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [isVideoReady, setIsVideoReady] = useState(false);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
     video.muted = true;
+
+    if (video.readyState >= 3) {
+      setIsVideoReady(true);
+    }
 
     const playVideo = async () => {
       try {
@@ -257,6 +262,15 @@ export default function HeroSection() {
                 "
               />
 
+              {!isVideoReady && (
+                <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-3 bg-black/60 backdrop-blur-xs transition-opacity duration-500">
+                  <div className="h-10 w-10 rounded-full border-2 border-lime/40 border-t-lime animate-spin" />
+                  <span className="text-xs text-text-muted font-medium tracking-wide">
+                    Loading Preview Video...
+                  </span>
+                </div>
+              )}
+
               <video
                 ref={videoRef}
                 autoPlay
@@ -264,6 +278,8 @@ export default function HeroSection() {
                 controls
                 playsInline
                 preload="auto"
+                onLoadedData={() => setIsVideoReady(true)}
+                onCanPlay={() => setIsVideoReady(true)}
                 width={1080}
                 height={675}
                 src="/videos/meshy_grab_demo.mp4"

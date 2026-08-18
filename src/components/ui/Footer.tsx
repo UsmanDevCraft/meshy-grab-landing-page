@@ -9,12 +9,18 @@ export default function Footer({ minimal = false }: FooterProps) {
     return (
       <footer className="bg-bg-card border-t border-border-subtle py-8">
         <div className="container mx-auto max-w-6xl px-6">
-          <p className="text-xs text-text-muted leading-relaxed max-w-3xl mb-3">
-            MeshyGrab is an independent third-party product and is not
-            affiliated with, endorsed by, or sponsored by Meshy.
+          <p className="text-xs text-text-muted leading-relaxed max-w-4xl mb-3">
+            <strong>Educational & Legal Disclaimer:</strong> MeshyGrab is an
+            independent third-party tool built solely for educational and
+            learning purposes. It is not affiliated with, endorsed by, or
+            sponsored by Meshy (Meshy AI). MeshyGrab operates 100% locally in
+            your browser to help users export GLB files of models they
+            generated. No user data is harvested, stolen, or shared, and no
+            external attacks or scraping are conducted.
           </p>
-          <p className="text-sm text-text-muted">
-            &copy; 2026 MeshyGrab. All rights reserved.
+          <p className="text-xs text-text-muted">
+            &copy; 2026 MeshyGrab. All rights reserved. Built for educational &
+            research purposes.
           </p>
         </div>
       </footer>
@@ -34,8 +40,8 @@ export default function Footer({ minimal = false }: FooterProps) {
                 height={50}
               />
             </Link>
-            <p className="text-sm text-text-muted leading-relaxed">
-              Simple model downloads, without the friction.
+            <p className="text-sm text-text-muted leading-relaxed mt-2">
+              Simple model downloads and previews, without friction.
             </p>
           </div>
 
@@ -106,13 +112,21 @@ export default function Footer({ minimal = false }: FooterProps) {
           </div>
         </div>
 
-        <div className="border-t border-border-subtle pt-8 flex flex-col gap-4">
-          <p className="text-xs text-text-muted leading-relaxed max-w-3xl">
-            MeshyGrab is an independent third-party product and is not
-            affiliated with, endorsed by, or sponsored by Meshy. Meshy and its
-            trademarks remain the property of their respective owners.
+        <div className="border-t border-border-subtle pt-8 flex flex-col gap-3">
+          <p className="text-xs text-text-muted leading-relaxed max-w-4xl">
+            <strong>Educational & Fair Use Statement:</strong> MeshyGrab is an
+            open educational utility and productivity helper designed to empower
+            free tier users to preview and export GLB 3D models they generated.
+            We strictly respect user privacy: no data harvesting, credential
+            logging, or network attacks are performed.
           </p>
-          <p className="text-sm text-text-muted">
+          <p className="text-xs text-text-muted leading-relaxed max-w-4xl">
+            <strong>Trademark & Disclaimer:</strong> MeshyGrab is an independent
+            third-party product and is not affiliated with, authorized, endorsed
+            by, or sponsored by Meshy (Meshy AI). All product names, logos,
+            brands, and trademarks belong strictly to their respective owners.
+          </p>
+          <p className="text-xs text-text-muted mt-2">
             &copy; 2026 MeshyGrab. All rights reserved.
           </p>
         </div>
