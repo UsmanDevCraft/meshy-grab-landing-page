@@ -88,6 +88,18 @@ export default function Footer({ minimal = false }: FooterProps) {
               >
                 Privacy Policy
               </Link>
+              <Link
+                href="/terms"
+                className="text-sm text-text-secondary hover:text-lime transition-colors"
+              >
+                Terms of Use
+              </Link>
+              <Link
+                href="/refund-policy"
+                className="text-sm text-text-secondary hover:text-lime transition-colors"
+              >
+                Refund Policy
+              </Link>
             </div>
           </div>
 

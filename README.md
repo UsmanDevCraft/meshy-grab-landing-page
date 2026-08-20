@@ -119,7 +119,7 @@ The actual model download is performed by the extension rather than routing the 
 
 For complete details, see the project's:
 
-**[Privacy Policy](https://your-domain.com/privacy)**
+**[Privacy Policy](https://meshygrab.vercel.app/privacy-policy)**
 
 ---
 

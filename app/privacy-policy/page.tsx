@@ -121,10 +121,10 @@ export default function PrivacyPage() {
                 If you have questions regarding this Privacy Policy or the
                 educational scope of MeshyGrab, please contact us at:{" "}
                 <a
-                  href="mailto:usmanaugust28@gmail.com"
+                  href="mailto:support.meshygrab@gmail.com"
                   className="text-lime underline underline-offset-2 hover:opacity-80"
                 >
-                  usmanaugust28@gmail.com
+                  support.meshygrab@gmail.com
                 </a>
               </p>
             </div>
