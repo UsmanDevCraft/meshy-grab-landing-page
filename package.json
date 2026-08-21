@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@paddle/paddle-js": "^1.6.4",
     "@tailwindcss/postcss": "^4.3.3",
     "lucide-react": "^1.31.0",
     "motion": "^13.1.0",

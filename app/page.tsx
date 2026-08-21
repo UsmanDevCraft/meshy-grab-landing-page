@@ -2,6 +2,7 @@ import dynamic from "next/dynamic";
 import Navbar from "@/components/ui/Navbar";
 import Footer from "@/components/ui/Footer";
 import HeroShimmer from "@/components/sections/HeroShimmer";
+import PaddleInitializer from "@/components/PaddleInitializer";
 
 const HeroSection = dynamic(() => import("@/components/sections/HeroSection"), {
   loading: () => <HeroShimmer />,
@@ -21,6 +22,7 @@ import FinalCTA from "@/components/sections/FinalCTA";
 export default function HomePage() {
   return (
     <>
+      <PaddleInitializer />
       <Navbar />
       <main id="main-content">
         <HeroSection />
