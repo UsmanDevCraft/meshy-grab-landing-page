@@ -23,7 +23,8 @@ export default function PaddleInitializer() {
     initializedRef.current = true;
 
     initializePaddle({
-      environment: "sandbox",
+      // environment: "sandbox",
+      environment: "production",
       token: token,
     }).catch((err) => {
       console.error("Failed to initialize Paddle.js:", err);

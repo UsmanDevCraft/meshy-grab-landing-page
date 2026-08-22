@@ -64,7 +64,8 @@ function CheckoutContent() {
         let paddle = getPaddleInstance();
         if (!paddle || !paddle.Initialized) {
           paddle = await initializePaddle({
-            environment: "sandbox",
+            // environment: "sandbox",
+            environment: "production",
             token: token,
             eventCallback: handlePaddleEvent,
           });
