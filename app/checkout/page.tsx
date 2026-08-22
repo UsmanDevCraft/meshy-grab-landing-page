@@ -17,7 +17,7 @@ function CheckoutContent() {
   const ptxn = searchParams.get("_ptxn");
   const installationId = searchParams.get("installationId");
 
-  const token = process.env.NEXT_PUBLIC_PADDLE_SANDBOX_CLIENT_TOKEN;
+  const token = process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN;
 
   const initialError = !ptxn
     ? "Invalid checkout link. Transaction ID (_ptxn) is missing."

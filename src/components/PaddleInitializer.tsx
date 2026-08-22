@@ -9,12 +9,12 @@ export default function PaddleInitializer() {
   useEffect(() => {
     if (initializedRef.current) return;
 
-    const token = process.env.NEXT_PUBLIC_PADDLE_SANDBOX_CLIENT_TOKEN;
+    const token = process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN;
 
     if (!token) {
       if (process.env.NODE_ENV === "development") {
         console.warn(
-          "Paddle client token is missing. Please set NEXT_PUBLIC_PADDLE_SANDBOX_CLIENT_TOKEN.",
+          "Paddle client token is missing. Please set NEXT_PUBLIC_PADDLE_CLIENT_TOKEN.",
         );
       }
       return;
