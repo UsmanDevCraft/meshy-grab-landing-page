@@ -44,6 +44,13 @@ function CheckoutContent() {
         (event.name as string) === "checkout.completed"
       ) {
         router.push(`/thanks?_ptxn=${encodeURIComponent(ptxn)}`);
+      } else if (
+        (event.name as string) === "checkout.error" ||
+        (event.name as string) === "checkout.failed"
+      ) {
+        setSdkError(
+          "Checkout session is invalid or expired. Please try again.",
+        );
       }
     };
 
@@ -64,7 +71,7 @@ function CheckoutContent() {
 
         if (paddle && paddle.Checkout) {
           setStatusMessage("Opening secure checkout...");
-          paddle.Checkout.open({
+          await paddle.Checkout.open({
             transactionId: ptxn,
             settings: {
               allowLogout: false,
@@ -75,7 +82,9 @@ function CheckoutContent() {
         }
       } catch (err: unknown) {
         console.error("Failed to open Paddle Checkout:", err);
-        setSdkError("Unable to open checkout portal. Please try again.");
+        setSdkError(
+          "Checkout session is invalid or expired. Please try again.",
+        );
       }
     };
 
@@ -101,13 +110,15 @@ function CheckoutContent() {
               <line x1="12" y1="16" x2="12.01" y2="16" />
             </svg>
           </div>
-          <h1 className="text-2xl font-bold mb-3">Checkout Unavailable</h1>
+          <h1 className="text-2xl font-bold mb-3">Checkout Session Invalid</h1>
           <p className="text-text-secondary text-sm mb-8 leading-relaxed">
             {error}
           </p>
-          <Link href="/" className="btn btn-secondary">
-            Return to MeshyGrab
-          </Link>
+          <div className="flex justify-center">
+            <Link href="/" className="btn btn-primary">
+              Try again
+            </Link>
+          </div>
         </div>
       </main>
     );

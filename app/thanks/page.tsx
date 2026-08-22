@@ -1,108 +1,134 @@
 "use client";
 
-import { Suspense, useEffect, useState, useCallback } from "react";
+import { Suspense, useEffect, useState, useCallback, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import Footer from "@/components/ui/Footer";
 import Link from "next/link";
 import OpenExtensionButton from "@/components/ui/OpenExtensionButton";
 
-type ActivationStatus = "activating" | "active" | "delayed";
+type ActivationStatus =
+  | "checking"
+  | "waiting"
+  | "activated"
+  | "delayed"
+  | "error";
+
+const RETRY_DELAYS = [0, 1000, 2000, 3000, 5000, 8000];
 
 function ThanksContent() {
   const searchParams = useSearchParams();
-  const [status, setStatus] = useState<ActivationStatus>("activating");
+  const [status, setStatus] = useState<ActivationStatus>("checking");
   const [attemptCount, setAttemptCount] = useState(0);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const ptxn = searchParams.get("_ptxn");
   const userId = searchParams.get("userId");
   const email = searchParams.get("email");
 
-  const checkEntitlement = useCallback(async () => {
-    try {
-      const baseUrl =
-        process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
-      const params = new URLSearchParams();
-      if (ptxn) params.set("_ptxn", ptxn);
-      if (userId) params.set("userId", userId);
-      if (email) params.set("email", email);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const isFetchingRef = useRef<boolean>(false);
+  const isMountedRef = useRef<boolean>(true);
 
-      const queryString = params.toString();
-      const endpoint = `${baseUrl}/api/entitlement${
-        queryString ? `?${queryString}` : ""
-      }`;
+  const checkEntitlement = useCallback(async (): Promise<boolean> => {
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+    const params = new URLSearchParams();
+    if (ptxn) params.set("_ptxn", ptxn);
+    if (userId) params.set("userId", userId);
+    if (email) params.set("email", email);
 
-      const res = await fetch(endpoint, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+    const queryString = params.toString();
+    const endpoint = `${baseUrl}/api/entitlement${
+      queryString ? `?${queryString}` : ""
+    }`;
 
-      if (res.ok) {
-        const data = await res.json();
-        if (
-          data.isPaid === true ||
-          data.active === true ||
-          data.isPro === true ||
-          data.status === "active"
-        ) {
-          setStatus("active");
-          return true;
-        }
-      }
-    } catch (err) {
-      console.warn("Entitlement check failed during polling:", err);
+    const res = await fetch(endpoint, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!res.ok) {
+      throw new Error(`Entitlement API error (status ${res.status})`);
     }
-    return false;
+
+    const data = await res.json();
+    return Boolean(
+      data.isPaid === true ||
+      data.active === true ||
+      data.isPro === true ||
+      data.status === "active",
+    );
   }, [ptxn, userId, email]);
 
-  useEffect(() => {
-    let timer: NodeJS.Timeout;
-    let retries = 0;
-    const maxRetries = 15; // Poll every 2 seconds for up to 30 seconds
-
-    const poll = async () => {
-      const isActivated = await checkEntitlement();
-      if (isActivated) return;
-
-      retries++;
-      setAttemptCount(retries);
-
-      if (retries < maxRetries) {
-        timer = setTimeout(poll, 2000);
-      } else {
-        setStatus("delayed");
+  const runRetrySchedule = useCallback(
+    async (startIndex: number) => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
       }
-    };
 
-    poll();
+      const executeStep = async (index: number) => {
+        if (!isMountedRef.current || isFetchingRef.current) return;
+        isFetchingRef.current = true;
+        setAttemptCount(index + 1);
+
+        try {
+          const isActivated = await checkEntitlement();
+          if (!isMountedRef.current) return;
+          isFetchingRef.current = false;
+
+          if (isActivated) {
+            setStatus("activated");
+            return;
+          }
+
+          if (index + 1 < RETRY_DELAYS.length) {
+            setStatus("waiting");
+            const delay = RETRY_DELAYS[index + 1];
+            timerRef.current = setTimeout(() => {
+              executeStep(index + 1);
+            }, delay);
+          } else {
+            setStatus("delayed");
+          }
+        } catch (err: unknown) {
+          console.warn("Entitlement check failed:", err);
+          if (!isMountedRef.current) return;
+          isFetchingRef.current = false;
+          setErrorMessage(
+            err instanceof Error
+              ? err.message
+              : "Failed to connect to entitlement service.",
+          );
+          setStatus("error");
+        }
+      };
+
+      await executeStep(startIndex);
+    },
+    [checkEntitlement],
+  );
+
+  useEffect(() => {
+    isMountedRef.current = true;
+    runRetrySchedule(0);
 
     return () => {
-      if (timer) clearTimeout(timer);
-    };
-  }, [checkEntitlement]);
-
-  const handleManualRetry = () => {
-    setStatus("activating");
-    setAttemptCount(0);
-    checkEntitlement().then((isActivated) => {
-      if (!isActivated) {
-        let retries = 0;
-        const maxRetries = 10;
-        const interval = setInterval(async () => {
-          retries++;
-          setAttemptCount(retries);
-          const active = await checkEntitlement();
-          if (active || retries >= maxRetries) {
-            clearInterval(interval);
-            if (!active) setStatus("delayed");
-          }
-        }, 2000);
+      isMountedRef.current = false;
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
       }
-    });
+    };
+  }, [runRetrySchedule]);
+
+  const handleTryAgain = () => {
+    setStatus("checking");
+    setErrorMessage(null);
+    runRetrySchedule(0);
   };
 
-  if (status === "activating") {
+  if (status === "checking" || status === "waiting") {
     return (
       <main
         id="main-content"
@@ -143,8 +169,65 @@ function ThanksContent() {
                   strokeDashoffset="12"
                 />
               </svg>
-              <span>Checking entitlement status... ({attemptCount}/15)</span>
+              <span>
+                Checking entitlement status... ({attemptCount}/
+                {RETRY_DELAYS.length})
+              </span>
             </div>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  if (status === "error") {
+    return (
+      <main
+        id="main-content"
+        className="min-h-screen flex items-center justify-center pt-24 pb-16"
+      >
+        <div className="container mx-auto max-w-xl px-6 text-center">
+          <div className="w-24 h-24 mx-auto mb-8 rounded-full bg-red-500/10 border-2 border-red-500/30 flex items-center justify-center text-red-400">
+            <svg
+              className="w-12 h-12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+          </div>
+
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-500/10 border border-red-500/20 rounded-full text-xs font-semibold text-red-400 mb-6">
+            Verification Error
+          </div>
+
+          <h1 className="text-3xl md:text-4xl font-extrabold mb-4">
+            Unable to verify subscription
+          </h1>
+          <p className="text-text-secondary text-base md:text-lg leading-relaxed mb-8 max-w-md mx-auto">
+            We encountered a network or server issue while verifying your
+            subscription status.
+          </p>
+
+          {errorMessage && (
+            <div className="p-4 bg-bg-card border border-red-500/20 rounded-2xl max-w-md mx-auto mb-8 text-sm text-red-400">
+              {errorMessage}
+            </div>
+          )}
+
+          <div className="flex flex-wrap gap-4 justify-center">
+            <button onClick={handleTryAgain} className="btn btn-primary">
+              Try again
+            </button>
+            <Link href="/" className="btn btn-secondary">
+              Back to MeshyGrab
+            </Link>
           </div>
         </div>
       </main>
@@ -181,8 +264,8 @@ function ThanksContent() {
             Subscription is processing...
           </h1>
           <p className="text-text-secondary text-base md:text-lg leading-relaxed mb-8 max-w-md mx-auto">
-            Your payment was successful! The payment confirmation webhook is
-            taking a bit longer than expected to process.
+            Your payment was received, but activation is taking longer than
+            expected. Please try again in a moment.
           </p>
 
           <div className="p-4 bg-bg-card border border-border-subtle rounded-2xl max-w-md mx-auto mb-8 text-sm text-text-secondary text-left space-y-2">
@@ -197,7 +280,7 @@ function ThanksContent() {
           </div>
 
           <div className="flex flex-wrap gap-4 justify-center">
-            <button onClick={handleManualRetry} className="btn btn-primary">
+            <button onClick={handleTryAgain} className="btn btn-primary">
               Check Status Again
             </button>
             <OpenExtensionButton />
