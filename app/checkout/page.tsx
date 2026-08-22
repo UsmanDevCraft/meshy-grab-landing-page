@@ -15,14 +15,17 @@ function CheckoutContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const ptxn = searchParams.get("_ptxn");
+  const installationId = searchParams.get("installationId");
 
   const token = process.env.NEXT_PUBLIC_PADDLE_SANDBOX_CLIENT_TOKEN;
 
   const initialError = !ptxn
     ? "Invalid checkout link. Transaction ID (_ptxn) is missing."
-    : !token
-      ? "Paddle configuration error. Sandbox client token is missing."
-      : null;
+    : !installationId
+      ? "Invalid checkout link. Installation ID is missing."
+      : !token
+        ? "Paddle configuration error. Sandbox client token is missing."
+        : null;
 
   const [sdkError, setSdkError] = useState<string | null>(null);
   const [statusMessage, setStatusMessage] = useState<string>(
@@ -33,7 +36,7 @@ function CheckoutContent() {
   const error = initialError || sdkError;
 
   useEffect(() => {
-    if (!ptxn || !token) return;
+    if (!ptxn || !installationId || !token) return;
 
     if (initializedRef.current) return;
     initializedRef.current = true;
@@ -43,7 +46,9 @@ function CheckoutContent() {
         event.name === CheckoutEventNames.CHECKOUT_COMPLETED ||
         (event.name as string) === "checkout.completed"
       ) {
-        router.push(`/thanks?_ptxn=${encodeURIComponent(ptxn)}`);
+        router.push(
+          `/thanks?installationId=${encodeURIComponent(installationId)}`,
+        );
       } else if (
         (event.name as string) === "checkout.error" ||
         (event.name as string) === "checkout.failed"
@@ -89,7 +94,7 @@ function CheckoutContent() {
     };
 
     startCheckout();
-  }, [ptxn, token, router]);
+  }, [ptxn, installationId, token, router]);
 
   if (error) {
     return (

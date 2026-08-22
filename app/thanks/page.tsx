@@ -17,29 +17,27 @@ const RETRY_DELAYS = [0, 1000, 2000, 3000, 5000, 8000];
 
 function ThanksContent() {
   const searchParams = useSearchParams();
-  const [status, setStatus] = useState<ActivationStatus>("checking");
-  const [attemptCount, setAttemptCount] = useState(0);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const installationId = searchParams.get("installationId");
 
-  const ptxn = searchParams.get("_ptxn");
-  const userId = searchParams.get("userId");
-  const email = searchParams.get("email");
+  const [status, setStatus] = useState<ActivationStatus>(
+    installationId ? "checking" : "error",
+  );
+  const [attemptCount, setAttemptCount] = useState(0);
+  const [errorMessage, setErrorMessage] = useState<string | null>(
+    installationId
+      ? null
+      : "Installation ID is missing. Cannot verify subscription.",
+  );
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const isFetchingRef = useRef<boolean>(false);
   const isMountedRef = useRef<boolean>(true);
 
   const checkEntitlement = useCallback(async (): Promise<boolean> => {
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
-    const params = new URLSearchParams();
-    if (ptxn) params.set("_ptxn", ptxn);
-    if (userId) params.set("userId", userId);
-    if (email) params.set("email", email);
+    if (!installationId) return false;
 
-    const queryString = params.toString();
-    const endpoint = `${baseUrl}/api/entitlement${
-      queryString ? `?${queryString}` : ""
-    }`;
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+    const endpoint = `${baseUrl}/api/entitlement?installationId=${encodeURIComponent(installationId)}`;
 
     const res = await fetch(endpoint, {
       method: "GET",
@@ -59,7 +57,7 @@ function ThanksContent() {
       data.isPro === true ||
       data.status === "active",
     );
-  }, [ptxn, userId, email]);
+  }, [installationId]);
 
   const runRetrySchedule = useCallback(
     async (startIndex: number) => {
@@ -112,7 +110,11 @@ function ThanksContent() {
 
   useEffect(() => {
     isMountedRef.current = true;
-    runRetrySchedule(0);
+
+    // Only start the retry schedule if we have an installationId
+    if (installationId) {
+      runRetrySchedule(0);
+    }
 
     return () => {
       isMountedRef.current = false;
@@ -120,7 +122,7 @@ function ThanksContent() {
         clearTimeout(timerRef.current);
       }
     };
-  }, [runRetrySchedule]);
+  }, [installationId, runRetrySchedule]);
 
   const handleTryAgain = () => {
     setStatus("checking");
