@@ -64,9 +64,8 @@ function CheckoutContent() {
         let paddle = getPaddleInstance();
         if (!paddle || !paddle.Initialized) {
           paddle = await initializePaddle({
-            // environment: "sandbox",
-            environment: "production",
-            token: token,
+            environment: token.startsWith("live_") ? "production" : "sandbox",
+            token,
             eventCallback: handlePaddleEvent,
           });
         } else {
