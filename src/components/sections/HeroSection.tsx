@@ -467,7 +467,9 @@ export default function HeroSection() {
             "
           >
             <Link
-              href="/#pricing"
+              href="https://chromewebstore.google.com/detail/jkddfapkjenldpiacoccgheimcokhmcc?utm_source=item-share-cb"
+              target="_blank"
+              rel="noopener noreferrer"
               className="btn btn-primary group w-full sm:w-auto"
             >
               Get MeshyGrab

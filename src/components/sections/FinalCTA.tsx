@@ -24,7 +24,9 @@ export default function FinalCTA() {
           </p>
           <div className="flex flex-col items-center gap-3">
             <Link
-              href="/#pricing"
+              href="https://chromewebstore.google.com/detail/jkddfapkjenldpiacoccgheimcokhmcc?utm_source=item-share-cb"
+              target="_blank"
+              rel="noopener noreferrer"
               className="btn btn-primary !px-9 !py-4 !text-base shadow-[0_0_30px_rgba(197,249,85,0.25)]"
             >
               Get MeshyGrab

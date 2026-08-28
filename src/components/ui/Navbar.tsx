@@ -66,8 +66,9 @@ export default function Navbar() {
             Privacy
           </Link>
           <Link
-            href="/#get"
-            onClick={(e) => handleAnchorClick(e, "/#get")}
+            href="https://chromewebstore.google.com/detail/jkddfapkjenldpiacoccgheimcokhmcc?utm_source=item-share-cb"
+            target="_blank"
+            rel="noopener noreferrer"
             className="btn btn-primary !py-2.5 !px-5 !text-sm"
           >
             Get MeshyGrab
@@ -124,8 +125,9 @@ export default function Navbar() {
             Privacy Policy
           </Link>
           <Link
-            href="/#get"
-            onClick={(e) => handleAnchorClick(e, "/#get")}
+            href="https://chromewebstore.google.com/detail/jkddfapkjenldpiacoccgheimcokhmcc?utm_source=item-share-cb"
+            target="_blank"
+            rel="noopener noreferrer"
             className="btn btn-primary text-center mt-2"
           >
             Get MeshyGrab

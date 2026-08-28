@@ -108,18 +108,14 @@ export default function Footer({ minimal = false }: FooterProps) {
               Links
             </h4>
             <div className="flex flex-col gap-3">
-              <span
+              <Link
+                href="https://chromewebstore.google.com/detail/jkddfapkjenldpiacoccgheimcokhmcc?utm_source=item-share-cb"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-sm text-text-secondary hover:text-lime transition-colors cursor-pointer"
-                onClick={() => alert("Coming soon")}
               >
                 Chrome Web Store
-              </span>
-              <span
-                className="text-sm text-text-secondary hover:text-lime transition-colors cursor-pointer"
-                onClick={() => alert("Coming soon")}
-              >
-                GitHub
-              </span>
+              </Link>
             </div>
           </div>
         </div>
