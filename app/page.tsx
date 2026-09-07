@@ -40,7 +40,7 @@ export default function HomePage() {
             </div>
           }
         >
-          <PlansContent />
+          <PlansContent isPlanPage={false} />
         </Suspense>
         <MoneySection />
         <PrivacySection />

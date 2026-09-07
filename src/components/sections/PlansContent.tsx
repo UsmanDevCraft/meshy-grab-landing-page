@@ -5,13 +5,20 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { plansList } from "@/constants/constants";
 import { PlanItem } from "@/types/types";
 
-export default function PlansContent() {
+const CHROME_WEB_STORE_URL =
+  "https://chromewebstore.google.com/detail/jkddfapkjenldpiacoccgheimcokhmcc?utm_source=item-share-cb";
+
+interface PlansContentProps {
+  isPlanPage?: boolean;
+}
+
+export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const installationId = searchParams.get("installationId");
-  const urlUserId = searchParams.get("userId");
-  const urlEmail = searchParams.get("email");
+  const installationId = isPlanPage ? searchParams.get("installationId") : null;
+  const urlUserId = isPlanPage ? searchParams.get("userId") : null;
+  const urlEmail = isPlanPage ? searchParams.get("email") : null;
 
   const [selectedPlanId, setSelectedPlanId] = useState<string>("free");
   const [userId, setUserId] = useState<string | null>(urlUserId);
@@ -57,18 +64,24 @@ export default function PlansContent() {
 
   // Fetch identity on mount if installationId exists and userId/email are not in URL
   useEffect(() => {
-    if (installationId && (!urlUserId || !urlEmail)) {
+    if (isPlanPage && installationId && (!urlUserId || !urlEmail)) {
       // Defer to a microtask to avoid synchronous setState within the effect body,
       // which React flags as a cascading render.
       queueMicrotask(() => {
         resolveIdentity(installationId);
       });
     }
-  }, [installationId, urlUserId, urlEmail, resolveIdentity]);
+  }, [isPlanPage, installationId, urlUserId, urlEmail, resolveIdentity]);
 
   // Handle plan purchase CTA click
   const handlePlanClick = async (plan: PlanItem) => {
     setSelectedPlanId(plan.id);
+
+    // Homepage mode: all buttons go to Chrome Web Store
+    if (!isPlanPage) {
+      window.open(CHROME_WEB_STORE_URL, "_blank", "noopener,noreferrer");
+      return;
+    }
 
     // Free plan links out directly to Chrome store
     if (!plan.planKey) {
@@ -190,8 +203,8 @@ export default function PlansContent() {
         </p>
       </div>
 
-      {/* Missing InstallationId Warning State */}
-      {!installationId && (
+      {/* Missing InstallationId Warning State (Plans page only) */}
+      {isPlanPage && !installationId && (
         <div className="max-w-2xl mx-auto mb-10 p-5 bg-amber-500/10 border border-amber-500/30 rounded-2xl text-center">
           <div className="flex items-center justify-center gap-2 text-amber-400 font-bold mb-1 text-sm sm:text-base">
             <svg
@@ -473,6 +486,13 @@ export default function PlansContent() {
           );
         })}
       </div>
+
+      {/* Homepage upgrade hint */}
+      {!isPlanPage && (
+        <p className="text-center text-sm text-text-secondary mb-10">
+          Already have MeshyGrab? Open the extension and click Plans to upgrade.
+        </p>
+      )}
 
       {/* Feature Matrix / Guarantee Box */}
       <div className="bg-bg-card border border-border-subtle rounded-3xl p-8 sm:p-10 max-w-4xl mx-auto text-center mb-16">
