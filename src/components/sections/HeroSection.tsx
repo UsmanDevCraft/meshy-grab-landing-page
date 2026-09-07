@@ -282,7 +282,7 @@ export default function HeroSection() {
                 onCanPlay={() => setIsVideoReady(true)}
                 width={1080}
                 height={675}
-                src="/videos/meshy_grab_demo.mp4"
+                src="/videos/meshygrab_demo_full_2k.mp4"
                 aria-label="MeshyGrab demonstration"
                 className="
                   block
