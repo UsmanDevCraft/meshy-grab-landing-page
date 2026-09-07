@@ -13,6 +13,7 @@ export interface CometCardProps {
 
 export interface PlanItem {
   id: string;
+  planKey?: "pro_monthly" | "pro_annual" | "lifetime" | null;
   name: string;
   badge: string;
   price: string;

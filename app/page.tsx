@@ -1,4 +1,5 @@
 import dynamic from "next/dynamic";
+import { Suspense } from "react";
 import Navbar from "@/components/ui/Navbar";
 import Footer from "@/components/ui/Footer";
 import HeroShimmer from "@/components/sections/HeroShimmer";
@@ -32,7 +33,15 @@ export default function HomePage() {
         <PreviewSection />
         <FeaturesSection />
         <AudienceSection />
-        <PlansContent />
+        <Suspense
+          fallback={
+            <div className="py-24 text-center text-text-muted">
+              Loading plans...
+            </div>
+          }
+        >
+          <PlansContent />
+        </Suspense>
         <MoneySection />
         <PrivacySection />
         <FAQSection />

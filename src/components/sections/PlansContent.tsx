@@ -1,19 +1,182 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
+import { useState, useEffect, useCallback } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { plansList } from "@/constants/constants";
+import { PlanItem } from "@/types/types";
 
 export default function PlansContent() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const installationId = searchParams.get("installationId");
+  const urlUserId = searchParams.get("userId");
+  const urlEmail = searchParams.get("email");
+
   const [selectedPlanId, setSelectedPlanId] = useState<string>("free");
+  const [userId, setUserId] = useState<string | null>(urlUserId);
+  const [email, setEmail] = useState<string | null>(urlEmail);
+
+  const [submittingPlan, setSubmittingPlan] = useState<string | null>(null);
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
+  const [isResolvingIdentity, setIsResolvingIdentity] =
+    useState<boolean>(false);
+
+  // Identity resolution helper
+  const resolveIdentity = useCallback(async (targetInstallationId: string) => {
+    setIsResolvingIdentity(true);
+    try {
+      const baseUrl =
+        process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+      const endpoint = `${baseUrl}/entitlement?installationId=${encodeURIComponent(
+        targetInstallationId,
+      )}`;
+
+      const res = await fetch(endpoint, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        const fetchedUserId = data.userId || data.user?.id || data.id || null;
+        const fetchedEmail = data.email || data.user?.email || null;
+
+        if (fetchedUserId) setUserId(fetchedUserId);
+        if (fetchedEmail) setEmail(fetchedEmail);
+
+        return { userId: fetchedUserId, email: fetchedEmail };
+      }
+    } catch (err) {
+      console.warn("Failed to resolve identity from entitlement API:", err);
+    } finally {
+      setIsResolvingIdentity(false);
+    }
+    return { userId: null, email: null };
+  }, []);
+
+  // Fetch identity on mount if installationId exists and userId/email are not in URL
+  useEffect(() => {
+    if (installationId && (!urlUserId || !urlEmail)) {
+      // Defer to a microtask to avoid synchronous setState within the effect body,
+      // which React flags as a cascading render.
+      queueMicrotask(() => {
+        resolveIdentity(installationId);
+      });
+    }
+  }, [installationId, urlUserId, urlEmail, resolveIdentity]);
+
+  // Handle plan purchase CTA click
+  const handlePlanClick = async (plan: PlanItem) => {
+    setSelectedPlanId(plan.id);
+
+    // Free plan links out directly to Chrome store
+    if (!plan.planKey) {
+      if (plan.href) {
+        window.open(plan.href, "_blank", "noopener,noreferrer");
+      }
+      return;
+    }
+
+    // Prevent duplicate submission
+    if (submittingPlan) return;
+
+    setCheckoutError(null);
+
+    // Require installationId
+    if (!installationId) {
+      setCheckoutError(
+        "Installation ID is missing. The Plans & Pricing page must be opened directly from your MeshyGrab Chrome Extension.",
+      );
+      return;
+    }
+
+    let activeUserId = userId || urlUserId;
+    let activeEmail = email || urlEmail;
+
+    // Retry identity resolution if missing
+    if (!activeUserId || !activeEmail) {
+      setSubmittingPlan(plan.id);
+      const resolved = await resolveIdentity(installationId);
+      activeUserId = activeUserId || resolved.userId;
+      activeEmail = activeEmail || resolved.email;
+    }
+
+    if (!activeUserId || !activeEmail) {
+      setSubmittingPlan(null);
+      setCheckoutError(
+        "Unable to verify Meshy account identity for this installation. Please ensure you open the Plans page from your MeshyGrab extension.",
+      );
+      return;
+    }
+
+    setSubmittingPlan(plan.id);
+
+    try {
+      const baseUrl =
+        process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+      const endpoint = `${baseUrl}/api/checkout`;
+
+      const payload = {
+        plan: plan.planKey,
+        userId: activeUserId,
+        email: activeEmail,
+        installationId: installationId,
+      };
+
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        throw new Error(
+          data.error ||
+            `Checkout session creation failed (Status ${res.status}).`,
+        );
+      }
+
+      const ptxn =
+        data.transactionId || data._ptxn || data.transaction?.id || null;
+      const checkoutUrl = data.url || null;
+
+      if (ptxn) {
+        // Navigate to existing /checkout page contract
+        router.push(
+          `/checkout?_ptxn=${encodeURIComponent(
+            ptxn,
+          )}&installationId=${encodeURIComponent(installationId)}`,
+        );
+      } else if (checkoutUrl) {
+        window.location.assign(checkoutUrl);
+      } else {
+        throw new Error(
+          "Checkout session was created, but transaction ID was missing from the server response.",
+        );
+      }
+    } catch (err: unknown) {
+      console.error("Checkout submission failed:", err);
+      setCheckoutError(
+        err instanceof Error
+          ? err.message
+          : "An unexpected error occurred while creating checkout session.",
+      );
+      setSubmittingPlan(null);
+    }
+  };
 
   return (
     <div
       id="pricing"
-      className="container mx-auto max-w-7xl px-4 sm:px-6 pt-24 pb-16"
+      className="container mx-auto max-w-7xl px-4 sm:px-6 pt-16 pb-16"
     >
       {/* Hero Header */}
-      <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16">
+      <div className="text-center max-w-3xl mx-auto mb-10 md:mb-14">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-lime/10 border border-lime/25 rounded-full text-xs font-semibold text-lime mb-5">
           <span className="w-2 h-2 rounded-full bg-lime animate-pulse" />
           Plans & Pricing
@@ -26,6 +189,46 @@ export default function PlansContent() {
           texture exports.
         </p>
       </div>
+
+      {/* Missing InstallationId Warning State */}
+      {!installationId && (
+        <div className="max-w-2xl mx-auto mb-10 p-5 bg-amber-500/10 border border-amber-500/30 rounded-2xl text-center">
+          <div className="flex items-center justify-center gap-2 text-amber-400 font-bold mb-1 text-sm sm:text-base">
+            <svg
+              className="w-5 h-5 flex-shrink-0"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+            Opened Outside MeshyGrab Extension
+          </div>
+          <p className="text-xs sm:text-sm text-text-secondary leading-relaxed">
+            To upgrade to a paid plan, please open the Plans & Pricing page
+            directly from inside your <strong>MeshyGrab</strong> Chrome
+            Extension so your account identity is verified automatically.
+          </p>
+        </div>
+      )}
+
+      {/* Checkout / Identity Error Banner */}
+      {checkoutError && (
+        <div className="max-w-2xl mx-auto mb-10 p-4 bg-red-500/10 border border-red-500/30 rounded-2xl text-center flex items-center justify-between gap-4">
+          <div className="text-xs sm:text-sm text-red-400 font-medium text-left">
+            ⚠️ {checkoutError}
+          </div>
+          <button
+            onClick={() => setCheckoutError(null)}
+            className="text-xs font-bold text-red-400 underline underline-offset-2 hover:opacity-80 flex-shrink-0"
+          >
+            Dismiss
+          </button>
+        </div>
+      )}
 
       {/* Visual Progression Strip */}
       <div className="max-w-2xl mx-auto mb-12 p-3 bg-bg-card border border-border-subtle rounded-2xl flex flex-wrap items-center justify-around gap-2 text-xs sm:text-sm font-medium">
@@ -62,6 +265,7 @@ export default function PlansContent() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch mb-16">
         {plansList.map((plan) => {
           const isSelected = selectedPlanId === plan.id;
+          const isLoadingThisPlan = submittingPlan === plan.id;
 
           return (
             <div
@@ -81,7 +285,7 @@ export default function PlansContent() {
                   : ""
               }`}
             >
-              {/* Highlight Gradient Borders for Best Value & Lifetime */}
+              {/* Highlight Gradient Borders */}
               {plan.isBestValue && (
                 <div
                   className="absolute inset-0 rounded-3xl p-px pointer-events-none"
@@ -218,10 +422,14 @@ export default function PlansContent() {
 
               {/* Action CTA Button */}
               <div>
-                <Link
-                  href={plan.href}
-                  target={plan.id === "free" ? "_blank" : "_self"}
-                  className={`btn w-full text-center text-sm font-bold py-3.5 rounded-xl transition-all duration-300 ${
+                <button
+                  type="button"
+                  disabled={Boolean(submittingPlan) || isResolvingIdentity}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handlePlanClick(plan);
+                  }}
+                  className={`btn w-full text-center text-sm font-bold py-3.5 rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed ${
                     plan.isBestValue
                       ? "btn-primary"
                       : plan.isPremium
@@ -231,8 +439,30 @@ export default function PlansContent() {
                           : "btn-secondary"
                   }`}
                 >
-                  {plan.cta}
-                </Link>
+                  {isLoadingThisPlan ? (
+                    <span className="inline-flex items-center gap-2">
+                      <svg
+                        className="w-4 h-4 animate-spin text-current"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="3"
+                      >
+                        <circle
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          strokeDasharray="32"
+                          strokeDashoffset="12"
+                        />
+                      </svg>
+                      Preparing Checkout...
+                    </span>
+                  ) : (
+                    plan.cta
+                  )}
+                </button>
+
                 {plan.id === "free" && (
                   <p className="text-[11px] text-center text-text-muted mt-2">
                     Default free tier — No credit card needed
