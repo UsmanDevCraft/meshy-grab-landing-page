@@ -14,10 +14,10 @@ import PreviewSection from "@/components/sections/PreviewSection";
 import FeaturesSection from "@/components/sections/FeaturesSection";
 import AudienceSection from "@/components/sections/AudienceSection";
 import PrivacySection from "@/components/sections/PrivacySection";
-import PricingSection from "@/components/sections/PricingSection";
 import MoneySection from "@/components/sections/MoneySection";
 import FAQSection from "@/components/sections/FAQSection";
 import FinalCTA from "@/components/sections/FinalCTA";
+import PlansContent from "@/components/sections/PlansContent";
 
 export default function HomePage() {
   return (
@@ -32,7 +32,7 @@ export default function HomePage() {
         <PreviewSection />
         <FeaturesSection />
         <AudienceSection />
-        <PricingSection />
+        <PlansContent />
         <MoneySection />
         <PrivacySection />
         <FAQSection />

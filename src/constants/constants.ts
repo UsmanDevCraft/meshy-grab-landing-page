@@ -1,3 +1,5 @@
+import { PlanItem } from "@/types/types";
+
 export const faqs = [
   {
     q: "What is MeshyGrab?",
@@ -137,4 +139,74 @@ export const navLinks = [
   { href: "/#audience", label: "Who It's For" },
   { href: "/#pricing", label: "Pricing" },
   { href: "/#faq", label: "FAQ" },
+];
+
+export const plansList: PlanItem[] = [
+  {
+    id: "free",
+    name: "Free",
+    badge: "Free",
+    price: "$0",
+    period: "",
+    subtitle: "Ideal for trying out MeshyGrab",
+    features: [
+      "2 GLB / OBJ / FBX downloads",
+      "8 texture PNG downloads",
+      "Basic functionality",
+    ],
+    cta: "Get Started Free",
+    href: "https://chromewebstore.google.com/detail/jkddfapkjenldpiacoccgheimcokhmcc?utm_source=item-share-cb",
+  },
+  {
+    id: "pro",
+    name: "Pro",
+    badge: "Monthly",
+    price: "$0.99",
+    period: "/month",
+    subtitle: "Flexible monthly subscription",
+    features: [
+      "Unlimited GLB downloads",
+      "Unlimited OBJ downloads",
+      "Unlimited FBX downloads",
+      "Unlimited texture PNG downloads",
+      "Full Pro features",
+    ],
+    cta: "Get Pro Monthly",
+    href: "/checkout?plan=pro-monthly",
+  },
+  {
+    id: "pro-annual",
+    name: "Pro Annual ⭐",
+    badge: "Best Value ⭐",
+    price: "$9.99",
+    period: "/year",
+    originalPrice: "$12/year",
+    savings: "Save ~17%",
+    subtitle: "Recommended for active creators",
+    features: [
+      "Everything in Pro",
+      "Any new updates shared with you first",
+      "New features shared with you first",
+    ],
+    cta: "Get Pro Annual",
+    href: "/checkout?plan=pro-annual",
+    isBestValue: true,
+  },
+  {
+    id: "lifetime",
+    name: "Lifetime 🔥",
+    badge: "Lifetime 🔥",
+    price: "$49",
+    period: "one-time",
+    subtitle: "Pay once, use forever",
+    features: [
+      "Everything in Pro",
+      "Any new updates shared with you first",
+      "New features shared with you first",
+      "No recurring payments ever",
+    ],
+    cta: "Get Lifetime Access",
+    href: "/checkout?plan=lifetime",
+    isPremium: true,
+  },
 ];
