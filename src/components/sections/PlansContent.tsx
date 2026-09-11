@@ -52,6 +52,15 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
         if (fetchedUserId) setUserId(fetchedUserId);
         if (fetchedEmail) setEmail(fetchedEmail);
 
+        if (data.isPaid === true && data.plan) {
+          const matchingPlan = plansList.find(
+            (p) => p.planKey === data.plan || p.id === data.plan,
+          );
+          if (matchingPlan) {
+            setSelectedPlanId(matchingPlan.id);
+          }
+        }
+
         return { userId: fetchedUserId, email: fetchedEmail };
       }
     } catch (err) {
