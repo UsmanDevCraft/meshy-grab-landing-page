@@ -17,7 +17,8 @@ export default function StepsSection() {
             How It Works
           </h2>
           <p className="text-lg text-text-secondary max-w-xl mx-auto">
-            From model creation to downloading your GLB asset in seconds.
+            From model creation to downloading your 3D assets &amp; textures in
+            seconds.
           </p>
         </div>
 

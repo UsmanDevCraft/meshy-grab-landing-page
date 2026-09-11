@@ -14,12 +14,13 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
 
   title: {
-    default: "MeshyGrab — Preview & Download Meshy 3D Models as GLB",
+    default:
+      "MeshyGrab — Preview & Download Meshy 3D Models (GLB, OBJ, FBX, 3MF, STL & Textures)",
     template: "%s | MeshyGrab",
   },
 
   description:
-    "MeshyGrab is a Chrome extension that helps Meshy users preview and download the 3D models they've generated as GLB files. 2 free downloads, then $0.99/month.",
+    "MeshyGrab is a Chrome extension that helps Meshy users preview and download 3D models in GLB, OBJ, FBX, 3MF, STL formats and texture exports. 2 free downloads, then $0.99/month.",
 
   applicationName: "MeshyGrab",
 
@@ -42,6 +43,11 @@ export const metadata: Metadata = {
     "download Meshy 3D models",
     "Meshy download",
     "Meshy GLB",
+    "Meshy OBJ",
+    "Meshy FBX",
+    "Meshy 3MF",
+    "Meshy STL",
+    "Meshy texture export",
     "Meshy GLB downloader",
     "download Meshy model as GLB",
     "Meshy model download",
@@ -51,7 +57,7 @@ export const metadata: Metadata = {
     "Meshy Chrome extension",
     "Meshy browser extension",
     "3D model downloader",
-    "3D model GLB download",
+    "3D model GLB OBJ FBX 3MF STL download",
     "AI 3D model downloader",
   ],
 
@@ -64,15 +70,16 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: siteUrl,
     siteName: "MeshyGrab",
-    title: "MeshyGrab — Preview & Download Meshy 3D Models as GLB",
+    title:
+      "MeshyGrab — Preview & Download Meshy 3D Models (GLB, OBJ, FBX, 3MF, STL & Textures)",
     description:
-      "MeshyGrab is a Chrome extension that helps Meshy users preview and download the 3D models they've generated as GLB files.",
+      "MeshyGrab is a Chrome extension that helps Meshy users preview and download 3D models in GLB, OBJ, FBX, 3MF, STL formats and texture exports.",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "MeshyGrab — Preview & Download Meshy 3D Models as GLB",
+        alt: "MeshyGrab — Preview & Download Meshy 3D Models (GLB, OBJ, FBX, 3MF, STL & Textures)",
       },
     ],
   },
@@ -83,9 +90,10 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "MeshyGrab — Preview & Download Meshy 3D Models as GLB",
+    title:
+      "MeshyGrab — Preview & Download Meshy 3D Models (GLB, OBJ, FBX, 3MF, STL & Textures)",
     description:
-      "MeshyGrab is a Chrome extension that helps Meshy users preview and download the 3D models they've generated as GLB files.",
+      "MeshyGrab is a Chrome extension that helps Meshy users preview and download 3D models in GLB, OBJ, FBX, 3MF, STL formats and texture exports.",
     images: ["/og-image.png"],
   },
 
@@ -132,7 +140,7 @@ export default function RootLayout({
         "2 free downloads, then unlimited downloads for $0.99/month.",
     },
     description:
-      "MeshyGrab is a Chrome extension that helps Meshy users preview and download the 3D models they've generated as GLB files.",
+      "MeshyGrab is a Chrome extension that helps Meshy users preview and download 3D models in GLB, OBJ, FBX, 3MF, STL formats and texture exports.",
     url: siteUrl,
   };
 

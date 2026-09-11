@@ -100,8 +100,8 @@ export default function FeaturesSection() {
             Built for your workflow
           </h2>
           <p className="text-lg text-text-secondary max-w-xl mx-auto">
-            Clear, practical features designed around one job: getting your GLB
-            file.
+            Clear, practical features designed around one job: getting your 3D
+            assets in GLB, OBJ, FBX, 3MF, STL &amp; texture formats.
           </p>
         </div>
 

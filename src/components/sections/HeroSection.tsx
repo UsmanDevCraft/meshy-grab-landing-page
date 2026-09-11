@@ -442,7 +442,8 @@ export default function HeroSection() {
             "
           >
             MeshyGrab is a lightweight Chrome extension that lets you preview
-            and download the 3D models you&apos;ve generated in Meshy.
+            and export 3D models from Meshy in all formats — GLB, OBJ, FBX, 3MF,
+            STL &amp; texture maps.
           </motion.p>
 
           {/* CTA */}

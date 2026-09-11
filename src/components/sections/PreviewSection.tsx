@@ -23,8 +23,8 @@ export default function PreviewSection() {
             </h2>
             <p className="text-lg text-text-secondary leading-relaxed mt-4">
               MeshyGrab opens right alongside your Meshy workspace. Confirm your
-              model preview, verify the GLB file status, and download in a
-              single click.
+              model preview, choose your export format (GLB, OBJ, FBX, 3MF, STL,
+              or textures), and download in a single click.
             </p>
             <div className="mt-8 flex flex-col gap-3.5">
               {checks.map((c) => (
@@ -101,9 +101,15 @@ export default function PreviewSection() {
                 {/* Details */}
                 <div className="space-y-3 mb-6 bg-bg-page/60 p-3.5 rounded-xl border border-border-subtle text-xs">
                   <div className="flex justify-between items-center">
-                    <span className="text-text-muted">Format</span>
-                    <span className="text-lime font-bold font-mono px-2 py-0.5 bg-lime/10 rounded">
-                      .GLB
+                    <span className="text-text-muted">Formats</span>
+                    <span className="text-lime font-bold font-mono text-[10px] px-2 py-0.5 bg-lime/10 rounded">
+                      GLB • OBJ • FBX • 3MF • STL
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-text-muted">Textures</span>
+                    <span className="text-pink font-bold font-mono text-[10px] px-2 py-0.5 bg-pink/10 rounded">
+                      PNG Maps Included
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
@@ -136,7 +142,7 @@ export default function PreviewSection() {
                     <polyline points="7 10 12 15 17 10" />
                     <line x1="12" y1="15" x2="12" y2="3" />
                   </svg>
-                  Download GLB File
+                  Download 3D Model &amp; Textures
                 </button>
 
                 <p className="text-center mt-3 text-[11px] text-text-muted">

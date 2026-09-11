@@ -32,7 +32,8 @@ export default function ProblemSection() {
             Meshy makes it easy to generate 3D models. But once your model is
             ready, downloading the actual asset can be limited. MeshyGrab
             focuses on that final step—helping you preview and download the
-            model you&apos;ve already created as a GLB file.
+            model you&apos;ve already created in your choice of GLB, OBJ, FBX,
+            3MF, STL, or texture exports.
           </p>
         </div>
 
@@ -146,7 +147,8 @@ export default function ProblemSection() {
                 </div>
                 <div className="text-center text-lime text-xs">&darr;</div>
                 <div className="p-2.5 bg-lime/10 border border-lime/40 rounded-lg text-lime font-bold flex items-center gap-2">
-                  <span>5.</span> Download GLB instantly
+                  <span>5.</span> Download GLB, OBJ, FBX, 3MF, STL &amp;
+                  Textures
                 </div>
               </div>
             </div>

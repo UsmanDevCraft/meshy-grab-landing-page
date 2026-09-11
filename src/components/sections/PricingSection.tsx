@@ -17,7 +17,8 @@ export default function PricingSection() {
             Simple, honest pricing
           </h2>
           <p className="text-lg text-text-secondary max-w-xl mx-auto">
-            Try 2 downloads for free. Upgrade to Pro for unlimited access.
+            Try 2 downloads for free. Upgrade to Pro for unlimited GLB, OBJ,
+            FBX, 3MF, STL &amp; texture exports.
           </p>
         </div>
 
@@ -27,7 +28,9 @@ export default function PricingSection() {
           <span className="text-text-muted">&rarr;</span>
           <span className="text-pink font-bold">$0.99 / month</span>
           <span className="text-text-muted">&rarr;</span>
-          <span className="text-lime font-bold">Unlimited Downloads</span>
+          <span className="text-lime font-bold">
+            Unlimited All-Format Access
+          </span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">

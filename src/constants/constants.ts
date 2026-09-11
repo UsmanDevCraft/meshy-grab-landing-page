@@ -3,23 +3,23 @@ import { PlanItem } from "@/types/types";
 export const faqs = [
   {
     q: "What is MeshyGrab?",
-    a: "MeshyGrab is a Chrome extension that helps Meshy users preview and download the 3D models they've generated as GLB files.",
+    a: "MeshyGrab is a Chrome extension that helps Meshy users preview and download their 3D models in all formats: GLB, OBJ, FBX, 3MF, STL, and texture exports.",
   },
   {
     q: "Does MeshyGrab generate 3D models?",
-    a: "No. MeshyGrab does not generate models. You create your model in Meshy, and MeshyGrab focuses on helping you access and download the generated model.",
+    a: "No. MeshyGrab does not generate models. You create your model in Meshy, and MeshyGrab focuses on helping you access and export the generated model files.",
   },
   {
-    q: "What does MeshyGrab download?",
-    a: "MeshyGrab is designed to download generated Meshy models as GLB files.",
+    q: "What formats does MeshyGrab download?",
+    a: "MeshyGrab is designed to download generated Meshy models in all popular 3D formats (GLB, OBJ, FBX, 3MF, STL) as well as full texture maps (PNG).",
   },
   {
     q: "How many free downloads do I get?",
-    a: "The Free plan includes 2 downloads.",
+    a: "The Free plan includes 2 free downloads across all supported formats.",
   },
   {
     q: "How much is Pro?",
-    a: "Pro is $0.99/month and provides unlimited downloads.",
+    a: "Pro starts at $0.99/month and provides unlimited downloads for all 3D formats and texture exports.",
   },
   {
     q: "Do I need to provide a Meshy API key?",
@@ -33,7 +33,8 @@ export const faqs = [
 
 export const checks = [
   "Model preview before download",
-  "GLB format confirmation",
+  "All 3D formats (GLB, OBJ, FBX, 3MF, STL)",
+  "Full texture maps & PNG exports",
   "Download entitlement tracking",
 ];
 
@@ -44,8 +45,8 @@ export const plans = [
     price: "$0",
     period: "",
     features: [
-      "2 free downloads",
-      "No subscription required",
+      "2 free downloads (all formats)",
+      "GLB, OBJ, FBX, 3MF, STL & textures",
       "Model preview before download",
     ],
     cta: "Try MeshyGrab Free",
@@ -57,8 +58,8 @@ export const plans = [
     price: "$0.99",
     period: "/month",
     features: [
-      "Unlimited downloads",
-      "Simple monthly subscription",
+      "Unlimited 3D downloads",
+      "GLB, OBJ, FBX, 3MF, STL & textures",
       "Full extension functionality",
     ],
     cta: "Get Pro",
@@ -69,7 +70,11 @@ export const plans = [
 export const valueProps = [
   {
     title: "Download what you generated",
-    desc: "Get the model you've already created in Meshy.",
+    desc: "Get the model you've already created in Meshy in any format.",
+  },
+  {
+    title: "All formats & texture exports",
+    desc: "Export as GLB, OBJ, FBX, 3MF, STL, and extract high-quality PNG texture maps.",
   },
   {
     title: "Preview before downloading",
@@ -84,12 +89,8 @@ export const valueProps = [
     desc: "The product is designed around a simple user workflow rather than requiring users to manually configure API credentials.",
   },
   {
-    title: "2 free downloads",
-    desc: "Try the product without subscribing.",
-  },
-  {
     title: "Unlimited with Pro",
-    desc: "Upgrade to Pro for unlimited downloads.",
+    desc: "Upgrade to Pro for unlimited downloads across all format types.",
   },
 ];
 
@@ -99,7 +100,7 @@ export const audienceList = [
   "Indie developers",
   "Designers",
   "Prototyping workflows",
-  "3D printing workflows",
+  "3D printing workflows (STL / 3MF)",
   "Creators experimenting with AI-generated 3D assets",
 ];
 
@@ -129,7 +130,7 @@ export const steps = [
   {
     num: "4",
     title: "Download",
-    desc: "Preview the available model and download it as a GLB file.",
+    desc: "Select GLB, OBJ, FBX, 3MF, STL, or Texture export and download instantly.",
   },
 ];
 
@@ -151,9 +152,9 @@ export const plansList: PlanItem[] = [
     period: "",
     subtitle: "Ideal for trying out MeshyGrab",
     features: [
-      "2 GLB / OBJ / FBX downloads",
-      "8 texture PNG downloads",
-      "Basic functionality",
+      "2 free downloads (GLB, OBJ, FBX, 3MF, STL)",
+      "Texture PNG downloads included",
+      "Basic extension functionality",
     ],
     cta: "Get Started Free",
     href: "https://chromewebstore.google.com/detail/jkddfapkjenldpiacoccgheimcokhmcc?utm_source=item-share-cb",
@@ -167,9 +168,8 @@ export const plansList: PlanItem[] = [
     period: "/month",
     subtitle: "Flexible monthly subscription",
     features: [
-      "Unlimited GLB downloads",
-      "Unlimited OBJ downloads",
-      "Unlimited FBX downloads",
+      "Unlimited GLB, OBJ, FBX downloads",
+      "Unlimited 3MF & STL 3D printing formats",
       "Unlimited texture PNG downloads",
       "Full Pro features",
     ],
@@ -187,7 +187,7 @@ export const plansList: PlanItem[] = [
     savings: "Save ~17%",
     subtitle: "Recommended for active creators",
     features: [
-      "Everything in Pro",
+      "Everything in Pro (all 3D & texture formats)",
       "New updates shared with you first",
       "New features shared with you first",
     ],
@@ -204,7 +204,7 @@ export const plansList: PlanItem[] = [
     period: "one-time",
     subtitle: "Pay once, use forever",
     features: [
-      "Everything in Pro",
+      "Everything in Pro (all 3D & texture formats)",
       "New updates shared with you first",
       "New features shared with you first",
       "No recurring payments",

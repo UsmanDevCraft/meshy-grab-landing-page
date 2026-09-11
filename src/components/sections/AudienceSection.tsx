@@ -18,7 +18,8 @@ export default function AudienceSection() {
           </h2>
           <p className="text-lg text-text-secondary max-w-2xl mx-auto">
             MeshyGrab is built for anyone who regularly creates 3D models in
-            Meshy and needs direct access to their generated GLB files.
+            Meshy and needs direct access to their generated GLB, OBJ, FBX, 3MF,
+            STL files and texture exports.
           </p>
         </div>
 

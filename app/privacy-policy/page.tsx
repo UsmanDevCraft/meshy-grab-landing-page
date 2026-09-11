@@ -51,8 +51,9 @@ export default function PrivacyPage() {
                   <strong>Website Content & Host Permissions:</strong> The
                   extension requires host permissions strictly for{" "}
                   <code>*.meshy.ai</code> subdomains to detect, inspect, and
-                  download user-generated 3D assets (GLB files). This content is
-                  processed locally within your browser.
+                  download user-generated 3D assets (GLB, OBJ, FBX, 3MF, STL
+                  files and textures). This content is processed locally within
+                  your browser.
                 </li>
               </ul>
 

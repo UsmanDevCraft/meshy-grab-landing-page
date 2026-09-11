@@ -49,7 +49,7 @@ const items = [
         <line x1="12" y1="15" x2="12" y2="3" />
       </svg>
     ),
-    label: "GLB downloads",
+    label: "GLB, OBJ, FBX, 3MF & STL",
   },
   {
     icon: (

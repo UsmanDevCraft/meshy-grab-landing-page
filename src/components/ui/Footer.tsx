@@ -14,9 +14,10 @@ export default function Footer({ minimal = false }: FooterProps) {
             independent third-party tool built solely for educational and
             learning purposes. It is not affiliated with, endorsed by, or
             sponsored by Meshy (Meshy AI). MeshyGrab operates 100% locally in
-            your browser to help users export GLB files of models they
-            generated. No user data is harvested, stolen, or shared, and no
-            external attacks or scraping are conducted.
+            your browser to help users export 3D model files (GLB, OBJ, FBX,
+            3MF, STL &amp; textures) of models they generated. No user data is
+            harvested, stolen, or shared, and no external attacks or scraping
+            are conducted.
           </p>
           <p className="text-xs text-text-muted">
             &copy; 2026 MeshyGrab. All rights reserved. Built for educational &
@@ -124,9 +125,10 @@ export default function Footer({ minimal = false }: FooterProps) {
           <p className="text-xs text-text-muted leading-relaxed max-w-4xl">
             <strong>Educational & Fair Use Statement:</strong> MeshyGrab is an
             open educational utility and productivity helper designed to empower
-            free tier users to preview and export GLB 3D models they generated.
-            We strictly respect user privacy: no data harvesting, credential
-            logging, or network attacks are performed.
+            free tier users to preview and export 3D models (GLB, OBJ, FBX, 3MF,
+            STL &amp; textures) they generated. We strictly respect user
+            privacy: no data harvesting, credential logging, or network attacks
+            are performed.
           </p>
           <p className="text-xs text-text-muted leading-relaxed max-w-4xl">
             <strong>Trademark & Disclaimer:</strong> MeshyGrab is an independent
