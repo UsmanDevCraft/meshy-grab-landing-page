@@ -86,8 +86,8 @@ function PricingCard({
             {plan.badge}
           </span>
           {plan.primary && (
-            <span className="text-xs font-bold text-pink uppercase tracking-wider">
-              Most Popular
+            <span className="text-xs font-bold text-lime uppercase tracking-wider">
+              Unlimited Access
             </span>
           )}
         </div>

@@ -13,7 +13,12 @@ export interface CometCardProps {
 
 export interface PlanItem {
   id: string;
-  planKey?: "pro_monthly" | "pro_annual" | "lifetime" | null;
+  planKey?:
+    | "pro_monthly"
+    | "pro_max_monthly"
+    | "pro_annual"
+    | "lifetime"
+    | null;
   name: string;
   badge: string;
   price: string;
@@ -21,9 +26,15 @@ export interface PlanItem {
   originalPrice?: string;
   savings?: string;
   subtitle?: string;
+  communityAllowance: string;
+  communityReset: string;
+  accountsTotal: number;
+  accountsAdditional: number;
+  accountsBenefit?: string;
   features: string[];
   cta: string;
   href: string;
   isBestValue?: boolean;
+  isRecommended?: boolean;
   isPremium?: boolean;
 }
