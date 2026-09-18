@@ -36,7 +36,8 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
     try {
       const baseUrl =
         process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
-      const endpoint = `${baseUrl}/entitlement?installationId=${encodeURIComponent(
+      const version = process.env.NEXT_PUBLIC_API_VERSION || "v2";
+      const endpoint = `${baseUrl}/${version}/entitlement?installationId=${encodeURIComponent(
         targetInstallationId,
       )}`;
 
