@@ -7,11 +7,11 @@ import PlansContent from "@/components/sections/PlansContent";
 export const metadata: Metadata = {
   title: "Plans & Pricing — MeshyGrab",
   description:
-    "Explore MeshyGrab pricing plans. Start free with 2 downloads, or upgrade to Pro, Pro Annual, or Lifetime access for unlimited 3D model downloads (GLB, OBJ, FBX, 3MF, STL & textures).",
+    "Explore MeshyGrab pricing plans. Start free or upgrade to Pro, Pro Max ($4.99/mo), Pro Annual, or Lifetime for unlimited 3D exports, Community model allowances, and multi-account access.",
   openGraph: {
     title: "Plans & Pricing — MeshyGrab",
     description:
-      "Explore MeshyGrab pricing plans. Start free with 2 downloads, or upgrade to Pro, Pro Annual, or Lifetime access for unlimited 3D model downloads (GLB, OBJ, FBX, 3MF, STL & textures).",
+      "Explore MeshyGrab pricing plans. Start free or upgrade to Pro, Pro Max ($4.99/mo), Pro Annual, or Lifetime for unlimited 3D exports, Community model allowances, and multi-account access.",
   },
 };
 

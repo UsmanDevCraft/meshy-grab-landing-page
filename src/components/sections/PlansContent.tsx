@@ -36,7 +36,8 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
     try {
       const baseUrl =
         process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
-      const endpoint = `${baseUrl}/entitlement?installationId=${encodeURIComponent(
+      const version = process.env.NEXT_PUBLIC_API_VERSION || "v2";
+      const endpoint = `${baseUrl}/${version}/entitlement?installationId=${encodeURIComponent(
         targetInstallationId,
       )}`;
 
@@ -213,8 +214,8 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
           Flexible plans for every 3D creator
         </h1>
         <p className="text-base sm:text-lg text-text-secondary max-w-2xl mx-auto leading-relaxed">
-          Start with 2 free downloads or upgrade to unlimited GLB, OBJ, FBX, and
-          texture exports.
+          Start free with 2 workspace downloads, or upgrade for unlimited 3D
+          exports, Community model allowances, and multi-account access.
         </p>
       </div>
 
@@ -230,7 +231,7 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
               strokeWidth="2"
             >
               <circle cx="12" cy="12" r="10" />
-              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="8" x2="12" />
               <line x1="12" y1="16" x2="12.01" y2="16" />
             </svg>
             Opened Outside MeshyGrab Extension
@@ -259,54 +260,71 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
       )}
 
       {/* Visual Progression Strip */}
-      <div className="max-w-2xl mx-auto mb-12 p-3 bg-bg-card border border-border-subtle rounded-2xl flex flex-wrap items-center justify-around gap-2 text-xs sm:text-sm font-medium">
+      <div className="max-w-4xl mx-auto mb-12 p-3.5 bg-bg-card border border-border-subtle rounded-2xl flex flex-wrap items-center justify-around gap-3 text-xs sm:text-sm font-medium">
         <div className="flex items-center gap-1.5 text-text-secondary">
           <span className="w-2 h-2 rounded-full bg-lime" />
           <span>
             Free: <strong className="text-text-primary">2 Downloads</strong>
           </span>
         </div>
-        <span className="text-text-muted font-bold">&rarr;</span>
+        <span className="text-text-muted font-bold hidden sm:inline">
+          &rarr;
+        </span>
         <div className="flex items-center gap-1.5 text-text-secondary">
           <span className="w-2 h-2 rounded-full bg-lime" />
           <span>
             Pro: <strong className="text-lime">$0.99/mo</strong>
           </span>
         </div>
-        <span className="text-text-muted font-bold">&rarr;</span>
+        <span className="text-text-muted font-bold hidden sm:inline">
+          &rarr;
+        </span>
+        <div className="flex items-center gap-1.5 text-text-secondary">
+          <span className="w-2 h-2 rounded-full bg-lime" />
+          <span>
+            Pro Max:{" "}
+            <strong className="text-lime font-bold">$4.99/mo ⭐</strong>
+          </span>
+        </div>
+        <span className="text-text-muted font-bold hidden sm:inline">
+          &rarr;
+        </span>
         <div className="flex items-center gap-1.5 text-text-secondary">
           <span className="w-2 h-2 rounded-full bg-lime" />
           <span>
             Annual: <strong className="text-lime">$9.99/yr</strong>
           </span>
         </div>
-        <span className="text-text-muted font-bold">&rarr;</span>
+        <span className="text-text-muted font-bold hidden sm:inline">
+          &rarr;
+        </span>
         <div className="flex items-center gap-1.5 text-text-secondary">
           <span className="w-2 h-2 rounded-full bg-pink" />
           <span>
-            Lifetime: <strong className="text-pink">$49 once</strong>
+            Lifetime: <strong className="text-pink">$29.99 once</strong>
           </span>
         </div>
       </div>
 
-      {/* 4 Pricing Cards Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch mb-16">
+      {/* 5 Pricing Cards Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5 items-stretch mb-16">
         {plansList.map((plan) => {
           const isSelected = selectedPlanId === plan.id;
           const isActive = activePlanId === plan.id;
           const isLoadingThisPlan = submittingPlan === plan.id;
+          const isRecommended = plan.isBestValue || plan.isRecommended;
 
           return (
             <div
               key={plan.id}
               onClick={() => setSelectedPlanId(plan.id)}
-              className={`relative rounded-3xl p-6 sm:p-7 flex flex-col justify-between cursor-pointer transition-all duration-300 ${
+              className={`relative rounded-3xl p-5 sm:p-6 flex flex-col justify-between cursor-pointer transition-all duration-300 ${
                 isSelected
                   ? "bg-bg-card ring-2 ring-lime shadow-[0_0_35px_rgba(197,249,85,0.18)] scale-[1.02]"
                   : "bg-bg-card/80 hover:bg-bg-card hover:-translate-y-1 border border-border-subtle hover:border-lime/30"
               } ${
-                plan.isBestValue
-                  ? "border-lime/40 bg-gradient-to-b from-lime/5 via-bg-card to-bg-card shadow-[0_0_40px_rgba(197,249,85,0.12)]"
+                isRecommended
+                  ? "border-lime/60 bg-gradient-to-b from-lime/10 via-bg-card to-bg-card shadow-[0_0_40px_rgba(197,249,85,0.18)] ring-1 ring-lime/40"
                   : ""
               } ${
                 plan.isPremium
@@ -315,12 +333,12 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
               }`}
             >
               {/* Highlight Gradient Borders */}
-              {plan.isBestValue && (
+              {isRecommended && (
                 <div
                   className="absolute inset-0 rounded-3xl p-px pointer-events-none"
                   style={{
                     background:
-                      "linear-gradient(135deg, rgba(197,249,85,0.5), rgba(197,249,85,0.1))",
+                      "linear-gradient(135deg, rgba(197,249,85,0.6), rgba(197,249,85,0.15))",
                     WebkitMask:
                       "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
                     WebkitMaskComposite: "xor",
@@ -345,10 +363,10 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
 
               <div>
                 {/* Header Row: Badge, Activated & Selected Indicators */}
-                <div className="flex items-center justify-between gap-2 mb-4">
+                <div className="flex items-center justify-between gap-1.5 mb-3 flex-wrap">
                   <span
-                    className={`inline-block px-3 py-1 rounded-full text-xs font-bold ${
-                      plan.isBestValue
+                    className={`inline-block px-2.5 py-1 rounded-full text-[11px] font-bold ${
+                      isRecommended
                         ? "bg-lime text-deep-black shadow-[0_0_15px_rgba(197,249,85,0.4)]"
                         : plan.isPremium
                           ? "bg-pink/20 text-pink border border-pink/30"
@@ -358,9 +376,9 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
                     {plan.badge}
                   </span>
 
-                  <div className="flex items-center gap-1.5 flex-wrap justify-end">
+                  <div className="flex items-center gap-1 flex-wrap justify-end">
                     {isActive && (
-                      <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-400 bg-emerald-500/15 border border-emerald-500/30 px-2.5 py-0.5 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.2)]">
+                      <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-400 bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.2)]">
                         <svg
                           className="w-3 h-3 text-emerald-400"
                           viewBox="0 0 24 24"
@@ -375,9 +393,9 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
                     )}
 
                     {isSelected ? (
-                      <span className="inline-flex items-center gap-1 text-xs font-semibold text-lime bg-lime/10 border border-lime/30 px-2.5 py-0.5 rounded-full">
+                      <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-lime bg-lime/10 border border-lime/30 px-2 py-0.5 rounded-full">
                         <svg
-                          className="w-3.5 h-3.5 text-lime"
+                          className="w-3 h-3 text-lime"
                           viewBox="0 0 24 24"
                           fill="none"
                           stroke="currentColor"
@@ -389,7 +407,7 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
                       </span>
                     ) : (
                       plan.savings && (
-                        <span className="text-xs font-bold text-lime bg-lime/10 border border-lime/20 px-2 py-0.5 rounded-full">
+                        <span className="text-[10px] font-bold text-lime bg-lime/10 border border-lime/20 px-2 py-0.5 rounded-full">
                           {plan.savings}
                         </span>
                       )
@@ -398,7 +416,7 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
                 </div>
 
                 {/* Plan Name */}
-                <h3 className="text-2xl font-extrabold text-text-primary mb-1">
+                <h3 className="text-xl sm:text-2xl font-extrabold text-text-primary mb-1">
                   {plan.name}
                 </h3>
                 {plan.subtitle && (
@@ -408,10 +426,10 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
                 )}
 
                 {/* Price Display */}
-                <div className="mb-6 pt-2 border-t border-border-subtle/50">
+                <div className="mb-5 pt-2 border-t border-border-subtle/50">
                   {plan.originalPrice && (
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="line-through text-text-muted text-sm font-semibold">
+                      <span className="line-through text-text-muted text-xs font-semibold">
                         {plan.originalPrice}
                       </span>
                       {plan.savings && (
@@ -423,11 +441,11 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
                   )}
 
                   <div className="flex items-baseline gap-1 font-mono">
-                    <span className="text-4xl sm:text-5xl font-black text-text-primary tracking-tight">
+                    <span className="text-3xl sm:text-4xl font-black text-text-primary tracking-tight">
                       {plan.price}
                     </span>
                     {plan.period && (
-                      <span className="text-sm font-sans font-medium text-text-secondary">
+                      <span className="text-xs sm:text-sm font-sans font-medium text-text-secondary">
                         {plan.period}
                       </span>
                     )}
@@ -440,29 +458,60 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
                   )}
                 </div>
 
-                {/* Features List */}
-                <div className="space-y-3 mb-8">
-                  {plan.features.map((feature, idx) => (
-                    <div
-                      key={idx}
-                      className="flex items-start gap-2.5 text-sm text-text-secondary leading-snug"
-                    >
-                      <svg
-                        className={`w-4 h-4 mt-0.5 flex-shrink-0 ${
-                          plan.isPremium ? "text-pink" : "text-lime"
-                        }`}
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <polyline points="20 6 9 17 4 12" />
-                      </svg>
-                      <span>{feature}</span>
+                {/* Prominent Multi-Account Highlight Banner (Pro Max & Lifetime only) */}
+                {plan.accountsAdditional > 0 && (
+                  <div
+                    className={`mb-4 p-2.5 rounded-xl border text-xs font-semibold leading-tight ${
+                      plan.id === "pro-max"
+                        ? "bg-lime/10 border-lime/30 text-lime"
+                        : "bg-pink/10 border-pink/30 text-pink"
+                    }`}
+                  >
+                    <div className="font-bold mb-0.5 flex items-center gap-1">
+                      <span>✨</span>
+                      <span>
+                        +{plan.accountsAdditional} Extra Meshy{" "}
+                        {plan.accountsAdditional === 1 ? "Account" : "Accounts"}
+                      </span>
                     </div>
-                  ))}
+                    <div className="text-[11px] opacity-90">
+                      {plan.accountsBenefit ||
+                        (plan.id === "pro-max"
+                          ? "3 total Meshy accounts under one subscription"
+                          : "5 total Meshy accounts under one purchase")}
+                    </div>
+                  </div>
+                )}
+
+                {/* Features list */}
+                <div className="space-y-2.5 mb-6 text-xs sm:text-sm">
+                  <div className="space-y-2 pt-1">
+                    {plan.features.map((feature, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-start gap-2 text-xs text-text-secondary leading-snug"
+                      >
+                        <svg
+                          className={`w-3.5 h-3.5 mt-0.5 flex-shrink-0 ${
+                            plan.isPremium
+                              ? "text-pink"
+                              : isRecommended
+                                ? "text-lime"
+                                : "text-lime/80"
+                          }`}
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg>
+                        <span>{feature}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
 
@@ -475,9 +524,9 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
                     e.stopPropagation();
                     handlePlanClick(plan);
                   }}
-                  className={`btn w-full text-center text-sm font-bold py-3.5 rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed ${
-                    plan.isBestValue
-                      ? "btn-primary"
+                  className={`btn w-full text-center text-xs sm:text-sm font-bold py-3 rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed ${
+                    isRecommended
+                      ? "btn-primary shadow-[0_4px_20px_rgba(197,249,85,0.3)]"
                       : plan.isPremium
                         ? "bg-gradient-to-r from-pink to-rose-500 text-white shadow-[0_4px_20px_rgba(255,62,143,0.3)] hover:brightness-110 hover:-translate-y-0.5"
                         : isSelected
@@ -502,7 +551,7 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
                           strokeDashoffset="12"
                         />
                       </svg>
-                      Preparing Checkout...
+                      Preparing...
                     </span>
                   ) : (
                     plan.cta
@@ -510,8 +559,8 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
                 </button>
 
                 {plan.id === "free" && (
-                  <p className="text-[11px] text-center text-text-muted mt-2">
-                    Default free tier — No credit card needed
+                  <p className="text-[10px] text-center text-text-muted mt-2">
+                    Default free tier — No card required
                   </p>
                 )}
               </div>
@@ -527,14 +576,219 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
         </p>
       )}
 
+      {/* Feature Comparison Table */}
+      <div className="bg-bg-card border border-border-subtle rounded-3xl p-6 sm:p-10 max-w-5xl mx-auto mb-16 overflow-hidden">
+        <div className="text-center max-w-xl mx-auto mb-8">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-text-primary mb-2">
+            Plan Feature Comparison
+          </h2>
+          <p className="text-xs sm:text-sm text-text-secondary">
+            Compare workspace export formats, Community model limits, and
+            multi-account allowances side by side.
+          </p>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs sm:text-sm border-collapse min-w-[640px]">
+            <thead>
+              <tr className="border-b border-border-subtle text-text-muted">
+                <th className="pb-4 font-semibold w-1/4">Feature</th>
+                <th className="pb-4 font-semibold text-center">Free</th>
+                <th className="pb-4 font-semibold text-center">Pro Monthly</th>
+                <th className="pb-4 font-semibold text-center text-lime font-bold">
+                  Pro Max ⭐
+                </th>
+                <th className="pb-4 font-semibold text-center">Pro Annual</th>
+                <th className="pb-4 font-semibold text-center text-pink font-bold">
+                  Lifetime 🔥
+                </th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border-subtle/50 text-text-secondary">
+              {/* Category: Price */}
+              <tr className="bg-bg-elevated/30">
+                <td className="py-3.5 font-bold text-text-primary" colSpan={6}>
+                  Pricing & Billing
+                </td>
+              </tr>
+              <tr>
+                <td className="py-3 font-medium text-text-primary pl-3">
+                  Price
+                </td>
+                <td className="py-3 text-center text-text-primary font-mono font-semibold">
+                  $0
+                </td>
+                <td className="py-3 text-center text-text-primary font-mono font-semibold">
+                  $0.99/mo
+                </td>
+                <td className="py-3 text-center text-lime font-mono font-bold">
+                  $4.99/mo
+                </td>
+                <td className="py-3 text-center text-text-primary font-mono font-semibold">
+                  $9.99/yr
+                </td>
+                <td className="py-3 text-center text-pink font-mono font-bold">
+                  $29.99 once
+                </td>
+              </tr>
+              <tr>
+                <td className="py-3 font-medium text-text-primary pl-3">
+                  Billing Type
+                </td>
+                <td className="py-3 text-center text-text-muted">
+                  Free forever
+                </td>
+                <td className="py-3 text-center">Monthly</td>
+                <td className="py-3 text-center font-medium text-lime/90">
+                  Monthly
+                </td>
+                <td className="py-3 text-center">Annual</td>
+                <td className="py-3 text-center font-medium text-pink">
+                  One-time purchase
+                </td>
+              </tr>
+
+              {/* Category: Workspace Exports */}
+              <tr className="bg-bg-elevated/30">
+                <td className="py-3.5 font-bold text-text-primary" colSpan={6}>
+                  Workspace Model & Texture Exports
+                </td>
+              </tr>
+              <tr>
+                <td className="py-3 font-medium text-text-primary pl-3">
+                  GLB, OBJ, FBX
+                </td>
+                <td className="py-3 text-center">2 total</td>
+                <td className="py-3 text-center text-emerald-400 font-semibold">
+                  Unlimited
+                </td>
+                <td className="py-3 text-center text-emerald-400 font-semibold">
+                  Unlimited
+                </td>
+                <td className="py-3 text-center text-emerald-400 font-semibold">
+                  Unlimited
+                </td>
+                <td className="py-3 text-center text-emerald-400 font-semibold">
+                  Unlimited
+                </td>
+              </tr>
+              <tr>
+                <td className="py-3 font-medium text-text-primary pl-3">
+                  STL & 3MF (3D Printing)
+                </td>
+                <td className="py-3 text-center">2 total</td>
+                <td className="py-3 text-center text-emerald-400 font-semibold">
+                  Unlimited
+                </td>
+                <td className="py-3 text-center text-emerald-400 font-semibold">
+                  Unlimited
+                </td>
+                <td className="py-3 text-center text-emerald-400 font-semibold">
+                  Unlimited
+                </td>
+                <td className="py-3 text-center text-emerald-400 font-semibold">
+                  Unlimited
+                </td>
+              </tr>
+              <tr>
+                <td className="py-3 font-medium text-text-primary pl-3">
+                  Texture PNG Maps
+                </td>
+                <td className="py-3 text-center">8 total</td>
+                <td className="py-3 text-center text-emerald-400 font-semibold">
+                  Unlimited
+                </td>
+                <td className="py-3 text-center text-emerald-400 font-semibold">
+                  Unlimited
+                </td>
+                <td className="py-3 text-center text-emerald-400 font-semibold">
+                  Unlimited
+                </td>
+                <td className="py-3 text-center text-emerald-400 font-semibold">
+                  Unlimited
+                </td>
+              </tr>
+
+              {/* Category: Community Models */}
+              <tr className="bg-bg-elevated/30">
+                <td className="py-3.5 font-bold text-text-primary" colSpan={6}>
+                  Community Models
+                </td>
+              </tr>
+              <tr>
+                <td className="py-3 font-medium text-text-primary pl-3">
+                  Community model downloads
+                </td>
+                <td className="py-3 text-center">1 total</td>
+                <td className="py-3 text-center">2 / month</td>
+                <td className="py-3 text-center font-bold text-lime">
+                  8 / month
+                </td>
+                <td className="py-3 text-center">40 / year</td>
+                <td className="py-3 text-center font-bold text-pink">
+                  Unlimited
+                </td>
+              </tr>
+              <tr>
+                <td className="py-3 font-medium text-text-primary pl-3">
+                  Refresh
+                </td>
+                <td className="py-3 text-center text-text-muted">One-time</td>
+                <td className="py-3 text-center">Every month</td>
+                <td className="py-3 text-center font-medium text-lime/90">
+                  Every month
+                </td>
+                <td className="py-3 text-center">Every year</td>
+                <td className="py-3 text-center font-medium text-pink">
+                  Unlimited
+                </td>
+              </tr>
+
+              {/* Category: Additional Meshy Accounts */}
+              <tr className="bg-bg-elevated/30">
+                <td className="py-3.5 font-bold text-text-primary" colSpan={6}>
+                  Additional Meshy Accounts
+                </td>
+              </tr>
+              <tr>
+                <td className="py-3 font-medium text-text-primary pl-3">
+                  Additional accounts
+                </td>
+                <td className="py-3 text-center text-text-muted">0</td>
+                <td className="py-3 text-center text-text-muted">0</td>
+                <td className="py-3 text-center font-bold text-lime">+2</td>
+                <td className="py-3 text-center text-text-muted">0</td>
+                <td className="py-3 text-center font-bold text-pink">+4</td>
+              </tr>
+              <tr>
+                <td className="py-3 font-medium text-text-primary pl-3">
+                  Total accounts
+                </td>
+                <td className="py-3 text-center">1</td>
+                <td className="py-3 text-center">1</td>
+                <td className="py-3 text-center font-bold text-lime">3</td>
+                <td className="py-3 text-center">1</td>
+                <td className="py-3 text-center font-bold text-pink">5</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p className="text-[11px] text-text-muted text-center mt-6 leading-relaxed">
+          * MeshyGrab does not create, own, or manage your Meshy accounts.
+          Additional slots allow you to attach extra existing Meshy accounts to
+          your single MeshyGrab subscription or purchase entitlement.
+        </p>
+      </div>
+
       {/* Feature Matrix / Guarantee Box */}
       <div className="bg-bg-card border border-border-subtle rounded-3xl p-8 sm:p-10 max-w-4xl mx-auto text-center mb-16">
         <h2 className="text-xl sm:text-2xl font-bold text-text-primary mb-3">
           All Paid Tiers Include Full Pro Rights
         </h2>
         <p className="text-sm text-text-secondary max-w-xl mx-auto mb-8">
-          Whether you choose Pro Monthly, Pro Annual, or Lifetime, you get
-          unlimited access with no hidden restrictions.
+          Whether you choose Pro Monthly, Pro Max, Pro Annual, or Lifetime, you
+          get instant activation with zero hidden restrictions.
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-left">
