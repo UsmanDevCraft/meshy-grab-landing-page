@@ -283,7 +283,7 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
           <span className="w-2 h-2 rounded-full bg-lime" />
           <span>
             Pro Max:{" "}
-            <strong className="text-lime font-bold">$4.99/mo ⭐</strong>
+            <strong className="text-lime font-bold">$3.99/mo ⭐</strong>
           </span>
         </div>
         <span className="text-text-muted font-bold hidden sm:inline">
@@ -301,7 +301,7 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
         <div className="flex items-center gap-1.5 text-text-secondary">
           <span className="w-2 h-2 rounded-full bg-pink" />
           <span>
-            Lifetime: <strong className="text-pink">$29.99 once</strong>
+            Lifetime: <strong className="text-pink">$19.99 once</strong>
           </span>
         </div>
       </div>
@@ -453,7 +453,8 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
 
                   {plan.id === "lifetime" && (
                     <p className="text-xs font-bold text-pink mt-1">
-                      Pay once, use forever
+                      One-time payment forever & always priority of beta
+                      versions
                     </p>
                   )}
                 </div>
@@ -479,6 +480,20 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
                         (plan.id === "pro-max"
                           ? "3 total Meshy accounts under one subscription"
                           : "5 total Meshy accounts under one purchase")}
+                    </div>
+                  </div>
+                )}
+
+                {/* Upcoming Next Version Perks Callout (Pro Max, Annual & Lifetime only) */}
+                {plan.hasUpcomingPerks && (
+                  <div className="mb-4 p-2.5 rounded-xl border border-lime/30 bg-lime/10 text-xs font-semibold leading-tight text-lime shadow-[0_0_15px_rgba(197,249,85,0.08)]">
+                    <div className="font-bold mb-0.5 flex items-center gap-1.5 text-text-primary">
+                      <span>🚀</span>
+                      <span>Next Version Perks</span>
+                    </div>
+                    <div className="text-[11px] text-text-secondary leading-snug">
+                      Tripo 3D support & expanded community download formats in
+                      next version
                     </div>
                   </div>
                 )}
@@ -622,13 +637,22 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
                   $0.99/mo
                 </td>
                 <td className="py-3 text-center text-lime font-mono font-bold">
-                  $4.99/mo
+                  <span className="line-through text-text-muted text-xs block font-normal">
+                    $5.99/mo
+                  </span>
+                  $3.99/mo
                 </td>
                 <td className="py-3 text-center text-text-primary font-mono font-semibold">
+                  <span className="line-through text-text-muted text-xs block font-normal">
+                    $12/yr
+                  </span>
                   $9.99/yr
                 </td>
                 <td className="py-3 text-center text-pink font-mono font-bold">
-                  $29.99 once
+                  <span className="line-through text-text-muted text-xs block font-normal">
+                    $29.99
+                  </span>
+                  $19.99 once
                 </td>
               </tr>
               <tr>
@@ -769,6 +793,57 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
                 <td className="py-3 text-center font-bold text-lime">3</td>
                 <td className="py-3 text-center">1</td>
                 <td className="py-3 text-center font-bold text-pink">5</td>
+              </tr>
+
+              {/* Category: Upcoming Next Version Features */}
+              <tr className="bg-bg-elevated/30">
+                <td className="py-3.5 font-bold text-text-primary" colSpan={6}>
+                  Upcoming Next Version Features & Beta Access
+                </td>
+              </tr>
+              <tr>
+                <td className="py-3 font-medium text-text-primary pl-3">
+                  Tripo 3D Support (Next Version)
+                </td>
+                <td className="py-3 text-center text-text-muted">❌</td>
+                <td className="py-3 text-center text-text-muted">❌</td>
+                <td className="py-3 text-center font-bold text-lime">
+                  ✅ Next Version
+                </td>
+                <td className="py-3 text-center font-bold text-lime">
+                  ✅ Next Version
+                </td>
+                <td className="py-3 text-center font-bold text-pink">
+                  ✅ Next Version
+                </td>
+              </tr>
+              <tr>
+                <td className="py-3 font-medium text-text-primary pl-3">
+                  Expanded Community Download Formats (Next Version)
+                </td>
+                <td className="py-3 text-center text-text-muted">❌</td>
+                <td className="py-3 text-center text-text-muted">❌</td>
+                <td className="py-3 text-center font-bold text-lime">
+                  ✅ Next Version
+                </td>
+                <td className="py-3 text-center font-bold text-lime">
+                  ✅ Next Version
+                </td>
+                <td className="py-3 text-center font-bold text-pink">
+                  ✅ Next Version
+                </td>
+              </tr>
+              <tr>
+                <td className="py-3 font-medium text-text-primary pl-3">
+                  Priority Beta Access
+                </td>
+                <td className="py-3 text-center text-text-muted">❌</td>
+                <td className="py-3 text-center text-text-muted">❌</td>
+                <td className="py-3 text-center text-text-muted">❌</td>
+                <td className="py-3 text-center text-text-muted">❌</td>
+                <td className="py-3 text-center font-bold text-pink">
+                  ✅ Always Priority
+                </td>
               </tr>
             </tbody>
           </table>
