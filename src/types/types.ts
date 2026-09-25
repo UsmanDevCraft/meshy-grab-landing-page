@@ -31,6 +31,7 @@ export interface PlanItem {
   accountsTotal: number;
   accountsAdditional: number;
   accountsBenefit?: string;
+  hasUpcomingPerks?: boolean;
   features: string[];
   cta: string;
   href: string;
