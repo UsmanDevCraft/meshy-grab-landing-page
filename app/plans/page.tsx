@@ -27,7 +27,7 @@ export default function PlansPage() {
   return (
     <>
       <Navbar />
-      <main id="main-content" className="min-h-screen bg-bg-page pt-28 pb-20">
+      <main id="main-content" className="min-h-screen bg-bg-page pt-16 sm:pt-20 pb-16">
         <Suspense
           fallback={
             <div className="min-h-screen bg-bg-page flex items-center justify-center">
