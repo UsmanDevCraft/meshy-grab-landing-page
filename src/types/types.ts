@@ -38,4 +38,6 @@ export interface PlanItem {
   isBestValue?: boolean;
   isRecommended?: boolean;
   isPremium?: boolean;
+  priceId?: string;
+  discountedPriceId?: string;
 }

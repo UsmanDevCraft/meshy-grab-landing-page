@@ -2,8 +2,9 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { plansList } from "@/constants/constants";
+import { getPlansList } from "@/constants/constants";
 import { PlanItem } from "@/types/types";
+import FallSaleBanner from "./FallSaleBanner";
 
 const CHROME_WEB_STORE_URL =
   "https://chromewebstore.google.com/detail/jkddfapkjenldpiacoccgheimcokhmcc?utm_source=item-share-cb";
@@ -30,53 +31,92 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
   const [isResolvingIdentity, setIsResolvingIdentity] =
     useState<boolean>(false);
 
+  const isDiscounted = process.env.NEXT_PUBLIC_IS_DISCOUNTED_PRICES === "true";
+  const effectivePlansList = getPlansList(isDiscounted);
+
+  const getPriceIdForPlan = (planId: string) => {
+    if (isDiscounted) {
+      if (planId === "pro-max") {
+        return (
+          process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_MONTHLY_PRO_MAX_DISCOUNTED ||
+          process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_MONTHLY_PRO_MAX
+        );
+      }
+      if (planId === "pro-annual") {
+        return (
+          process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_ANNUALLY_DISCOUNTED ||
+          process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_ANNUALLY
+        );
+      }
+      if (planId === "lifetime") {
+        return (
+          process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_LIFETIME_DISCOUNTED ||
+          process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_LIFETIME
+        );
+      }
+    }
+
+    if (planId === "pro")
+      return process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_MONTHLY;
+    if (planId === "pro-max")
+      return process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_MONTHLY_PRO_MAX;
+    if (planId === "pro-annual")
+      return process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_ANNUALLY;
+    if (planId === "lifetime")
+      return process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_LIFETIME;
+    return undefined;
+  };
+
   // Identity resolution helper
-  const resolveIdentity = useCallback(async (targetInstallationId: string) => {
-    setIsResolvingIdentity(true);
-    try {
-      const baseUrl =
-        process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
-      const version = process.env.NEXT_PUBLIC_API_VERSION || "v2";
-      const endpoint = `${baseUrl}/${version}/entitlement?installationId=${encodeURIComponent(
-        targetInstallationId,
-      )}`;
+  const resolveIdentity = useCallback(
+    async (targetInstallationId: string) => {
+      setIsResolvingIdentity(true);
+      try {
+        const baseUrl =
+          process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+        const version = process.env.NEXT_PUBLIC_API_VERSION || "v2";
+        const endpoint = `${baseUrl}/${version}/entitlement?installationId=${encodeURIComponent(
+          targetInstallationId,
+        )}`;
 
-      const res = await fetch(endpoint, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
+        const res = await fetch(endpoint, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
 
-      if (res.ok) {
-        const data = await res.json();
-        const fetchedUserId = data.userId || data.user?.id || data.id || null;
-        const fetchedEmail = data.email || data.user?.email || null;
+        if (res.ok) {
+          const data = await res.json();
+          const fetchedUserId = data.userId || data.user?.id || data.id || null;
+          const fetchedEmail = data.email || data.user?.email || null;
 
-        if (fetchedUserId) setUserId(fetchedUserId);
-        if (fetchedEmail) setEmail(fetchedEmail);
+          if (fetchedUserId) setUserId(fetchedUserId);
+          if (fetchedEmail) setEmail(fetchedEmail);
 
-        if (data.isPaid === true && data.plan) {
-          const matchingPlan = plansList.find(
-            (p) => p.planKey === data.plan || p.id === data.plan,
-          );
-          if (matchingPlan) {
-            setSelectedPlanId(matchingPlan.id);
-            setActivePlanId(matchingPlan.id);
+          if (data.isPaid === true && data.plan) {
+            const matchingPlan = effectivePlansList.find(
+              (p) => p.planKey === data.plan || p.id === data.plan,
+            );
+            if (matchingPlan) {
+              setSelectedPlanId(matchingPlan.id);
+              setActivePlanId(matchingPlan.id);
+            } else {
+              setActivePlanId("free");
+            }
           } else {
             setActivePlanId("free");
           }
-        } else {
-          setActivePlanId("free");
-        }
 
-        return { userId: fetchedUserId, email: fetchedEmail };
+          return { userId: fetchedUserId, email: fetchedEmail };
+        }
+      } catch (err) {
+        console.warn("Failed to resolve identity from entitlement API:", err);
+      } finally {
+        setIsResolvingIdentity(false);
       }
-    } catch (err) {
-      console.warn("Failed to resolve identity from entitlement API:", err);
-    } finally {
-      setIsResolvingIdentity(false);
-    }
-    return { userId: null, email: null };
-  }, []);
+      return { userId: null, email: null };
+    },
+    [effectivePlansList],
+  );
 
   // Fetch identity on mount if installationId exists and userId/email are not in URL
   useEffect(() => {
@@ -146,8 +186,12 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
         process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
       const endpoint = `${baseUrl}/api/checkout`;
 
+      const targetPriceId = getPriceIdForPlan(plan.id);
+
       const payload = {
         plan: plan.planKey,
+        ...(targetPriceId ? { priceId: targetPriceId } : {}),
+        isDiscounted,
         userId: activeUserId,
         email: activeEmail,
         installationId: installationId,
@@ -208,16 +252,22 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
       <div className="text-center max-w-3xl mx-auto mb-10 md:mb-14">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-lime/10 border border-lime/25 rounded-full text-xs font-semibold text-lime mb-5">
           <span className="w-2 h-2 rounded-full bg-lime animate-pulse" />
-          Plans & Pricing
+          {isDiscounted ? "🍁 Limited Time Fall Sale" : "Plans & Pricing"}
         </div>
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-text-primary mb-4 leading-tight">
-          Flexible plans for every 3D creator
+          {isDiscounted
+            ? "Fall Sale: Huge Discounts on 3D Export Plans!"
+            : "Flexible plans for every 3D creator"}
         </h1>
         <p className="text-base sm:text-lg text-text-secondary max-w-2xl mx-auto leading-relaxed">
-          Start free with 2 workspace downloads, or upgrade for unlimited 3D
-          exports, Community model allowances, and multi-account access.
+          {isDiscounted
+            ? "Start free with 2 downloads, or grab our limited-time Fall Sale discounts on Pro Max ($2.99), Annual ($5.99), and Lifetime ($9.99)!"
+            : "Start free with 2 workspace downloads, or upgrade for unlimited 3D exports, Community model allowances, and multi-account access."}
         </p>
       </div>
+
+      {/* Fall Sale Countdown Banner */}
+      {isDiscounted && <FallSaleBanner />}
 
       {/* Missing InstallationId Warning State (Plans page only) */}
       {isPlanPage && !installationId && (
@@ -283,7 +333,9 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
           <span className="w-2 h-2 rounded-full bg-lime" />
           <span>
             Pro Max:{" "}
-            <strong className="text-lime font-bold">$3.99/mo 🔥 HOT</strong>
+            <strong className="text-lime font-bold">
+              {isDiscounted ? "$2.99/mo 🍁 50% OFF" : "$3.99/mo 🔥 HOT"}
+            </strong>
           </span>
         </div>
         <span className="text-text-muted font-bold hidden sm:inline">
@@ -292,7 +344,10 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
         <div className="flex items-center gap-1.5 text-text-secondary">
           <span className="w-2 h-2 rounded-full bg-lime" />
           <span>
-            Annual: <strong className="text-lime">$9.99/yr</strong>
+            Annual:{" "}
+            <strong className="text-lime">
+              {isDiscounted ? "$5.99/yr 🍁 40% OFF" : "$9.99/yr"}
+            </strong>
           </span>
         </div>
         <span className="text-text-muted font-bold hidden sm:inline">
@@ -303,7 +358,9 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
           <span className="bg-pink/15 px-2.5 py-0.5 rounded-full border border-pink/40 shadow-[0_0_10px_rgba(255,62,143,0.2)]">
             Lifetime:{" "}
             <strong className="text-pink font-extrabold">
-              $19.99 ONE-TIME 🔥
+              {isDiscounted
+                ? "$9.99 ONE-TIME 🍁 67% OFF"
+                : "$19.99 ONE-TIME 🔥"}
             </strong>
           </span>
         </div>
@@ -311,7 +368,7 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
 
       {/* 5 Pricing Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5 items-stretch mb-16">
-        {plansList.map((plan) => {
+        {effectivePlansList.map((plan) => {
           const isSelected = selectedPlanId === plan.id;
           const isActive = activePlanId === plan.id;
           const isLoadingThisPlan = submittingPlan === plan.id;
@@ -588,7 +645,7 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
                     e.stopPropagation();
                     handlePlanClick(plan);
                   }}
-                  className={`btn w-full text-center text-xs sm:text-sm font-bold py-3 rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed ${
+                  className={`btn w-full text-center text-xs sm:text-sm font-bold py-3 rounded-xl transition-all duration-300 whitespace-pre-line disabled:opacity-50 disabled:cursor-not-allowed ${
                     isRecommended
                       ? "btn-primary shadow-[0_4px_20px_rgba(197,249,85,0.3)]"
                       : plan.isPremium
@@ -687,21 +744,21 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
                 </td>
                 <td className="py-3 text-center text-lime font-mono font-bold">
                   <span className="line-through text-text-muted text-xs block font-normal">
-                    $5.99/mo
+                    {isDiscounted ? "$4.99/mo" : "$5.99/mo"}
                   </span>
-                  $3.99/mo
+                  {isDiscounted ? "$2.99/mo" : "$3.99/mo"}
                 </td>
                 <td className="py-3 text-center text-text-primary font-mono font-semibold">
                   <span className="line-through text-text-muted text-xs block font-normal">
-                    $12/yr
+                    {isDiscounted ? "$9.99/yr" : "$12/yr"}
                   </span>
-                  $9.99/yr
+                  {isDiscounted ? "$5.99/yr" : "$9.99/yr"}
                 </td>
                 <td className="py-3 text-center text-pink font-mono font-bold">
                   <span className="line-through text-text-muted text-xs block font-normal">
                     $29.99
                   </span>
-                  $19.99 once
+                  {isDiscounted ? "$9.99 once" : "$19.99 once"}
                 </td>
               </tr>
               <tr>
