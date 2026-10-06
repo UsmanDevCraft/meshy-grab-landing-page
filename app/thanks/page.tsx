@@ -37,7 +37,7 @@ function ThanksContent() {
     if (!installationId) return false;
 
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
-    const version = process.env.NEXT_PUBLIC_API_VERSION || "v2";
+    const version = process.env.NEXT_PUBLIC_API_VERSION || "v3";
     const endpoint = `${baseUrl}/${version}/entitlement?installationId=${encodeURIComponent(installationId)}`;
 
     const res = await fetch(endpoint, {

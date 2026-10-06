@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { plansList } from "@/constants/constants";
+import { getPlansList } from "@/constants/constants";
 import { PlanItem } from "@/types/types";
+import FallSaleBanner from "./FallSaleBanner";
 
 const CHROME_WEB_STORE_URL =
   "https://chromewebstore.google.com/detail/jkddfapkjenldpiacoccgheimcokhmcc?utm_source=item-share-cb";
@@ -30,13 +31,61 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
   const [isResolvingIdentity, setIsResolvingIdentity] =
     useState<boolean>(false);
 
+  const isDiscounted = process.env.NEXT_PUBLIC_IS_DISCOUNTED_PRICES === "true";
+  const effectivePlansList = useMemo(
+    () => getPlansList(isDiscounted),
+    [isDiscounted],
+  );
+
+  // Keep a ref of current plans to avoid re-creating callbacks when plans list changes
+  const plansRef = useRef(effectivePlansList);
+  useEffect(() => {
+    plansRef.current = effectivePlansList;
+  }, [effectivePlansList]);
+
+  // Track fetched installationId to guarantee entitlement API is called at most once per installationId
+  const fetchedInstallationIdRef = useRef<string | null>(null);
+
+  const getPriceIdForPlan = (planId: string) => {
+    if (isDiscounted) {
+      if (planId === "pro-max") {
+        return (
+          process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_MONTHLY_PRO_MAX_DISCOUNTED ||
+          process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_MONTHLY_PRO_MAX
+        );
+      }
+      if (planId === "pro-annual") {
+        return (
+          process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_ANNUALLY_DISCOUNTED ||
+          process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_ANNUALLY
+        );
+      }
+      if (planId === "lifetime") {
+        return (
+          process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_LIFETIME_DISCOUNTED ||
+          process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_LIFETIME
+        );
+      }
+    }
+
+    if (planId === "pro")
+      return process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_MONTHLY;
+    if (planId === "pro-max")
+      return process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_MONTHLY_PRO_MAX;
+    if (planId === "pro-annual")
+      return process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_ANNUALLY;
+    if (planId === "lifetime")
+      return process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_LIFETIME;
+    return undefined;
+  };
+
   // Identity resolution helper
   const resolveIdentity = useCallback(async (targetInstallationId: string) => {
     setIsResolvingIdentity(true);
     try {
       const baseUrl =
         process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
-      const version = process.env.NEXT_PUBLIC_API_VERSION || "v2";
+      const version = process.env.NEXT_PUBLIC_API_VERSION || "v3";
       const endpoint = `${baseUrl}/${version}/entitlement?installationId=${encodeURIComponent(
         targetInstallationId,
       )}`;
@@ -55,7 +104,7 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
         if (fetchedEmail) setEmail(fetchedEmail);
 
         if (data.isPaid === true && data.plan) {
-          const matchingPlan = plansList.find(
+          const matchingPlan = plansRef.current.find(
             (p) => p.planKey === data.plan || p.id === data.plan,
           );
           if (matchingPlan) {
@@ -81,11 +130,12 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
   // Fetch identity on mount if installationId exists and userId/email are not in URL
   useEffect(() => {
     if (isPlanPage && installationId && (!urlUserId || !urlEmail)) {
-      // Defer to a microtask to avoid synchronous setState within the effect body,
-      // which React flags as a cascading render.
-      queueMicrotask(() => {
-        resolveIdentity(installationId);
-      });
+      if (fetchedInstallationIdRef.current !== installationId) {
+        fetchedInstallationIdRef.current = installationId;
+        queueMicrotask(() => {
+          resolveIdentity(installationId);
+        });
+      }
     }
   }, [isPlanPage, installationId, urlUserId, urlEmail, resolveIdentity]);
 
@@ -146,8 +196,12 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
         process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
       const endpoint = `${baseUrl}/api/checkout`;
 
+      const targetPriceId = getPriceIdForPlan(plan.id);
+
       const payload = {
         plan: plan.planKey,
+        ...(targetPriceId ? { priceId: targetPriceId } : {}),
+        isDiscounted,
         userId: activeUserId,
         email: activeEmail,
         installationId: installationId,
@@ -202,29 +256,37 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
   return (
     <div
       id="pricing"
-      className="container mx-auto max-w-7xl px-4 sm:px-6 pt-16 pb-16"
+      className={`container mx-auto max-w-7xl px-4 sm:px-6 pb-16 ${
+        isPlanPage ? "pt-2 sm:pt-4" : "pt-10 sm:pt-14"
+      }`}
     >
       {/* Hero Header */}
-      <div className="text-center max-w-3xl mx-auto mb-10 md:mb-14">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-lime/10 border border-lime/25 rounded-full text-xs font-semibold text-lime mb-5">
+      <div className="text-center max-w-3xl mx-auto mb-4 sm:mb-6">
+        <div className="inline-flex items-center gap-2 px-3 py-1 bg-lime/10 border border-lime/25 rounded-full text-xs font-semibold text-lime mb-2.5">
           <span className="w-2 h-2 rounded-full bg-lime animate-pulse" />
-          Plans & Pricing
+          {isDiscounted ? "🍁 Limited Time Fall Sale" : "Plans & Pricing"}
         </div>
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-text-primary mb-4 leading-tight">
-          Flexible plans for every 3D creator
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-text-primary mb-2 leading-tight">
+          {isDiscounted
+            ? "Fall Sale: Huge Discounts on 3D Export Plans!"
+            : "Flexible plans for every 3D creator"}
         </h1>
-        <p className="text-base sm:text-lg text-text-secondary max-w-2xl mx-auto leading-relaxed">
-          Start free with 2 workspace downloads, or upgrade for unlimited 3D
-          exports, Community model allowances, and multi-account access.
+        <p className="text-xs sm:text-sm text-text-secondary max-w-xl mx-auto leading-relaxed">
+          {isDiscounted
+            ? "Start free with 2 downloads, or grab limited-time Fall Sale discounts on Pro Max ($2.99), Annual ($5.99), and Lifetime ($9.99)!"
+            : "Start free with 2 workspace downloads, or upgrade for unlimited 3D exports, Community model allowances, and multi-account access."}
         </p>
       </div>
 
+      {/* Fall Sale Countdown Banner */}
+      {isDiscounted && <FallSaleBanner />}
+
       {/* Missing InstallationId Warning State (Plans page only) */}
       {isPlanPage && !installationId && (
-        <div className="max-w-2xl mx-auto mb-10 p-5 bg-amber-500/10 border border-amber-500/30 rounded-2xl text-center">
-          <div className="flex items-center justify-center gap-2 text-amber-400 font-bold mb-1 text-sm sm:text-base">
+        <div className="max-w-2xl mx-auto mb-6 p-4 bg-amber-500/10 border border-amber-500/30 rounded-2xl text-center">
+          <div className="flex items-center justify-center gap-2 text-amber-400 font-bold mb-1 text-xs sm:text-sm">
             <svg
-              className="w-5 h-5 flex-shrink-0"
+              className="w-4 h-4 flex-shrink-0"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -236,7 +298,7 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
             </svg>
             Opened Outside MeshyGrab Extension
           </div>
-          <p className="text-xs sm:text-sm text-text-secondary leading-relaxed">
+          <p className="text-xs text-text-secondary leading-relaxed">
             To upgrade to a paid plan, please open the Plans & Pricing page
             directly from inside your <strong>MeshyGrab</strong> Chrome
             Extension so your account identity is verified automatically.
@@ -246,7 +308,7 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
 
       {/* Checkout / Identity Error Banner */}
       {checkoutError && (
-        <div className="max-w-2xl mx-auto mb-10 p-4 bg-red-500/10 border border-red-500/30 rounded-2xl text-center flex items-center justify-between gap-4">
+        <div className="max-w-2xl mx-auto mb-6 p-3.5 bg-red-500/10 border border-red-500/30 rounded-2xl text-center flex items-center justify-between gap-4">
           <div className="text-xs sm:text-sm text-red-400 font-medium text-left">
             ⚠️ {checkoutError}
           </div>
@@ -260,7 +322,7 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
       )}
 
       {/* Visual Progression Strip */}
-      <div className="max-w-4xl mx-auto mb-12 p-3.5 bg-bg-card border border-border-subtle rounded-2xl flex flex-wrap items-center justify-around gap-3 text-xs sm:text-sm font-medium">
+      <div className="max-w-4xl mx-auto mb-6 sm:mb-8 p-2.5 sm:p-3 bg-bg-card border border-border-subtle rounded-2xl flex flex-wrap items-center justify-around gap-2.5 text-xs font-medium">
         <div className="flex items-center gap-1.5 text-text-secondary">
           <span className="w-2 h-2 rounded-full bg-lime" />
           <span>
@@ -283,7 +345,9 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
           <span className="w-2 h-2 rounded-full bg-lime" />
           <span>
             Pro Max:{" "}
-            <strong className="text-lime font-bold">$3.99/mo 🔥 HOT</strong>
+            <strong className="text-lime font-bold">
+              {isDiscounted ? "$2.99/mo 🍁 50% OFF" : "$3.99/mo 🔥 HOT"}
+            </strong>
           </span>
         </div>
         <span className="text-text-muted font-bold hidden sm:inline">
@@ -292,7 +356,10 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
         <div className="flex items-center gap-1.5 text-text-secondary">
           <span className="w-2 h-2 rounded-full bg-lime" />
           <span>
-            Annual: <strong className="text-lime">$9.99/yr</strong>
+            Annual:{" "}
+            <strong className="text-lime">
+              {isDiscounted ? "$5.99/yr 🍁 40% OFF" : "$9.99/yr"}
+            </strong>
           </span>
         </div>
         <span className="text-text-muted font-bold hidden sm:inline">
@@ -303,7 +370,9 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
           <span className="bg-pink/15 px-2.5 py-0.5 rounded-full border border-pink/40 shadow-[0_0_10px_rgba(255,62,143,0.2)]">
             Lifetime:{" "}
             <strong className="text-pink font-extrabold">
-              $19.99 ONE-TIME 🔥
+              {isDiscounted
+                ? "$9.99 ONE-TIME 🍁 67% OFF"
+                : "$19.99 ONE-TIME 🔥"}
             </strong>
           </span>
         </div>
@@ -311,7 +380,7 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
 
       {/* 5 Pricing Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5 items-stretch mb-16">
-        {plansList.map((plan) => {
+        {effectivePlansList.map((plan) => {
           const isSelected = selectedPlanId === plan.id;
           const isActive = activePlanId === plan.id;
           const isLoadingThisPlan = submittingPlan === plan.id;
@@ -588,7 +657,7 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
                     e.stopPropagation();
                     handlePlanClick(plan);
                   }}
-                  className={`btn w-full text-center text-xs sm:text-sm font-bold py-3 rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed ${
+                  className={`btn w-full text-center text-xs sm:text-sm font-bold py-3 rounded-xl transition-all duration-300 whitespace-pre-line disabled:opacity-50 disabled:cursor-not-allowed ${
                     isRecommended
                       ? "btn-primary shadow-[0_4px_20px_rgba(197,249,85,0.3)]"
                       : plan.isPremium
@@ -687,21 +756,21 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
                 </td>
                 <td className="py-3 text-center text-lime font-mono font-bold">
                   <span className="line-through text-text-muted text-xs block font-normal">
-                    $5.99/mo
+                    {isDiscounted ? "$4.99/mo" : "$5.99/mo"}
                   </span>
-                  $3.99/mo
+                  {isDiscounted ? "$2.99/mo" : "$3.99/mo"}
                 </td>
                 <td className="py-3 text-center text-text-primary font-mono font-semibold">
                   <span className="line-through text-text-muted text-xs block font-normal">
-                    $12/yr
+                    {isDiscounted ? "$9.99/yr" : "$12/yr"}
                   </span>
-                  $9.99/yr
+                  {isDiscounted ? "$5.99/yr" : "$9.99/yr"}
                 </td>
                 <td className="py-3 text-center text-pink font-mono font-bold">
                   <span className="line-through text-text-muted text-xs block font-normal">
                     $29.99
                   </span>
-                  $19.99 once
+                  {isDiscounted ? "$9.99 once" : "$19.99 once"}
                 </td>
               </tr>
               <tr>
