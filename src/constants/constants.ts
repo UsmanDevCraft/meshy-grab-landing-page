@@ -270,43 +270,64 @@ export const plansList: PlanItem[] = [
   },
 ];
 
-export function getPlansList(isDiscounted: boolean = false): PlanItem[] {
-  if (!isDiscounted) {
-    return plansList;
+export function getPlansList(
+  isDiscounted: boolean = false,
+  isFavLifetime: boolean = false,
+): PlanItem[] {
+  const basePlans = !isDiscounted
+    ? plansList
+    : plansList.map((plan) => {
+        if (plan.id === "pro-max") {
+          return {
+            ...plan,
+            badge: "🍁 Fall Sale — 50% OFF 🔥",
+            price: "$2.99",
+            originalPrice: "$5.99/mo",
+            savings: "Save ~50%",
+            cta: "Get Pro Max ($2.99) 🔥",
+          };
+        }
+        if (plan.id === "pro-annual") {
+          return {
+            ...plan,
+            badge: "🍁 Fall Sale — 40% OFF",
+            price: "$5.99",
+            originalPrice: "$9.99/yr",
+            savings: "Save 40%",
+            cta: "Get Annual ($5.99)",
+            features: plan.features.map((f) =>
+              f.includes("Save ~17%") ? "Save 40% compared to monthly" : f,
+            ),
+          };
+        }
+        if (plan.id === "lifetime") {
+          return {
+            ...plan,
+            badge: "🍁 Fall Sale — 67% OFF 🔥",
+            price: "$9.99",
+            originalPrice: "$29.99",
+            savings: "Save 67%",
+            cta: "Grab Lifetime\n($9.99) 🔥",
+          };
+        }
+        return plan;
+      });
+
+  if (!isFavLifetime) {
+    return basePlans;
   }
 
-  return plansList.map((plan) => {
-    if (plan.id === "pro-max") {
-      return {
-        ...plan,
-        badge: "🍁 Fall Sale — 50% OFF 🔥",
-        price: "$2.99",
-        originalPrice: "$5.99/mo",
-        savings: "Save ~50%",
-        cta: "Get Pro Max ($2.99) 🔥",
-      };
-    }
-    if (plan.id === "pro-annual") {
-      return {
-        ...plan,
-        badge: "🍁 Fall Sale — 40% OFF",
-        price: "$5.99",
-        originalPrice: "$9.99/yr",
-        savings: "Save 40%",
-        cta: "Get Annual ($5.99)",
-        features: plan.features.map((f) =>
-          f.includes("Save ~17%") ? "Save 40% compared to monthly" : f,
-        ),
-      };
-    }
+  const favPrice = process.env.NEXT_PUBLIC_FAV_LIFETIME_PRICE || "$4.99";
+
+  return basePlans.map((plan) => {
     if (plan.id === "lifetime") {
       return {
         ...plan,
-        badge: "🍁 Fall Sale — 67% OFF 🔥",
-        price: "$9.99",
+        badge: "⭐ Fav Lifetime Deal 🔥",
+        price: favPrice,
         originalPrice: "$29.99",
-        savings: "Save 67%",
-        cta: "Grab Lifetime\n($9.99) 🔥",
+        savings: "Save ~83%",
+        cta: `Grab Lifetime\n(${favPrice}) 🔥`,
       };
     }
     return plan;
