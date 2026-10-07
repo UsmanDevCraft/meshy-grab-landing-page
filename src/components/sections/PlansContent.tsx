@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { getPlansList } from "@/constants/constants";
 import { PlanItem } from "@/types/types";
+import { isFavLifetimeUser as checkIsFavLifetimeUser } from "@/utils/allowlist";
 import FallSaleBanner from "./FallSaleBanner";
 
 const CHROME_WEB_STORE_URL =
@@ -31,10 +32,20 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
   const [isResolvingIdentity, setIsResolvingIdentity] =
     useState<boolean>(false);
 
+  const [entitlementEmail, setEntitlementEmail] = useState<string | null>(null);
+
+  const isFavLifetimeUser = useMemo(
+    () => checkIsFavLifetimeUser(entitlementEmail),
+    [entitlementEmail],
+  );
+
+  const favLifetimePrice =
+    process.env.NEXT_PUBLIC_FAV_LIFETIME_PRICE || "$4.99";
+
   const isDiscounted = process.env.NEXT_PUBLIC_IS_DISCOUNTED_PRICES === "true";
   const effectivePlansList = useMemo(
-    () => getPlansList(isDiscounted),
-    [isDiscounted],
+    () => getPlansList(isDiscounted, isFavLifetimeUser),
+    [isDiscounted, isFavLifetimeUser],
   );
 
   // Keep a ref of current plans to avoid re-creating callbacks when plans list changes
@@ -47,6 +58,10 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
   const fetchedInstallationIdRef = useRef<string | null>(null);
 
   const getPriceIdForPlan = (planId: string) => {
+    if (planId === "lifetime" && isFavLifetimeUser) {
+      const favPriceId = process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_FAV_LIFETIME;
+      if (favPriceId) return favPriceId;
+    }
     if (isDiscounted) {
       if (planId === "pro-max") {
         return (
@@ -101,7 +116,10 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
         const fetchedEmail = data.email || data.user?.email || null;
 
         if (fetchedUserId) setUserId(fetchedUserId);
-        if (fetchedEmail) setEmail(fetchedEmail);
+        if (fetchedEmail) {
+          setEmail(fetchedEmail);
+          setEntitlementEmail(fetchedEmail);
+        }
 
         if (data.isPaid === true && data.plan) {
           const matchingPlan = plansRef.current.find(
@@ -197,11 +215,14 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
       const endpoint = `${baseUrl}/api/checkout`;
 
       const targetPriceId = getPriceIdForPlan(plan.id);
+      const isFavLifetimeForRequest =
+        plan.id === "lifetime" && isFavLifetimeUser;
 
       const payload = {
         plan: plan.planKey,
         ...(targetPriceId ? { priceId: targetPriceId } : {}),
         isDiscounted,
+        isFavLifetime: isFavLifetimeForRequest,
         userId: activeUserId,
         email: activeEmail,
         installationId: installationId,
@@ -370,9 +391,11 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
           <span className="bg-pink/15 px-2.5 py-0.5 rounded-full border border-pink/40 shadow-[0_0_10px_rgba(255,62,143,0.2)]">
             Lifetime:{" "}
             <strong className="text-pink font-extrabold">
-              {isDiscounted
-                ? "$9.99 ONE-TIME 🍁 67% OFF"
-                : "$19.99 ONE-TIME 🔥"}
+              {isFavLifetimeUser
+                ? `${favLifetimePrice} ONE-TIME ⭐ FAV DEAL`
+                : isDiscounted
+                  ? "$9.99 ONE-TIME 🍁 67% OFF"
+                  : "$19.99 ONE-TIME 🔥"}
             </strong>
           </span>
         </div>
@@ -770,7 +793,11 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
                   <span className="line-through text-text-muted text-xs block font-normal">
                     $29.99
                   </span>
-                  {isDiscounted ? "$9.99 once" : "$19.99 once"}
+                  {isFavLifetimeUser
+                    ? `${favLifetimePrice} once`
+                    : isDiscounted
+                      ? "$9.99 once"
+                      : "$19.99 once"}
                 </td>
               </tr>
               <tr>
