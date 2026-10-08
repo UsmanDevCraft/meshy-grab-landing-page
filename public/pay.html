@@ -1,12 +1,15 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Completing Secure Checkout...</title>
+
     <!-- Load Paddle.js CDN -->
     <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+
     <style>
         body {
             background-color: #0f172a;
@@ -40,6 +43,7 @@
             }
         }
     </style>
+
 </head>
 
 <body>
@@ -48,27 +52,45 @@
     <p>Connecting to secure checkout...</p>
 
     <script>
-        // 1. Set environment to sandbox BEFORE initialization
+        // 1. Set Paddle environment before initialization.
+        //    Keep this as sandbox while testing.
         Paddle.Environment.set("sandbox");
 
-        // 2. Initialize Paddle with your Client-Side Token
+        // 2. Initialize Paddle with the client-side token.
         Paddle.Initialize({
             token: "test_69cc07dca8101aba02511983576"
         });
 
-        // 3. Extract transaction ID (_ptxn) passed by Paddle
+        // 3. Read the transaction ID and verified customer email.
         const urlParams = new URLSearchParams(window.location.search);
-        const txnId = urlParams.get('_ptxn');
+        const txnId = urlParams.get("_ptxn");
+        const email = urlParams.get("email");
 
-        // 4. Open the checkout overlay
-        if (txnId) {
+        // 4. Open the official Paddle checkout.
+        if (txnId && email) {
             Paddle.Checkout.open({
-                transactionId: txnId
+                transactionId: txnId,
+
+                customer: {
+                    email: email
+                },
+
+                settings: {
+                    displayMode: "overlay",
+                    variant: "one-page",
+                    theme: "dark",
+                    allowLogout: false
+                }
             });
+        } else if (!txnId) {
+            document.body.innerHTML =
+                "<p style='color:#ef4444;'>No transaction ID found. Please return to the extension and try again.</p>";
         } else {
-            document.body.innerHTML = "<p style='color:#ef4444;'>No transaction ID found. Please return to the extension and try again.</p>";
+            document.body.innerHTML =
+                "<p style='color:#ef4444;'>No customer email found. Please return to the extension and try again.</p>";
         }
     </script>
+
 </body>
 
 </html>
