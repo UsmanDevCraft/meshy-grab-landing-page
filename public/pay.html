@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
@@ -43,7 +42,6 @@
             }
         }
     </style>
-
 </head>
 
 <body>
@@ -52,42 +50,41 @@
     <p>Connecting to secure checkout...</p>
 
     <script>
-        // 1. Set Paddle environment before initialization.
-        //    Keep this as sandbox while testing.
-        Paddle.Environment.set("sandbox");
-
-        // 2. Initialize Paddle with the client-side token.
-        Paddle.Initialize({
-            token: "test_69cc07dca8101aba02511983576"
-        });
-
-        // 3. Read the transaction ID and verified customer email.
+        // 1. Read URL parameters first
         const urlParams = new URLSearchParams(window.location.search);
         const txnId = urlParams.get("_ptxn");
         const email = urlParams.get("email");
 
-        // 4. Open the official Paddle checkout.
-        if (txnId && email) {
-            Paddle.Checkout.open({
-                transactionId: txnId,
+        if (!txnId) {
+            document.body.innerHTML =
+                "<p style='color:#ef4444;'>No transaction ID found. Please return to MeshyGrab and try again.</p>";
+        } else if (!email) {
+            document.body.innerHTML =
+                "<p style='color:#ef4444;'>No customer email found. Please return to MeshyGrab and try again.</p>";
+        } else {
+            // 2. Set Sandbox mode
+            Paddle.Environment.set("sandbox");
 
-                customer: {
-                    email: email
-                },
-
-                settings: {
-                    displayMode: "overlay",
-                    variant: "one-page",
-                    theme: "dark",
-                    allowLogout: false
+            // 3. Initialize with global checkout settings (Forces Dark Mode & One-Page)
+            Paddle.Initialize({
+                token: "test_69cc07dca8101aba02511983576",
+                checkout: {
+                    settings: {
+                        displayMode: "overlay",
+                        variant: "one-page",
+                        theme: "dark",
+                        allowLogout: false
+                    }
                 }
             });
-        } else if (!txnId) {
-            document.body.innerHTML =
-                "<p style='color:#ef4444;'>No transaction ID found. Please return to the extension and try again.</p>";
-        } else {
-            document.body.innerHTML =
-                "<p style='color:#ef4444;'>No customer email found. Please return to the extension and try again.</p>";
+
+            // 4. Open transaction with pre-filled email
+            Paddle.Checkout.open({
+                transactionId: txnId,
+                customer: {
+                    email: email
+                }
+            });
         }
     </script>
 
