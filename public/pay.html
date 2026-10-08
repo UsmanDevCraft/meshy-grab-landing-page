@@ -48,18 +48,19 @@
     <p>Connecting to secure checkout...</p>
 
     <script>
-        // 1. Initialize Paddle with your Client-Side Token from Paddle Dashboard
-        // Replace this string with your actual Paddle Client-Side Token (e.g. test_... or live_...)
+        // 1. Set environment to sandbox BEFORE initialization
+        Paddle.Environment.set("sandbox");
+
+        // 2. Initialize Paddle with your Client-Side Token
         Paddle.Initialize({
-            token: "test_69cc07dca8101aba02511983576",
-            environment: "sandbox",
+            token: "test_69cc07dca8101aba02511983576"
         });
 
-        // 2. Extract transaction ID (_ptxn) automatically passed by Paddle
+        // 3. Extract transaction ID (_ptxn) passed by Paddle
         const urlParams = new URLSearchParams(window.location.search);
         const txnId = urlParams.get('_ptxn');
 
-        // 3. Open the checkout overlay
+        // 4. Open the checkout overlay
         if (txnId) {
             Paddle.Checkout.open({
                 transactionId: txnId
