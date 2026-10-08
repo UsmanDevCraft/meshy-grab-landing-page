@@ -245,19 +245,19 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
         );
       }
 
+      const checkoutUrl = data.url || null;
       const ptxn =
         data.transactionId || data._ptxn || data.transaction?.id || null;
-      const checkoutUrl = data.url || null;
 
-      if (ptxn) {
-        // Navigate to existing /checkout page contract
+      if (checkoutUrl) {
+        window.location.assign(checkoutUrl);
+      } else if (ptxn) {
+        // Fallback to existing /checkout page contract if url is missing
         router.push(
           `/checkout?_ptxn=${encodeURIComponent(
             ptxn,
           )}&installationId=${encodeURIComponent(installationId)}`,
         );
-      } else if (checkoutUrl) {
-        window.location.assign(checkoutUrl);
       } else {
         throw new Error(
           "Checkout session was created, but transaction ID was missing from the server response.",
