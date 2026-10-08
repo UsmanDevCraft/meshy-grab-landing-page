@@ -63,11 +63,12 @@
                 "<p style='color:#ef4444;'>No customer email found. Please return to MeshyGrab and try again.</p>";
         } else {
             // 2. Set Sandbox mode
-            Paddle.Environment.set("sandbox");
+            // Paddle.Environment.set("sandbox");
+            Paddle.Environment.set("production");
 
             // 3. Initialize with global checkout settings (Forces Dark Mode & One-Page)
             Paddle.Initialize({
-                token: "test_69cc07dca8101aba02511983576",
+                token: "live_8f551bb035c369c0f3672bfa74a",
                 checkout: {
                     settings: {
                         displayMode: "overlay",
