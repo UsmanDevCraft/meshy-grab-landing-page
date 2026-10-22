@@ -42,30 +42,39 @@ export default function Navbar() {
       role="navigation"
       aria-label="Main navigation"
     >
-      <div className="container mx-auto max-w-6xl px-6 flex items-center justify-between">
-        <Link href="/">
+      <div className="container mx-auto max-w-7xl px-4 sm:px-6 flex items-center justify-between">
+        <Link href="/" className="flex items-center gap-3 group">
           <Image
             src="/apple-touch-icon.png"
             alt="MeshyGrab Logo"
-            width={50}
-            height={50}
+            width={42}
+            height={42}
+            className="rounded-xl transition-transform duration-300 group-hover:scale-105"
           />
+          <div className="flex flex-col">
+            <span className="font-extrabold text-lg tracking-tight text-text-primary leading-none">
+              MeshyGrab
+            </span>
+            <span className="text-[10px] text-lime font-mono tracking-widest uppercase">
+              3D Toolkit
+            </span>
+          </div>
         </Link>
 
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden lg:flex items-center gap-5 xl:gap-6">
           {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
               onClick={(e) => handleAnchorClick(e, link.href)}
-              className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors"
+              className="text-xs xl:text-sm font-medium text-text-secondary hover:text-lime transition-colors"
             >
               {link.label}
             </a>
           ))}
           <Link
             href="/privacy-policy"
-            className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors"
+            className="text-xs xl:text-sm font-medium text-text-secondary hover:text-text-primary transition-colors"
           >
             Privacy
           </Link>
@@ -73,14 +82,14 @@ export default function Navbar() {
             href="https://chromewebstore.google.com/detail/jkddfapkjenldpiacoccgheimcokhmcc?utm_source=item-share-cb"
             target="_blank"
             rel="noopener noreferrer"
-            className="btn btn-primary !py-2.5 !px-5 !text-sm"
+            className="btn btn-primary !py-2 !px-4 !text-xs xl:!text-sm font-bold shadow-[0_0_15px_rgba(197,249,85,0.25)]"
           >
-            Get MeshyGrab
+            Get Extension
           </Link>
         </div>
 
         <button
-          className="md:hidden w-10 h-10 flex items-center justify-center rounded-xl border border-border-subtle text-text-primary"
+          className="lg:hidden w-10 h-10 flex items-center justify-center rounded-xl border border-border-subtle text-text-primary bg-bg-card/60"
           aria-label="Toggle menu"
           aria-expanded={mobileOpen}
           onClick={() => setMobileOpen(!mobileOpen)}
@@ -110,20 +119,20 @@ export default function Navbar() {
       </div>
 
       {mobileOpen && (
-        <div className="md:hidden fixed top-[72px] left-0 right-0 bg-bg-nav backdrop-blur-xl border-b border-border-subtle p-6 flex flex-col gap-4 z-40">
+        <div className="lg:hidden fixed top-[72px] left-0 right-0 bg-bg-nav backdrop-blur-xl border-b border-border-subtle p-6 flex flex-col gap-4 z-40 max-h-[85vh] overflow-y-auto">
           {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
               onClick={(e) => handleAnchorClick(e, link.href)}
-              className="py-3 text-base font-medium text-text-secondary border-b border-border-subtle last:border-0"
+              className="py-3 text-base font-medium text-text-secondary hover:text-lime border-b border-border-subtle last:border-0"
             >
               {link.label}
             </a>
           ))}
           <Link
             href="/privacy-policy"
-            className="py-3 text-base font-medium text-text-secondary border-b border-border-subtle"
+            className="py-3 text-base font-medium text-text-secondary hover:text-lime border-b border-border-subtle"
             onClick={() => setMobileOpen(false)}
           >
             Privacy Policy
@@ -132,9 +141,9 @@ export default function Navbar() {
             href="https://chromewebstore.google.com/detail/jkddfapkjenldpiacoccgheimcokhmcc?utm_source=item-share-cb"
             target="_blank"
             rel="noopener noreferrer"
-            className="btn btn-primary text-center mt-2"
+            className="btn btn-primary text-center mt-2 font-bold"
           >
-            Get MeshyGrab
+            Get the Chrome Extension
           </Link>
         </div>
       )}

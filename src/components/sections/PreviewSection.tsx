@@ -16,15 +16,16 @@ export default function PreviewSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div ref={textRef} className="reveal max-w-lg">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-lime/10 border border-lime/20 rounded-full text-xs font-semibold text-lime mb-4">
-              Extension Preview
+              Extension &amp; Workspace UI
             </div>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-[1.1] tracking-tight mb-4">
-              A clean, focused extension UI
+              Intuitive browser extension &amp; workspace
             </h2>
             <p className="text-lg text-text-secondary leading-relaxed mt-4">
-              MeshyGrab opens right alongside your Meshy workspace. Confirm your
-              model preview, choose your export format (GLB, OBJ, FBX, 3MF, STL,
-              or textures), and download in a single click.
+              MeshyGrab works right alongside your Meshy workspace, Tripo3D
+              Studio, and local files. Inspect geometry in real time, choose
+              your target format (GLB, OBJ, FBX, 3MF, or STL), upscale PBR
+              textures up to 8K, and export with zero friction.
             </p>
             <div className="mt-8 flex flex-col gap-3.5">
               {checks.map((c) => (
@@ -66,7 +67,7 @@ export default function PreviewSection() {
                   </span>
                 </div>
                 <span className="text-[11px] font-medium text-text-muted px-2 py-0.5 bg-lime/10 rounded text-lime">
-                  v1.0 Chrome
+                  v3.3 Chrome
                 </span>
               </div>
 
@@ -90,10 +91,10 @@ export default function PreviewSection() {
                   </svg>
                   <div className="text-center z-10">
                     <span className="text-xs font-semibold text-text-primary block">
-                      Generated 3D Asset
+                      3D Model Preview
                     </span>
-                    <span className="text-[10px] text-text-muted">
-                      Ready for preview
+                    <span className="text-[10px] text-lime font-mono">
+                      Real-Time PBR Viewport
                     </span>
                   </div>
                 </div>
@@ -103,26 +104,26 @@ export default function PreviewSection() {
                   <div className="flex justify-between items-center">
                     <span className="text-text-muted">Formats</span>
                     <span className="text-lime font-bold font-mono text-[10px] px-2 py-0.5 bg-lime/10 rounded">
-                      GLB • OBJ • FBX • 3MF • STL
+                      GLB • OBJ • FBX • STL • 3MF
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-text-muted">Textures</span>
+                    <span className="text-text-muted">Texture Upscale</span>
                     <span className="text-pink font-bold font-mono text-[10px] px-2 py-0.5 bg-pink/10 rounded">
-                      PNG Maps Included
+                      4K &amp; 8K PBR Maps
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-text-muted">Status</span>
-                    <span className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-lime/10 rounded text-xs font-semibold text-lime">
-                      <span className="w-1.5 h-1.5 bg-lime rounded-full animate-pulse" />
-                      Model Available
+                    <span className="text-text-muted">Converter</span>
+                    <span className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-emerald-400/10 rounded text-xs font-semibold text-emerald-400">
+                      <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
+                      Cross-Format Active
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-text-muted">Entitlement</span>
                     <span className="text-text-secondary font-medium">
-                      2 Free Downloads
+                      2 Free Downloads • Pro Unlimited
                     </span>
                   </div>
                 </div>
@@ -142,11 +143,11 @@ export default function PreviewSection() {
                     <polyline points="7 10 12 15 17 10" />
                     <line x1="12" y1="15" x2="12" y2="3" />
                   </svg>
-                  Download 3D Model &amp; Textures
+                  Export Model &amp; Textures
                 </button>
 
                 <p className="text-center mt-3 text-[11px] text-text-muted">
-                  Simple workflow. No complex setup.
+                  Client-side rendering. Zero API key configuration.
                 </p>
               </div>
             </div>

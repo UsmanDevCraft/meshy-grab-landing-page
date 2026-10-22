@@ -14,13 +14,12 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
 
   title: {
-    default:
-      "MeshyGrab — Preview & Download Meshy 3D Models (GLB, OBJ, FBX, 3MF, STL & Textures)",
+    default: "MeshyGrab — 3D Model Viewer, Converter & Texture Upscaler",
     template: "%s | MeshyGrab",
   },
 
   description:
-    "MeshyGrab is a Chrome extension that helps Meshy users preview and download 3D models in GLB, OBJ, FBX, 3MF, STL formats and texture exports. 2 free downloads, then $0.99/month.",
+    "View and render 3D models, convert files between GLB, OBJ, FBX, STL, and 3MF, upscale PBR textures to 4K and 8K, and export models and textures from Meshy AI and supported community sources.",
 
   applicationName: "MeshyGrab",
 
@@ -59,6 +58,31 @@ export const metadata: Metadata = {
     "3D model downloader",
     "3D model GLB OBJ FBX 3MF STL download",
     "AI 3D model downloader",
+    "3D model viewer",
+    "3D model converter",
+    "3D file converter",
+    "AI texture upscaler",
+    "4K and 8K texture upscaling",
+    "online 3D model viewer",
+    "3D model preview",
+    "3D workspace",
+    "GLB converter",
+    "OBJ converter",
+    "FBX converter",
+    "STL converter",
+    "3MF converter",
+    "GLB to OBJ",
+    "FBX to GLB",
+    "OBJ to STL",
+    "PBR texture maps",
+    "PNG texture export",
+    "PBR textures",
+    "Meshy AI model downloader",
+    "Meshy model export",
+    "Meshy texture export",
+    "Tripo3D community models",
+    "AI-generated 3D assets",
+    "downloadable 3D models",
   ],
 
   alternates: {
@@ -70,16 +94,15 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: siteUrl,
     siteName: "MeshyGrab",
-    title:
-      "MeshyGrab — Preview & Download Meshy 3D Models (GLB, OBJ, FBX, 3MF, STL & Textures)",
+    title: "MeshyGrab — 3D Model Viewer, Converter & Texture Upscaler",
     description:
-      "MeshyGrab is a Chrome extension that helps Meshy users preview and download 3D models in GLB, OBJ, FBX, 3MF, STL formats and texture exports.",
+      "All-in-one 3D asset toolkit: 3D model viewing & rendering, universal format conversion (GLB, OBJ, FBX, STL, 3MF), 4K & 8K PBR texture upscaling, and seamless Meshy & Tripo3D exports.",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "MeshyGrab — Preview & Download Meshy 3D Models (GLB, OBJ, FBX, 3MF, STL & Textures)",
+        alt: "MeshyGrab — 3D Model Viewer, Converter & Texture Upscaler",
       },
     ],
   },
@@ -90,10 +113,9 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title:
-      "MeshyGrab — Preview & Download Meshy 3D Models (GLB, OBJ, FBX, 3MF, STL & Textures)",
+    title: "MeshyGrab — 3D Model Viewer, Converter & Texture Upscaler",
     description:
-      "MeshyGrab is a Chrome extension that helps Meshy users preview and download 3D models in GLB, OBJ, FBX, 3MF, STL formats and texture exports.",
+      "All-in-one 3D asset toolkit: 3D model viewing, format conversion (GLB, OBJ, FBX, STL, 3MF), 4K/8K texture upscaling, and Meshy & Tripo3D exports.",
     images: ["/og-image.png"],
   },
 
@@ -129,18 +151,35 @@ export default function RootLayout({
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     name: "MeshyGrab",
-    operatingSystem: "Chrome, Edge, Brave",
-    applicationCategory: "BrowserExtension",
+    applicationCategory: "DesignApplication",
+    operatingSystem: "Web, Chrome, Edge, Brave",
     offers: {
-      "@type": "Offer",
-      price: "0.99",
+      "@type": "AggregateOffer",
+      lowPrice: "0",
+      highPrice: "19.99",
       priceCurrency: "USD",
-      priceValidUntil: "2027-12-31",
-      description:
-        "2 free downloads, then unlimited downloads for $0.99/month.",
+      offerCount: "5",
+      offers: [
+        {
+          "@type": "Offer",
+          name: "Free",
+          price: "0",
+          priceCurrency: "USD",
+          description:
+            "2 model downloads, 8 texture PNG downloads, and 1 community model download.",
+        },
+        {
+          "@type": "Offer",
+          name: "Pro Monthly",
+          price: "0.99",
+          priceCurrency: "USD",
+          description:
+            "Unlimited 3D model exports, unlimited texture PNG exports, 2 community downloads/mo.",
+        },
+      ],
     },
     description:
-      "MeshyGrab is a Chrome extension that helps Meshy users preview and download 3D models in GLB, OBJ, FBX, 3MF, STL formats and texture exports.",
+      "MeshyGrab is an all-in-one 3D asset toolkit featuring interactive 3D model viewing, universal file conversion (GLB, OBJ, FBX, STL, 3MF), 4K & 8K PBR texture upscaling, and model/texture exports from Meshy AI and Tripo3D.",
     url: siteUrl,
   };
 

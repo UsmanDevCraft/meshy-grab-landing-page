@@ -17,25 +17,29 @@ export default function MoneySection() {
           className="reveal text-center p-10 md:p-14 bg-bg-card/80 backdrop-blur-xl border border-lime/20 rounded-[28px] shadow-[0_0_50px_rgba(197,249,85,0.08)]"
         >
           <div className="inline-flex items-center gap-2 px-3.5 py-1 bg-lime/10 border border-lime/30 rounded-full text-xs font-bold text-lime mb-5 uppercase tracking-wider">
-            Pro Membership
+            All-in-One 3D Toolkit
           </div>
 
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-5 leading-tight">
-            Need more than two downloads?
+            Ready to Supercharge Your 3D Workflow?
           </h2>
 
           <p className="text-lg text-text-secondary leading-relaxed mb-8 max-w-xl mx-auto">
-            MeshyGrab gives you 2 downloads for free. If you&apos;re regularly
-            generating models and need more, Pro removes the download limit for
-            just $0.99/month.
+            Get started free with interactive 3D viewing, test conversions, and
+            initial exports. Upgrade to Pro for unlimited workspace model
+            exports, universal conversions, 4K &amp; 8K PBR texture upscaling,
+            and multi-account access.
           </p>
 
           <div className="flex flex-col items-center gap-3">
-            <button className="btn btn-primary !px-10 !py-4 !text-base shadow-[0_0_25px_rgba(197,249,85,0.3)]">
-              Go Pro — $0.99/month
-            </button>
+            <a
+              href="#pricing"
+              className="btn btn-primary !px-10 !py-4 !text-base font-bold shadow-[0_0_25px_rgba(197,249,85,0.3)]"
+            >
+              Explore Plans — Starting at $0.99/mo
+            </a>
             <p className="text-xs text-text-muted font-medium">
-              Unlimited downloads. Simple as that.
+              Flexible monthly, annual, and lifetime options. Cancel anytime.
             </p>
           </div>
         </div>
