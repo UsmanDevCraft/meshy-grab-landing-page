@@ -343,7 +343,7 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
       )}
 
       {/* Visual Progression Strip */}
-      <div className="max-w-4xl mx-auto mb-6 sm:mb-8 p-2.5 sm:p-3 bg-bg-card border border-border-subtle rounded-2xl flex flex-wrap items-center justify-around gap-2.5 text-xs font-medium">
+      <div className="max-w-4xl mx-auto mb-6 sm:mb-8 p-2.5 sm:p-3 bg-bg-card border border-border-subtle rounded-2xl flex flex-wrap items-center justify-around gap-2 text-xs font-medium">
         <div className="flex items-center gap-1.5 text-text-secondary">
           <span className="w-2 h-2 rounded-full bg-lime" />
           <span>
@@ -356,7 +356,7 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
         <div className="flex items-center gap-1.5 text-text-secondary">
           <span className="w-2 h-2 rounded-full bg-lime" />
           <span>
-            Pro: <strong className="text-lime">$0.99/mo</strong>
+            Pro: <strong className="text-lime">$0.99/mo Workspace</strong>
           </span>
         </div>
         <span className="text-text-muted font-bold hidden sm:inline">
@@ -367,7 +367,7 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
           <span>
             Pro Max:{" "}
             <strong className="text-lime font-bold">
-              {isDiscounted ? "$2.99/mo 🍁 50% OFF" : "$3.99/mo 🔥 HOT"}
+              {isDiscounted ? "$2.99/mo 🍁" : "$3.99/mo"} (3 Upscales + 5 Conv)
             </strong>
           </span>
         </div>
@@ -379,7 +379,8 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
           <span>
             Annual:{" "}
             <strong className="text-lime">
-              {isDiscounted ? "$5.99/yr 🍁 40% OFF" : "$9.99/yr"}
+              {isDiscounted ? "$5.99/yr 🍁" : "$9.99/yr"} (40 Upscales + 75
+              Conv)
             </strong>
           </span>
         </div>
@@ -395,14 +396,15 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
                 ? `${favLifetimePrice} ONE-TIME ⭐ FAV DEAL`
                 : isDiscounted
                   ? "$9.99 ONE-TIME 🍁 67% OFF"
-                  : "$19.99 ONE-TIME 🔥"}
+                  : "$19.99 ONE-TIME 🔥"}{" "}
+              (Unlimited AI &amp; Conv)
             </strong>
           </span>
         </div>
       </div>
 
       {/* 5 Pricing Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5 items-stretch mb-16">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 lg:gap-3.5 xl:gap-3 2xl:gap-4 items-stretch mb-16">
         {effectivePlansList.map((plan) => {
           const isSelected = selectedPlanId === plan.id;
           const isActive = activePlanId === plan.id;
@@ -413,7 +415,7 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
             <div
               key={plan.id}
               onClick={() => setSelectedPlanId(plan.id)}
-              className={`relative rounded-3xl p-5 sm:p-6 flex flex-col justify-between cursor-pointer transition-all duration-300 ${
+              className={`relative rounded-3xl p-4 sm:p-5 xl:p-4 2xl:p-5 flex flex-col justify-between cursor-pointer transition-all duration-300 min-w-0 overflow-hidden ${
                 isSelected
                   ? "bg-bg-card ring-2 ring-lime shadow-[0_0_35px_rgba(197,249,85,0.18)] scale-[1.02]"
                   : "bg-bg-card/80 hover:bg-bg-card hover:-translate-y-1 border border-border-subtle hover:border-lime/30"
@@ -456,11 +458,11 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
                 />
               )}
 
-              <div>
+              <div className="min-w-0">
                 {/* Header Row: Badge, Activated & Selected Indicators */}
-                <div className="flex items-center justify-between gap-1.5 mb-3 flex-wrap">
+                <div className="flex items-center justify-between gap-1.5 mb-2.5 flex-wrap min-w-0">
                   <span
-                    className={`inline-block px-2.5 py-1 rounded-full text-[11px] font-bold ${
+                    className={`inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold max-w-full break-words ${
                       plan.id === "lifetime"
                         ? "bg-gradient-to-r from-pink to-rose-500 text-white shadow-[0_0_18px_rgba(255,62,143,0.4)] animate-pulse"
                         : isRecommended
@@ -517,19 +519,19 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
                 </div>
 
                 {/* Plan Name */}
-                <h3 className="text-xl sm:text-2xl font-extrabold text-text-primary mb-1">
+                <h3 className="text-xl sm:text-2xl font-extrabold text-text-primary mb-1 break-words">
                   {plan.name}
                 </h3>
                 {plan.subtitle && (
-                  <p className="text-xs text-text-muted mb-4 min-h-[32px] leading-relaxed">
+                  <p className="text-xs text-text-muted mb-3 min-h-[32px] leading-relaxed break-words">
                     {plan.subtitle}
                   </p>
                 )}
 
                 {/* Price Display */}
-                <div className="mb-5 pt-2 border-t border-border-subtle/50">
+                <div className="mb-4 pt-2 border-t border-border-subtle/50">
                   {plan.originalPrice && (
-                    <div className="flex items-center gap-2 mb-1">
+                    <div className="flex items-center gap-1.5 mb-1 flex-wrap">
                       <span className="line-through text-text-muted text-xs font-semibold">
                         {plan.originalPrice}
                       </span>
@@ -547,7 +549,7 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
                     </div>
                   )}
 
-                  <div className="flex items-baseline gap-1 font-mono">
+                  <div className="flex items-baseline gap-1 font-mono flex-wrap">
                     <span className="text-3xl sm:text-4xl font-black text-text-primary tracking-tight">
                       {plan.price}
                     </span>
@@ -558,16 +560,16 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
                     )}
                   </div>
 
-                  {/* Prominent One-Time Payment Badge on NEXT LINE for Lifetime Plan */}
+                  {/* Prominent One-Time Payment Badge for Lifetime Plan */}
                   {plan.id === "lifetime" ? (
-                    <div className="mt-2.5 flex flex-col items-start gap-1">
-                      <span className="inline-flex items-center gap-1.5 text-xs font-extrabold text-pink bg-pink/20 border border-pink/40 px-3 py-1 rounded-full shadow-[0_0_15px_rgba(255,62,143,0.3)] animate-pulse">
+                    <div className="mt-2 flex flex-col items-start gap-1">
+                      <span className="inline-flex items-center gap-1.5 text-xs font-extrabold text-pink bg-pink/20 border border-pink/40 px-2.5 py-0.5 rounded-full shadow-[0_0_12px_rgba(255,62,143,0.3)] animate-pulse">
                         <span>⚡</span>
                         <span className="uppercase tracking-wider">
                           ONE-TIME PAYMENT
                         </span>
                       </span>
-                      <p className="text-[11px] font-semibold text-text-secondary mt-1 leading-snug">
+                      <p className="text-[11px] font-semibold text-text-secondary mt-0.5 leading-snug">
                         Pay once, keep forever. Priority updates & zero renewal
                         fees.
                       </p>
@@ -578,10 +580,10 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
                 {/* Prominent Multi-Account Highlight Banner (Pro Max & Lifetime only) */}
                 {plan.accountsAdditional > 0 && (
                   <div
-                    className={`mb-4 p-2.5 rounded-xl border text-xs font-semibold leading-tight ${
+                    className={`mb-3 p-2.5 rounded-xl border text-xs font-semibold leading-tight ${
                       plan.id === "pro-max"
-                        ? "bg-lime/10 border-lime/30 text-lime shadow-[0_0_12px_rgba(197,249,85,0.1)]"
-                        : "bg-pink/15 border-pink/40 text-pink shadow-[0_0_15px_rgba(255,62,143,0.2)]"
+                        ? "bg-lime/10 border-lime/30 text-lime shadow-[0_0_10px_rgba(197,249,85,0.1)]"
+                        : "bg-pink/15 border-pink/40 text-pink shadow-[0_0_12px_rgba(255,62,143,0.15)]"
                     }`}
                   >
                     <div className="font-extrabold mb-0.5 flex items-center gap-1.5 text-text-primary">
@@ -591,7 +593,7 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
                         {plan.accountsAdditional === 1 ? "Account" : "Accounts"}
                       </span>
                     </div>
-                    <div className="text-[11px] opacity-90">
+                    <div className="text-[11px] opacity-90 break-words">
                       {plan.accountsBenefit ||
                         (plan.id === "pro-max"
                           ? "3 total Meshy accounts under 1 subscription"
@@ -600,22 +602,57 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
                   </div>
                 )}
 
+                {/* Compact AI Upscaler & Converter Label (Pro Max, Annual & Lifetime) */}
+                {plan.upscalerAllowance && plan.converterAllowance && (
+                  <div className="mb-3 flex items-center">
+                    <span
+                      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold tracking-wide border shadow-sm ${
+                        plan.id === "lifetime"
+                          ? "bg-pink/15 text-pink border-pink/40 shadow-[0_0_12px_rgba(255,62,143,0.2)]"
+                          : "bg-lime/10 text-lime border-lime/30 shadow-[0_0_10px_rgba(197,249,85,0.1)]"
+                      }`}
+                    >
+                      <span>⚡</span>
+                      <span>AI Upscaler &amp; Converter</span>
+                      {plan.id === "lifetime" && (
+                        <span className="text-[9px] uppercase font-black px-1.5 py-0.5 rounded bg-pink/25 text-pink">
+                          Unlimited
+                        </span>
+                      )}
+                    </span>
+                  </div>
+                )}
+
+                {/* 3D Workspace & Model Renderer Feature Box (Pro Monthly Only) */}
+                {plan.id === "pro" && (
+                  <div className="mb-3.5 p-2.5 sm:p-3 rounded-2xl border border-lime/25 bg-lime/[0.06] text-xs font-semibold leading-tight">
+                    <div className="font-extrabold mb-1 flex items-center gap-1.5 text-text-primary text-[11px] uppercase tracking-wider">
+                      <span>🎨</span>
+                      <span>3D Renderer &amp; Workspace</span>
+                    </div>
+                    <div className="text-[11px] text-text-secondary font-normal leading-snug">
+                      Interactive 3D model viewport &amp; rendering included for
+                      all your 3D files.
+                    </div>
+                  </div>
+                )}
+
                 {/* Hot Additions Callout Box (Pro Max, Annual & Lifetime) */}
                 {plan.hasUpcomingPerks && (
                   <div
-                    className={`mb-4 p-2.5 rounded-xl border text-xs font-semibold leading-tight ${
+                    className={`mb-3 p-2.5 rounded-xl border text-xs font-semibold leading-tight ${
                       plan.id === "lifetime"
-                        ? "border-pink/40 bg-pink/10 text-pink shadow-[0_0_15px_rgba(255,62,143,0.15)]"
-                        : "border-lime/30 bg-lime/10 text-lime shadow-[0_0_15px_rgba(197,249,85,0.12)]"
+                        ? "border-pink/40 bg-pink/10 text-pink shadow-[0_0_12px_rgba(255,62,143,0.12)]"
+                        : "border-lime/30 bg-lime/10 text-lime shadow-[0_0_10px_rgba(197,249,85,0.1)]"
                     }`}
                   >
-                    <div className="font-bold mb-1 flex items-center gap-1.5 text-text-primary">
-                      <span className="text-sm">🔥</span>
+                    <div className="font-bold mb-0.5 flex items-center gap-1.5 text-text-primary">
+                      <span className="text-xs">🔥</span>
                       <span className="tracking-wide">
                         Hot Features Included
                       </span>
                     </div>
-                    <div className="text-[11px] text-text-secondary leading-snug font-normal">
+                    <div className="text-[11px] text-text-secondary leading-snug font-normal break-words">
                       <strong
                         className={
                           plan.id === "lifetime"
@@ -625,18 +662,18 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
                       >
                         ✨ Tripo 3D Support
                       </strong>{" "}
-                      & expanded community download formats included!
+                      &amp; expanded community formats included!
                     </div>
                   </div>
                 )}
 
                 {/* Features list */}
-                <div className="space-y-2.5 mb-6 text-xs sm:text-sm">
+                <div className="space-y-2 mb-6 text-xs sm:text-sm min-w-0">
                   <div className="space-y-2 pt-1">
                     {plan.features.map((feature, idx) => (
                       <div
                         key={idx}
-                        className="flex items-start gap-2 text-xs text-text-secondary leading-snug"
+                        className="flex items-start gap-2 text-xs text-text-secondary leading-snug min-w-0"
                       >
                         <svg
                           className={`w-3.5 h-3.5 mt-0.5 flex-shrink-0 ${
@@ -656,12 +693,17 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
                           <polyline points="20 6 9 17 4 12" />
                         </svg>
                         <span
-                          className={
+                          className={`min-w-0 break-words ${
                             feature.includes("Tripo 3D") ||
-                            feature.includes("Multi-Account")
+                            feature.includes("Multi-Account") ||
+                            feature.includes("AI texture") ||
+                            feature.includes("AI Texture") ||
+                            feature.includes("format conversion") ||
+                            feature.includes("Format Conversion") ||
+                            feature.includes("UNLIMITED")
                               ? "font-bold text-text-primary"
                               : ""
-                          }
+                          }`}
                         >
                           {feature}
                         </span>
@@ -817,35 +859,194 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
                 </td>
               </tr>
 
+              {/* Category: 3D Workspace & Model Viewer */}
+              <tr className="bg-bg-elevated/30">
+                <td className="py-3.5 font-bold text-text-primary" colSpan={6}>
+                  🎨 3D Workspace &amp; Model Viewer
+                </td>
+              </tr>
+              <tr>
+                <td className="py-3 font-medium text-text-primary pl-3">
+                  Interactive 3D Viewport &amp; Rendering
+                </td>
+                <td className="py-3 text-center text-text-muted">
+                  ❌ Not included
+                </td>
+                <td className="py-3 text-center text-emerald-400 font-semibold">
+                  ✅ Included
+                </td>
+                <td className="py-3 text-center text-emerald-400 font-semibold">
+                  ✅ Included
+                </td>
+                <td className="py-3 text-center text-emerald-400 font-semibold">
+                  ✅ Included
+                </td>
+                <td className="py-3 text-center text-emerald-400 font-semibold">
+                  ✅ Included
+                </td>
+              </tr>
+              <tr>
+                <td className="py-3 font-medium text-text-primary pl-3">
+                  Inspection Modes (PBR, Wireframe, Normals, MatCap)
+                </td>
+                <td className="py-3 text-center text-text-muted">
+                  ❌ Not included
+                </td>
+                <td className="py-3 text-center text-emerald-400 font-semibold">
+                  ✅ Included
+                </td>
+                <td className="py-3 text-center text-emerald-400 font-semibold">
+                  ✅ Included
+                </td>
+                <td className="py-3 text-center text-emerald-400 font-semibold">
+                  ✅ Included
+                </td>
+                <td className="py-3 text-center text-emerald-400 font-semibold">
+                  ✅ Included
+                </td>
+              </tr>
+              <tr>
+                <td className="py-3 font-medium text-text-primary pl-3">
+                  Import External 3D Files (GLB, OBJ, FBX, STL, 3MF)
+                </td>
+                <td className="py-3 text-center text-text-muted">
+                  ❌ Not included
+                </td>
+                <td className="py-3 text-center text-emerald-400 font-semibold">
+                  ✅ Included
+                </td>
+                <td className="py-3 text-center text-emerald-400 font-semibold">
+                  ✅ Included
+                </td>
+                <td className="py-3 text-center text-emerald-400 font-semibold">
+                  ✅ Included
+                </td>
+                <td className="py-3 text-center text-emerald-400 font-semibold">
+                  ✅ Included
+                </td>
+              </tr>
+
+              {/* Category: Universal 3D Format Converter */}
+              <tr className="bg-bg-elevated/30">
+                <td className="py-3.5 font-bold text-text-primary" colSpan={6}>
+                  ⚡ Universal 3D Model Format Converter
+                </td>
+              </tr>
+              <tr>
+                <td className="py-3 font-medium text-text-primary pl-3">
+                  Format Conversion (GLB, OBJ, FBX, STL, 3MF)
+                </td>
+                <td className="py-3 text-center text-text-muted">
+                  ❌ Not included
+                </td>
+                <td className="py-3 text-center text-text-muted">
+                  ❌ Not included
+                </td>
+                <td className="py-3 text-center text-lime font-bold">
+                  5 conversions / mo
+                </td>
+                <td className="py-3 text-center text-lime font-bold">
+                  75 conversions / yr
+                </td>
+                <td className="py-3 text-center text-pink font-black">
+                  🔥 Unlimited
+                </td>
+              </tr>
+              <tr>
+                <td className="py-3 font-medium text-text-primary pl-3">
+                  3D Printing Prep (STL &amp; 3MF Conversion)
+                </td>
+                <td className="py-3 text-center text-text-muted">
+                  ❌ Not included
+                </td>
+                <td className="py-3 text-center text-text-muted">
+                  ❌ Not included
+                </td>
+                <td className="py-3 text-center text-lime font-bold">
+                  5 conversions / mo
+                </td>
+                <td className="py-3 text-center text-lime font-bold">
+                  75 conversions / yr
+                </td>
+                <td className="py-3 text-center text-pink font-black">
+                  🔥 Unlimited
+                </td>
+              </tr>
+
+              {/* Category: 4K & 8K PBR Texture Upscaler */}
+              <tr className="bg-bg-elevated/30">
+                <td className="py-3.5 font-bold text-text-primary" colSpan={6}>
+                  ✨ 4K &amp; 8K PBR Texture Upscaler
+                </td>
+              </tr>
+              <tr>
+                <td className="py-3 font-medium text-text-primary pl-3">
+                  AI Texture Upscaling Quota
+                </td>
+                <td className="py-3 text-center text-text-muted">
+                  Standard 2K Preview
+                </td>
+                <td className="py-3 text-center text-text-muted">
+                  Standard 2K Preview
+                </td>
+                <td className="py-3 text-center text-lime font-bold">
+                  3 upscales / mo
+                </td>
+                <td className="py-3 text-center text-lime font-bold">
+                  40 upscales / yr
+                </td>
+                <td className="py-3 text-center text-pink font-black">
+                  🔥 Unlimited
+                </td>
+              </tr>
+              <tr>
+                <td className="py-3 font-medium text-text-primary pl-3">
+                  Upscale Resolution Support
+                </td>
+                <td className="py-3 text-center text-text-muted">
+                  Standard 2K
+                </td>
+                <td className="py-3 text-center text-text-muted">
+                  Standard 2K
+                </td>
+                <td className="py-3 text-center text-lime font-semibold">
+                  4K &amp; 8K (Priority)
+                </td>
+                <td className="py-3 text-center text-lime font-semibold">
+                  4K &amp; 8K Upscaling
+                </td>
+                <td className="py-3 text-center text-pink font-bold">
+                  4K &amp; 8K (Top Priority)
+                </td>
+              </tr>
+              <tr>
+                <td className="py-3 font-medium text-text-primary pl-3">
+                  Preserved PBR Maps (Albedo, Normal, Rough, Metal, AO)
+                </td>
+                <td className="py-3 text-center text-text-muted">2K Maps</td>
+                <td className="py-3 text-center text-text-muted">2K Maps</td>
+                <td className="py-3 text-center text-emerald-400 font-semibold">
+                  Full 4K/8K Maps
+                </td>
+                <td className="py-3 text-center text-emerald-400 font-semibold">
+                  Full 4K/8K Maps
+                </td>
+                <td className="py-3 text-center text-emerald-400 font-semibold">
+                  Full 4K/8K Maps
+                </td>
+              </tr>
+
               {/* Category: Workspace Exports */}
               <tr className="bg-bg-elevated/30">
                 <td className="py-3.5 font-bold text-text-primary" colSpan={6}>
-                  Workspace Model & Texture Exports
+                  📦 Meshy AI Workspace Model &amp; Texture Exports
                 </td>
               </tr>
               <tr>
                 <td className="py-3 font-medium text-text-primary pl-3">
-                  GLB, OBJ, FBX
+                  GLB, OBJ, FBX Workspace Exports
                 </td>
-                <td className="py-3 text-center">2 total</td>
-                <td className="py-3 text-center text-emerald-400 font-semibold">
-                  Unlimited
-                </td>
-                <td className="py-3 text-center text-emerald-400 font-semibold">
-                  Unlimited
-                </td>
-                <td className="py-3 text-center text-emerald-400 font-semibold">
-                  Unlimited
-                </td>
-                <td className="py-3 text-center text-emerald-400 font-semibold">
-                  Unlimited
-                </td>
-              </tr>
-              <tr>
-                <td className="py-3 font-medium text-text-primary pl-3">
-                  STL & 3MF (3D Printing)
-                </td>
-                <td className="py-3 text-center">2 total</td>
+                <td className="py-3 text-center text-text-muted">2 total</td>
                 <td className="py-3 text-center text-emerald-400 font-semibold">
                   Unlimited
                 </td>
@@ -861,9 +1062,27 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
               </tr>
               <tr>
                 <td className="py-3 font-medium text-text-primary pl-3">
-                  Texture PNG Maps
+                  STL &amp; 3MF (3D Printing)
                 </td>
-                <td className="py-3 text-center">8 total</td>
+                <td className="py-3 text-center text-text-muted">2 total</td>
+                <td className="py-3 text-center text-emerald-400 font-semibold">
+                  Unlimited
+                </td>
+                <td className="py-3 text-center text-emerald-400 font-semibold">
+                  Unlimited
+                </td>
+                <td className="py-3 text-center text-emerald-400 font-semibold">
+                  Unlimited
+                </td>
+                <td className="py-3 text-center text-emerald-400 font-semibold">
+                  Unlimited
+                </td>
+              </tr>
+              <tr>
+                <td className="py-3 font-medium text-text-primary pl-3">
+                  PBR Texture PNG Maps
+                </td>
+                <td className="py-3 text-center text-text-muted">8 total</td>
                 <td className="py-3 text-center text-emerald-400 font-semibold">
                   Unlimited
                 </td>
@@ -881,33 +1100,33 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
               {/* Category: Community Models */}
               <tr className="bg-bg-elevated/30">
                 <td className="py-3.5 font-bold text-text-primary" colSpan={6}>
-                  Community Models
+                  🌐 Community Model Downloads
                 </td>
               </tr>
               <tr>
                 <td className="py-3 font-medium text-text-primary pl-3">
-                  Community model downloads
+                  Meshy Discover Community Downloads
                 </td>
-                <td className="py-3 text-center">1 total</td>
-                <td className="py-3 text-center">2 / month</td>
+                <td className="py-3 text-center text-text-muted">1 total</td>
+                <td className="py-3 text-center font-medium">2 / month</td>
                 <td className="py-3 text-center font-bold text-lime">
                   8 / month
                 </td>
-                <td className="py-3 text-center">40 / year</td>
+                <td className="py-3 text-center font-medium">40 / year</td>
                 <td className="py-3 text-center font-bold text-pink">
                   Unlimited
                 </td>
               </tr>
               <tr>
                 <td className="py-3 font-medium text-text-primary pl-3">
-                  Refresh
+                  Community Quota Refresh
                 </td>
                 <td className="py-3 text-center text-text-muted">One-time</td>
-                <td className="py-3 text-center">Every month</td>
+                <td className="py-3 text-center font-medium">Every month</td>
                 <td className="py-3 text-center font-medium text-lime/90">
                   Every month
                 </td>
-                <td className="py-3 text-center">Every year</td>
+                <td className="py-3 text-center font-medium">Every year</td>
                 <td className="py-3 text-center font-medium text-pink">
                   Unlimited
                 </td>
@@ -916,12 +1135,12 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
               {/* Category: Additional Meshy Accounts */}
               <tr className="bg-bg-elevated/30">
                 <td className="py-3.5 font-bold text-text-primary" colSpan={6}>
-                  Additional Meshy Accounts
+                  🔑 Multi-Account Meshy Linking
                 </td>
               </tr>
               <tr>
                 <td className="py-3 font-medium text-text-primary pl-3">
-                  Additional accounts
+                  Additional Accounts
                 </td>
                 <td className="py-3 text-center text-text-muted">0</td>
                 <td className="py-3 text-center text-text-muted">0</td>
@@ -931,7 +1150,7 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
               </tr>
               <tr>
                 <td className="py-3 font-medium text-text-primary pl-3">
-                  Total accounts
+                  Total Accounts Under Subscription
                 </td>
                 <td className="py-3 text-center">1</td>
                 <td className="py-3 text-center">1</td>
@@ -940,15 +1159,15 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
                 <td className="py-3 text-center font-bold text-pink">5</td>
               </tr>
 
-              {/* Category: Hot Features & Format Support */}
+              {/* Category: Platform Integrations & Priority */}
               <tr className="bg-bg-elevated/30">
                 <td className="py-3.5 font-bold text-text-primary" colSpan={6}>
-                  🔥 Hot Features & Format Support
+                  🔥 Platform Integrations &amp; Perks
                 </td>
               </tr>
               <tr>
                 <td className="py-3 font-medium text-text-primary pl-3">
-                  Tripo 3D Support ✨
+                  Tripo 3D Studio Support ✨
                 </td>
                 <td className="py-3 text-center text-text-muted">❌</td>
                 <td className="py-3 text-center text-text-muted">❌</td>
@@ -980,12 +1199,16 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
               </tr>
               <tr>
                 <td className="py-3 font-medium text-text-primary pl-3">
-                  Priority Beta Access
+                  Priority Beta Updates &amp; Support
                 </td>
-                <td className="py-3 text-center text-text-muted">❌</td>
-                <td className="py-3 text-center text-text-muted">❌</td>
-                <td className="py-3 text-center text-text-muted">❌</td>
-                <td className="py-3 text-center text-text-muted">❌</td>
+                <td className="py-3 text-center text-text-muted">Standard</td>
+                <td className="py-3 text-center text-text-muted">Standard</td>
+                <td className="py-3 text-center text-lime font-medium">
+                  Early Access
+                </td>
+                <td className="py-3 text-center text-lime font-medium">
+                  Early Access
+                </td>
                 <td className="py-3 text-center font-bold text-pink">
                   ✅ Always Priority
                 </td>

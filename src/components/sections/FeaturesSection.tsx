@@ -93,15 +93,16 @@ export default function FeaturesSection() {
     <section id="features" className="section-padding bg-bg-page">
       <div className="container mx-auto max-w-6xl px-6">
         <div ref={headerRef} className="reveal text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-lime/10 border border-lime/20 rounded-full text-xs font-semibold text-lime mb-4">
-            Focused Benefits
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-lime/10 border border-lime/20 rounded-full text-xs font-semibold text-lime mb-4 uppercase tracking-wider">
+            Why Choose MeshyGrab
           </div>
           <h2 className="text-3xl md:text-4xl lg:text-[3.5rem] font-bold leading-[1.1] tracking-tight mb-4">
-            Built for your workflow
+            Engineered for Modern 3D Creators
           </h2>
-          <p className="text-lg text-text-secondary max-w-xl mx-auto">
-            Clear, practical features designed around one job: getting your 3D
-            assets in GLB, OBJ, FBX, 3MF, STL &amp; texture formats.
+          <p className="text-lg text-text-secondary max-w-2xl mx-auto">
+            From real-time geometry inspection to neural 4K/8K PBR upscaling and
+            universal file conversion, MeshyGrab powers every step of your 3D
+            workflow.
           </p>
         </div>
 

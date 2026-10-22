@@ -10,16 +10,17 @@ export default function AudienceSection() {
     <section id="audience" className="section-padding bg-bg-elevated">
       <div className="container mx-auto max-w-6xl px-6">
         <div ref={headerRef} className="reveal text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-lime/10 border border-lime/20 rounded-full text-xs font-semibold text-lime mb-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-lime/10 border border-lime/20 rounded-full text-xs font-semibold text-lime mb-4 uppercase tracking-wider">
             Target Audience
           </div>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-[1.1] tracking-tight mb-4">
             Who is MeshyGrab for?
           </h2>
           <p className="text-lg text-text-secondary max-w-2xl mx-auto">
-            MeshyGrab is built for anyone who regularly creates 3D models in
-            Meshy and needs direct access to their generated GLB, OBJ, FBX, 3MF,
-            STL files and texture exports.
+            MeshyGrab is built for 3D artists, game developers, designers, 3D
+            printing enthusiasts, indie creators, and AI modelers who need a
+            streamlined toolkit to inspect, convert, enhance, and export 3D
+            models.
           </p>
         </div>
 
@@ -31,8 +32,9 @@ export default function AudienceSection() {
 
         <div className="mt-12 text-center">
           <p className="text-xs text-text-muted max-w-xl mx-auto">
-            Remember: Meshy generates the 3D model. MeshyGrab helps you preview
-            and download the generated file smoothly.
+            Whether you work with Meshy AI, Tripo3D, or your own local 3D
+            models, MeshyGrab accelerates your asset preparation and export
+            workflow.
           </p>
         </div>
       </div>

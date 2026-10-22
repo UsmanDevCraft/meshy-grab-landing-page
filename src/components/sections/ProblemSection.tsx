@@ -3,11 +3,11 @@
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const frictionSteps = [
-  "1. User generates a 3D model in Meshy",
-  "2. Generation succeeds and the model is ready",
-  "3. User wants the resulting 3D asset file",
-  "4. Download availability may be limited",
-  "5. User needs a simpler way to get the model they created",
+  "1. Model created or acquired in 2K GLB",
+  "2. Incompatible formats for game engines or 3D printers",
+  "3. Low-resolution 2K textures blur in close-up renders",
+  "4. Disconnected third-party converters and export barriers",
+  "5. MeshyGrab solves the entire workflow in one workspace",
 ];
 
 export default function ProblemSection() {
@@ -15,25 +15,27 @@ export default function ProblemSection() {
   const beforeAfterRef = useScrollReveal<HTMLDivElement>();
 
   return (
-    <section id="problem" className="section-padding bg-bg-elevated">
+    <section
+      id="problem"
+      className="section-padding bg-bg-elevated border-b border-border-subtle"
+    >
       <div className="container mx-auto max-w-6xl px-6">
         <div
           ref={textRef}
           className="reveal max-w-3xl mx-auto text-center mb-16"
         >
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-pink/10 border border-pink/20 rounded-full text-xs font-semibold text-pink mb-4">
-            The Problem & Solution
+            The Problem &amp; The Solution
           </div>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold leading-[1.15] tracking-tight mb-6">
-            You already made the model. Getting the file shouldn&apos;t be the
-            hard part.
+            Fragmented 3D Workflows Slow Creators Down.
           </h2>
           <p className="text-lg text-text-secondary leading-relaxed">
-            Meshy makes it easy to generate 3D models. But once your model is
-            ready, downloading the actual asset can be limited. MeshyGrab
-            focuses on that final step—helping you preview and download the
-            model you&apos;ve already created in your choice of GLB, OBJ, FBX,
-            3MF, STL, or texture exports.
+            Generating or finding a 3D asset is only the first step. Artists and
+            developers waste hours juggling standalone converters, wrestling
+            with low-res 2K textures, and handling restricted platform exports.
+            MeshyGrab unites 3D model viewing, format conversion, 4K/8K PBR
+            upscaling, and direct exports into one clean browser workspace.
           </p>
         </div>
 
@@ -59,8 +61,8 @@ export default function ProblemSection() {
           <div className="text-center mb-8">
             <h3 className="text-2xl font-bold mb-2">Workflow Comparison</h3>
             <p className="text-sm text-text-muted">
-              Meshy handles model generation. MeshyGrab streamlines the download
-              access.
+              Stop juggling disjointed tools. Handle your complete 3D asset
+              pipeline in MeshyGrab.
             </p>
           </div>
 
@@ -82,30 +84,31 @@ export default function ProblemSection() {
                   <line x1="15" y1="9" x2="9" y2="15" />
                   <line x1="9" y1="9" x2="15" y2="15" />
                 </svg>
-                Current Friction
+                Fragmented Process
               </h4>
               <div className="flex flex-col gap-3 font-mono text-xs text-text-secondary">
                 <div className="p-2.5 bg-bg-page/60 rounded-lg border border-border-subtle flex items-center gap-2">
-                  <span className="text-lime">1.</span> Generate a model in
-                  Meshy
-                </div>
-                <div className="text-center text-text-muted text-xs">
-                  &darr;
-                </div>
-                <div className="p-2.5 bg-bg-page/60 rounded-lg border border-border-subtle flex items-center gap-2">
-                  <span className="text-lime">2.</span> Model succeeds
+                  <span className="text-pink font-bold">1.</span> Generate or
+                  find model in 2K GLB
                 </div>
                 <div className="text-center text-text-muted text-xs">
                   &darr;
                 </div>
                 <div className="p-2.5 bg-pink/10 border border-pink/30 rounded-lg text-pink flex items-center gap-2">
-                  <span>3.</span> Download availability is limited
+                  <span>2.</span> Incompatible with Unreal/Unity or 3D Slicers
+                </div>
+                <div className="text-center text-text-muted text-xs">
+                  &darr;
+                </div>
+                <div className="p-2.5 bg-pink/10 border border-pink/30 rounded-lg text-pink flex items-center gap-2">
+                  <span>3.</span> Textures blur at 2K resolution in camera view
                 </div>
                 <div className="text-center text-text-muted text-xs">
                   &darr;
                 </div>
                 <div className="p-2.5 bg-pink/10 border border-pink/30 rounded-lg text-pink font-semibold flex items-center gap-2">
-                  <span>4.</span> Unnecessary workflow friction
+                  <span>4.</span> Juggling 3 different tools to convert &amp;
+                  export
                 </div>
               </div>
             </div>
@@ -125,37 +128,34 @@ export default function ProblemSection() {
                 >
                   <polyline points="20 6 9 17 4 12" />
                 </svg>
-                Simple Workflow
+                All-in-One 3D Toolkit
               </h4>
               <div className="flex flex-col gap-2.5 font-mono text-xs text-text-secondary">
                 <div className="p-2 bg-bg-page/60 rounded-lg border border-border-subtle flex items-center gap-2">
-                  <span className="text-lime font-bold">1.</span> Generate a
-                  model
+                  <span className="text-lime font-bold">1.</span> Inspect in 3D
+                  Workspace with real-time lighting
                 </div>
                 <div className="text-center text-lime text-xs">&darr;</div>
                 <div className="p-2 bg-bg-page/60 rounded-lg border border-border-subtle flex items-center gap-2">
-                  <span className="text-lime font-bold">2.</span> Open your
-                  model
+                  <span className="text-lime font-bold">2.</span> Convert
+                  between GLB, OBJ, FBX, STL &amp; 3MF
                 </div>
                 <div className="text-center text-lime text-xs">&darr;</div>
                 <div className="p-2 bg-bg-page/60 rounded-lg border border-border-subtle flex items-center gap-2">
-                  <span className="text-lime font-bold">3.</span> Open MeshyGrab
-                </div>
-                <div className="text-center text-lime text-xs">&darr;</div>
-                <div className="p-2 bg-bg-page/60 rounded-lg border border-border-subtle flex items-center gap-2">
-                  <span className="text-lime font-bold">4.</span> Preview model
+                  <span className="text-lime font-bold">3.</span> Upscale PBR
+                  textures to ultra-sharp 4K or 8K
                 </div>
                 <div className="text-center text-lime text-xs">&darr;</div>
                 <div className="p-2.5 bg-lime/10 border border-lime/40 rounded-lg text-lime font-bold flex items-center gap-2">
-                  <span>5.</span> Download GLB, OBJ, FBX, 3MF, STL &amp;
-                  Textures
+                  <span>4.</span> Export clean assets &amp; PNG texture maps
+                  instantly
                 </div>
               </div>
             </div>
           </div>
-          <p className="text-xs text-center text-text-muted mt-4">
-            MeshyGrab does not modify model generation. It solely optimizes your
-            download access.
+          <p className="text-xs text-center text-text-muted mt-5">
+            Designed for 3D artists, game developers, 3D printing enthusiasts,
+            and indie studios.
           </p>
         </div>
       </div>

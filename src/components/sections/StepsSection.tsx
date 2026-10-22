@@ -17,8 +17,8 @@ export default function StepsSection() {
             How It Works
           </h2>
           <p className="text-lg text-text-secondary max-w-xl mx-auto">
-            From model creation to downloading your 3D assets &amp; textures in
-            seconds.
+            From raw 3D assets to production-ready GLB, OBJ, FBX, STL, 3MF and
+            4K/8K textures in four simple steps.
           </p>
         </div>
 

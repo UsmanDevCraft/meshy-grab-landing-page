@@ -360,28 +360,23 @@ export default function HeroSection() {
                 gap-2
                 rounded-full
                 border
-                border-lime/20
-                bg-lime/5
-                px-3
+                border-lime/30
+                bg-lime/10
+                px-3.5
                 py-1.5
                 text-[11px]
-                font-medium
+                font-bold
                 text-lime
                 backdrop-blur-sm
-                sm:px-3.5
+                shadow-[0_0_15px_rgba(197,249,85,0.15)]
+                sm:px-4
                 sm:text-xs
+                tracking-wide
+                uppercase
               "
             >
-              <svg
-                className="h-3.5 w-3.5"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-              >
-                <polyline points="20 6 9 17 4 12" />
-              </svg>
-              Chrome Extension for Meshy Users
+              <span className="w-2 h-2 rounded-full bg-lime animate-pulse" />
+              All-in-One 3D Asset Toolkit
             </div>
           </motion.div>
 
@@ -398,14 +393,14 @@ export default function HeroSection() {
               max-w-4xl
               text-[2.6rem]
               font-extrabold
-              leading-[1.02]
+              leading-[1.04]
               tracking-[-0.035em]
               sm:text-5xl
               md:text-6xl
               lg:text-7xl
             "
           >
-            You generated the model.
+            Your 3D Models.
             <br />
             <span
               className="
@@ -416,7 +411,7 @@ export default function HeroSection() {
                 animate-gradient-shift
               "
             >
-              Now get the file.
+              One Powerful Workspace.
             </span>
           </motion.h1>
 
@@ -431,7 +426,7 @@ export default function HeroSection() {
             }}
             className="
               mt-5
-              max-w-xl
+              max-w-2xl
               px-2
               text-[15px]
               leading-relaxed
@@ -441,12 +436,12 @@ export default function HeroSection() {
               md:text-lg
             "
           >
-            MeshyGrab is a lightweight Chrome extension that lets you preview
-            and export 3D models from Meshy in all formats — GLB, OBJ, FBX, 3MF,
-            STL &amp; texture maps.
+            View and render 3D models, convert files between supported formats,
+            upscale PBR textures to 4K and 8K, and export models and textures
+            from Meshy AI and supported community sources.
           </motion.p>
 
-          {/* CTA */}
+          {/* CTA Buttons */}
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -461,19 +456,19 @@ export default function HeroSection() {
               w-full
               flex-col
               items-center
+              justify-center
               gap-3
               sm:mt-8
               sm:w-auto
               sm:flex-row
+              flex-wrap
             "
           >
             <Link
-              href="https://chromewebstore.google.com/detail/jkddfapkjenldpiacoccgheimcokhmcc?utm_source=item-share-cb"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-primary group w-full sm:w-auto"
+              href="#tools"
+              className="btn btn-primary group w-full sm:w-auto font-bold shadow-[0_0_25px_rgba(197,249,85,0.3)]"
             >
-              Get MeshyGrab
+              Explore MeshyGrab
               <svg
                 className="
                   h-4
@@ -494,11 +489,41 @@ export default function HeroSection() {
             </Link>
 
             <Link
-              href="/#how-it-works"
-              className="btn btn-secondary w-full sm:w-auto"
+              href="https://chromewebstore.google.com/detail/jkddfapkjenldpiacoccgheimcokhmcc?utm_source=item-share-cb"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-secondary w-full sm:w-auto font-bold border-lime/30 hover:border-lime"
             >
-              See How It Works
+              Get the Chrome Extension
             </Link>
+
+            <Link
+              href="#features"
+              className="btn btn-secondary w-full sm:w-auto text-text-secondary hover:text-text-primary"
+            >
+              Explore Features
+            </Link>
+          </motion.div>
+
+          {/* Core Pillars Quick Pills */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.95 }}
+            className="mt-6 flex flex-wrap items-center justify-center gap-2 max-w-xl"
+          >
+            <span className="px-3 py-1 rounded-lg bg-bg-card border border-border-subtle text-[11px] font-mono text-text-secondary">
+              🎨 3D Workspace
+            </span>
+            <span className="px-3 py-1 rounded-lg bg-bg-card border border-border-subtle text-[11px] font-mono text-lime">
+              ⚡ GLB • OBJ • FBX • STL • 3MF
+            </span>
+            <span className="px-3 py-1 rounded-lg bg-bg-card border border-border-subtle text-[11px] font-mono text-pink">
+              ✨ 4K / 8K PBR Upscaler
+            </span>
+            <span className="px-3 py-1 rounded-lg bg-bg-card border border-border-subtle text-[11px] font-mono text-text-secondary">
+              🌐 Meshy & Tripo3D
+            </span>
           </motion.div>
 
           {/* Disclaimer */}
@@ -508,11 +533,13 @@ export default function HeroSection() {
             animate={{ opacity: 1 }}
             transition={{
               duration: 0.5,
-              delay: 1.05,
+              delay: 1.1,
             }}
-            className="mt-5 text-[11px] text-text-muted sm:text-xs"
+            className="mt-6 text-[11px] text-text-muted sm:text-xs max-w-lg leading-relaxed"
           >
-            Independent third-party extension for Meshy users.
+            Built for 3D artists, game developers, designers, 3D printing
+            enthusiasts, and AI creators. Independent third-party product not
+            affiliated with Meshy or Tripo3D.
           </motion.p>
         </div>
       </div>
