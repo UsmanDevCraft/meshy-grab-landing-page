@@ -10,6 +10,11 @@ const pillars = [
     title: "3D Workspace & Model Viewer",
     desc: "Inspect, rotate, and render 3D models with real-time materials, lighting controls, wireframe analysis, and polygon metrics directly in your browser.",
     formats: ["GLB", "OBJ", "FBX", "STL", "3MF"],
+    gradient: "from-indigo-500 via-purple-500 to-violet-600",
+    glow: "rgba(124, 92, 255, 0.35)",
+    badgeColor: "text-indigo-400 bg-indigo-500/10 border-indigo-500/30",
+    hoverBorder: "group-hover:border-indigo-500/40",
+    accentColor: "text-indigo-400",
     icon: (
       <svg
         className="w-6 h-6"
@@ -23,7 +28,6 @@ const pillars = [
         <line x1="12" y1="22.08" x2="12" y2="12" />
       </svg>
     ),
-    badgeColor: "text-lime bg-lime/10 border-lime/30",
     href: "#viewer",
   },
   {
@@ -32,6 +36,11 @@ const pillars = [
     title: "Universal 3D Model Converter",
     desc: "Import supported 3D model files from any source and seamlessly convert between GLB, OBJ, FBX, STL, and 3MF formats for game engines, DCC apps, or 3D slicers.",
     formats: ["GLB to OBJ", "FBX to GLB", "OBJ to STL", "3MF"],
+    gradient: "from-emerald-400 via-teal-500 to-cyan-500",
+    glow: "rgba(16, 185, 129, 0.35)",
+    badgeColor: "text-emerald-400 bg-emerald-400/10 border-emerald-400/30",
+    hoverBorder: "group-hover:border-emerald-500/40",
+    accentColor: "text-emerald-400",
     icon: (
       <svg
         className="w-6 h-6"
@@ -45,7 +54,6 @@ const pillars = [
         <line x1="12" y1="12" x2="12" y2="21" />
       </svg>
     ),
-    badgeColor: "text-emerald-400 bg-emerald-400/10 border-emerald-400/30",
     href: "#converter",
   },
   {
@@ -54,6 +62,11 @@ const pillars = [
     title: "4K & 8K PBR Texture Upscaler",
     desc: "Transform standard 2K textures into crystal-clear 4K and 8K resolution. AI-enhanced detail sharpening preserves normal maps, roughness, metallic, and displacement.",
     formats: ["Base Color", "Normal", "Roughness", "Metallic", "Height"],
+    gradient: "from-pink-500 via-rose-500 to-amber-500",
+    glow: "rgba(244, 63, 94, 0.35)",
+    badgeColor: "text-pink bg-pink/10 border-pink/30",
+    hoverBorder: "group-hover:border-pink-500/40",
+    accentColor: "text-pink",
     icon: (
       <svg
         className="w-6 h-6"
@@ -68,7 +81,6 @@ const pillars = [
         <path d="M12 18v4" />
       </svg>
     ),
-    badgeColor: "text-pink bg-pink/10 border-pink/30",
     href: "#upscaler",
   },
   {
@@ -77,6 +89,11 @@ const pillars = [
     title: "Meshy AI Workspace Exports",
     desc: "Instantly preview and export the 3D models you generate in your Meshy workspace in all supported formats (GLB, OBJ, FBX, STL, 3MF) with zero API tokens required.",
     formats: ["Full Geometry", "Texture Maps", "Instant Download"],
+    gradient: "from-cyan-400 via-sky-500 to-blue-600",
+    glow: "rgba(6, 182, 212, 0.35)",
+    badgeColor: "text-cyan-400 bg-cyan-400/10 border-cyan-400/30",
+    hoverBorder: "group-hover:border-cyan-500/40",
+    accentColor: "text-cyan-400",
     icon: (
       <svg
         className="w-6 h-6"
@@ -90,7 +107,6 @@ const pillars = [
         <line x1="12" y1="15" x2="12" y2="3" />
       </svg>
     ),
-    badgeColor: "text-lime bg-lime/10 border-lime/30",
     href: "#integrations",
   },
   {
@@ -99,6 +115,11 @@ const pillars = [
     title: "Community Model Downloads",
     desc: "Discover and download assets from the Meshy Discover community and Tripo3D Studio, with automated format conversion ready for your creative projects.",
     formats: ["Meshy Discover", "Tripo3D Studio", "Converted Exports"],
+    gradient: "from-amber-400 via-orange-500 to-yellow-500",
+    glow: "rgba(245, 158, 11, 0.35)",
+    badgeColor: "text-amber-400 bg-amber-400/10 border-amber-400/30",
+    hoverBorder: "group-hover:border-amber-500/40",
+    accentColor: "text-amber-400",
     icon: (
       <svg
         className="w-6 h-6"
@@ -112,7 +133,6 @@ const pillars = [
         <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
       </svg>
     ),
-    badgeColor: "text-amber-400 bg-amber-400/10 border-amber-400/30",
     href: "#integrations",
   },
   {
@@ -121,6 +141,11 @@ const pillars = [
     title: "PBR Texture Extraction",
     desc: "Download individual PNG material channels separately from 3D meshes. Connect seamlessly into Blender shader nodes, Unreal Engine materials, or Unity URP/HDRP.",
     formats: ["Albedo", "Normal", "Roughness", "Metallic", "AO"],
+    gradient: "from-lime via-emerald-400 to-teal-500",
+    glow: "rgba(197, 249, 85, 0.35)",
+    badgeColor: "text-lime bg-lime/10 border-lime/30",
+    hoverBorder: "group-hover:border-lime/40",
+    accentColor: "text-lime",
     icon: (
       <svg
         className="w-6 h-6"
@@ -134,7 +159,6 @@ const pillars = [
         <polyline points="21 15 16 10 5 21" />
       </svg>
     ),
-    badgeColor: "text-cyan-400 bg-cyan-400/10 border-cyan-400/30",
     href: "#textures",
   },
 ];
@@ -189,10 +213,20 @@ function PillarCard({
       className="reveal h-full"
       style={{ transitionDelay: `${delay}ms` }}
     >
-      <div className="h-full p-7 bg-bg-card border border-border-subtle rounded-3xl flex flex-col justify-between transition-all duration-300 hover:border-lime/30 hover:shadow-[0_20px_50px_rgba(0,0,0,0.5),0_0_25px_rgba(197,249,85,0.1)] hover:-translate-y-1.5 group">
-        <div>
+      <div
+        className={`relative h-full p-7 bg-bg-card border border-border-subtle rounded-3xl flex flex-col justify-between transition-all duration-300 ${pillar.hoverBorder} hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)] hover:-translate-y-1.5 group overflow-hidden`}
+      >
+        {/* Glow backdrop on hover */}
+        <div
+          className={`absolute inset-0 bg-gradient-to-br ${pillar.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-500 blur-xl pointer-events-none`}
+        />
+
+        <div className="relative z-10">
           <div className="flex items-center justify-between mb-5">
-            <div className="w-12 h-12 rounded-2xl bg-bg-elevated border border-border-subtle flex items-center justify-center text-lime group-hover:bg-lime group-hover:text-deep-black transition-all duration-300 shadow-inner">
+            {/* Vivid Colored Icon Button */}
+            <div
+              className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${pillar.gradient} text-white shadow-lg border border-white/15 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-md`}
+            >
               {pillar.icon}
             </div>
             <span
@@ -202,7 +236,7 @@ function PillarCard({
             </span>
           </div>
 
-          <h3 className="text-xl font-bold text-text-primary mb-2.5 group-hover:text-lime transition-colors">
+          <h3 className="text-xl font-bold text-text-primary mb-2.5 group-hover:text-white transition-colors">
             {pillar.title}
           </h3>
 
@@ -211,7 +245,7 @@ function PillarCard({
           </p>
         </div>
 
-        <div>
+        <div className="relative z-10">
           <div className="pt-4 border-t border-border-subtle/60 flex flex-wrap gap-1.5 mb-4">
             {pillar.formats.map((fmt) => (
               <span
@@ -225,7 +259,7 @@ function PillarCard({
 
           <Link
             href={pillar.href}
-            className="text-xs font-bold text-lime inline-flex items-center gap-1.5 group-hover:gap-2.5 transition-all"
+            className={`text-xs font-bold ${pillar.accentColor} inline-flex items-center gap-1.5 group-hover:gap-2.5 transition-all`}
           >
             Explore capability
             <svg

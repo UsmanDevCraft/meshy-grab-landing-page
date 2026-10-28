@@ -1,12 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback, memo } from "react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { faqs } from "@/constants/constants";
 
 export default function FAQSection() {
   const headerRef = useScrollReveal<HTMLDivElement>();
   const [openIndex, setOpenIndex] = useState<number | null>(0);
+
+  const handleToggle = useCallback((index: number) => {
+    setOpenIndex((prev) => (prev === index ? null : index));
+  }, []);
 
   return (
     <section id="faq" className="section-padding bg-bg-elevated">
@@ -29,7 +33,8 @@ export default function FAQSection() {
               key={i}
               faq={faq}
               isOpen={openIndex === i}
-              onToggle={() => setOpenIndex(openIndex === i ? null : i)}
+              index={i}
+              onToggle={handleToggle}
               delay={i * 40}
             />
           ))}
@@ -39,15 +44,17 @@ export default function FAQSection() {
   );
 }
 
-function FAQItem({
+const FAQItem = memo(function FAQItem({
   faq,
   isOpen,
+  index,
   onToggle,
   delay,
 }: {
   faq: (typeof faqs)[0];
   isOpen: boolean;
-  onToggle: () => void;
+  index: number;
+  onToggle: (index: number) => void;
   delay: number;
 }) {
   const ref = useScrollReveal<HTMLDivElement>();
@@ -57,7 +64,7 @@ function FAQItem({
       <div className="bg-bg-card border border-border-subtle rounded-2xl overflow-hidden transition-colors duration-300 hover:border-lime/20">
         <button
           className="w-full flex items-center justify-between p-5 text-left text-base font-semibold text-text-primary hover:text-lime transition-colors cursor-pointer"
-          onClick={onToggle}
+          onClick={() => onToggle(index)}
           aria-expanded={isOpen}
         >
           {faq.q}
@@ -89,4 +96,4 @@ function FAQItem({
       </div>
     </div>
   );
-}
+});

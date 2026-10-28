@@ -1,5 +1,3 @@
-"use client";
-
 import { FooterProps } from "@/types/types";
 import Image from "next/image";
 import Link from "next/link";

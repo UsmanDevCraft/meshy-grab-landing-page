@@ -17,6 +17,8 @@ const workflows = [
     ],
     formats: "GLB • OBJ • FBX • STL • 3MF • PNG Textures",
     tagColor: "text-lime bg-lime/10 border-lime/30",
+    activeBorder: "border-lime/50 shadow-[0_0_30px_rgba(197,249,85,0.18)]",
+    accentIconColor: "text-lime",
   },
   {
     id: "meshy-community",
@@ -31,6 +33,8 @@ const workflows = [
     ],
     formats: "Community GLB & automated format conversions",
     tagColor: "text-amber-400 bg-amber-400/10 border-amber-400/30",
+    activeBorder: "border-amber-400/50 shadow-[0_0_30px_rgba(251,191,36,0.18)]",
+    accentIconColor: "text-amber-400",
   },
   {
     id: "tripo-community",
@@ -45,6 +49,8 @@ const workflows = [
     ],
     formats: "Tripo3D models & universal format conversion",
     tagColor: "text-pink bg-pink/10 border-pink/30",
+    activeBorder: "border-pink/50 shadow-[0_0_30px_rgba(255,62,143,0.18)]",
+    accentIconColor: "text-pink",
   },
 ];
 
@@ -86,7 +92,7 @@ export default function IntegrationsSection() {
               onClick={() => setSelectedWorkflow(idx)}
               className={`p-5 rounded-2xl border text-left transition-all ${
                 selectedWorkflow === idx
-                  ? "bg-bg-card border-lime/40 shadow-[0_0_30px_rgba(197,249,85,0.12)] scale-[1.02]"
+                  ? `bg-bg-card ${wf.activeBorder} scale-[1.02]`
                   : "bg-bg-elevated/40 border-border-subtle text-text-secondary hover:text-text-primary hover:border-border-subtle"
               }`}
             >
@@ -134,7 +140,7 @@ export default function IntegrationsSection() {
                     className="flex items-start gap-2.5 text-xs text-text-secondary"
                   >
                     <svg
-                      className="w-4 h-4 text-lime flex-shrink-0 mt-0.5"
+                      className={`w-4 h-4 ${active.accentIconColor} flex-shrink-0 mt-0.5`}
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"

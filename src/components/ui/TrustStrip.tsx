@@ -20,6 +20,9 @@ const items = [
     ),
     label: "Interactive 3D Workspace",
     sub: "Real-time rendering & preview",
+    gradient: "from-indigo-500 via-purple-500 to-violet-600",
+    glow: "rgba(124, 92, 255, 0.4)",
+    borderColor: "hover:border-purple-500/40",
   },
   {
     icon: (
@@ -38,6 +41,9 @@ const items = [
     ),
     label: "Universal Format Converter",
     sub: "GLB • OBJ • FBX • STL • 3MF",
+    gradient: "from-emerald-400 via-teal-500 to-cyan-500",
+    glow: "rgba(16, 185, 129, 0.4)",
+    borderColor: "hover:border-emerald-500/40",
   },
   {
     icon: (
@@ -57,6 +63,9 @@ const items = [
     ),
     label: "4K & 8K PBR Texture Upscaler",
     sub: "Albedo, Normal & Roughness",
+    gradient: "from-pink-500 via-rose-500 to-orange-500",
+    glow: "rgba(244, 63, 94, 0.4)",
+    borderColor: "hover:border-pink-500/40",
   },
   {
     icon: (
@@ -75,6 +84,9 @@ const items = [
     ),
     label: "Meshy & Tripo3D Exports",
     sub: "Workspace & Community assets",
+    gradient: "from-amber-400 via-orange-500 to-yellow-500",
+    glow: "rgba(245, 158, 11, 0.4)",
+    borderColor: "hover:border-amber-500/40",
   },
 ];
 
@@ -82,27 +94,39 @@ export default function TrustStrip() {
   const ref = useScrollReveal<HTMLDivElement>();
 
   return (
-    <section className="py-10 border-y border-border-subtle bg-bg-card">
+    <section className="py-10 border-y border-border-subtle bg-bg-card relative overflow-hidden">
       <div className="container mx-auto max-w-6xl px-6">
         <div
           ref={ref}
-          className="reveal grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+          className="reveal grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"
         >
           {items.map((item) => (
             <div
               key={item.label}
-              className="flex items-center gap-3.5 p-4 rounded-2xl bg-bg-page/40 border border-border-subtle/60 hover:border-lime/30 transition-colors"
+              className={`group relative flex items-center gap-3.5 p-4 rounded-2xl bg-bg-page/60 border border-border-subtle/80 ${item.borderColor} transition-all duration-300 hover:-translate-y-1 hover:shadow-xl overflow-hidden`}
             >
-              <div className="w-11 h-11 bg-lime/10 text-lime border border-lime/20 rounded-xl flex items-center justify-center flex-shrink-0 shadow-[0_0_15px_rgba(197,249,85,0.1)]">
-                <div className="w-5 h-5">{item.icon}</div>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-sm font-bold text-text-primary leading-snug">
-                  {item.label}
-                </span>
-                <span className="text-xs text-text-muted font-medium">
-                  {item.sub}
-                </span>
+              {/* Colored ambient glow on hover */}
+              <div
+                className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-0 group-hover:opacity-15 transition-opacity duration-500 blur-xl pointer-events-none`}
+                style={{ filter: "blur(20px)" }}
+              />
+
+              <div className="relative z-10 flex items-center gap-3.5 min-w-0">
+                {/* Vivid Gradient Icon Container */}
+                <div
+                  className={`w-11 h-11 rounded-xl bg-gradient-to-br ${item.gradient} flex items-center justify-center text-white shadow-lg border border-white/15 flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}
+                >
+                  <div className="w-5 h-5">{item.icon}</div>
+                </div>
+
+                <div className="flex flex-col min-w-0">
+                  <span className="text-sm font-bold text-text-primary leading-snug truncate">
+                    {item.label}
+                  </span>
+                  <span className="text-xs text-text-secondary font-medium truncate">
+                    {item.sub}
+                  </span>
+                </div>
               </div>
             </div>
           ))}
