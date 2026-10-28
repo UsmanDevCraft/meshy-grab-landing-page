@@ -1,5 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  transpilePackages: ["framer-motion"],
+  poweredByHeader: false,
+  compress: true,
+  reactStrictMode: true,
+  images: {
+    formats: ["image/avif", "image/webp"],
+  },
   eslint: {
     ignoreDuringBuilds: true,
   },

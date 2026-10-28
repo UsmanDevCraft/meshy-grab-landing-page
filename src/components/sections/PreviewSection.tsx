@@ -50,7 +50,7 @@ export default function PreviewSection() {
             </div>
           </div>
 
-          {/* Chrome Extension Popup Mockup */}
+          {/* Chrome Extension Popup Mockup with Pure CSS/SVG UI */}
           <div
             ref={visualRef}
             className="reveal flex justify-center order-first lg:order-last"
@@ -66,36 +66,70 @@ export default function PreviewSection() {
                     MeshyGrab
                   </span>
                 </div>
-                <span className="text-[11px] font-medium text-text-muted px-2 py-0.5 bg-lime/10 rounded text-lime">
+                <span className="text-[11px] font-medium text-text-muted px-2 py-0.5 bg-lime/10 rounded text-lime font-mono">
                   v3.3 Chrome
                 </span>
               </div>
 
               {/* Popup content */}
               <div className="p-6">
-                {/* 3D Model Preview box */}
-                <div className="w-full h-44 bg-gradient-to-br from-lime/10 via-bg-page to-pink/10 border border-lime/25 rounded-2xl flex flex-col items-center justify-center gap-3 mb-5 relative group overflow-hidden">
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(197,249,85,0.15),transparent_70%)]" />
+                {/* Pure CSS/SVG Live 3D Model Viewport Card */}
+                <div className="w-full aspect-[4/3] rounded-2xl overflow-hidden border border-border-subtle relative group mb-5 shadow-lg bg-gradient-to-b from-[#090a0f] to-[#040508] flex items-center justify-center">
+                  {/* Perspective grid floor */}
+                  <div
+                    className="absolute inset-0 opacity-20 pointer-events-none"
+                    style={{
+                      backgroundImage:
+                        "linear-gradient(rgba(197,249,85,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(197,249,85,0.15) 1px, transparent 1px)",
+                      backgroundSize: "24px 24px",
+                      transform:
+                        "perspective(300px) rotateX(60deg) translateY(20px)",
+                      transformOrigin: "bottom center",
+                    }}
+                  />
+
+                  {/* SVG Isometric 3D Model Graphic */}
                   <svg
-                    className="w-12 h-12 text-lime drop-shadow-[0_0_15px_rgba(197,249,85,0.4)] animate-float"
-                    viewBox="0 0 24 24"
+                    className="w-28 h-28 relative z-10 drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]"
+                    viewBox="0 0 100 100"
                     fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
                   >
-                    <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                    <path d="M2 17l10 5 10-5" />
-                    <path d="M2 12l10 5 10-5" />
+                    <polygon
+                      points="50,15 80,32 50,50 20,32"
+                      fill="#718096"
+                      stroke="#c5f955"
+                      strokeWidth="0.8"
+                    />
+                    <polygon
+                      points="20,32 50,50 50,82 20,64"
+                      fill="#2d3748"
+                      stroke="#c5f955"
+                      strokeWidth="0.8"
+                    />
+                    <polygon
+                      points="50,50 80,32 80,64 50,82"
+                      fill="#1a202c"
+                      stroke="#c5f955"
+                      strokeWidth="0.8"
+                    />
+                    <circle cx="50" cy="50" r="3" fill="#c5f955" />
+                    <ellipse
+                      cx="50"
+                      cy="33"
+                      rx="12"
+                      ry="6"
+                      fill="#c5f955"
+                      opacity="0.85"
+                    />
                   </svg>
-                  <div className="text-center z-10">
-                    <span className="text-xs font-semibold text-text-primary block">
-                      3D Model Preview
-                    </span>
-                    <span className="text-[10px] text-lime font-mono">
-                      Real-Time PBR Viewport
-                    </span>
+
+                  <div className="absolute top-2.5 right-2.5 bg-black/75 backdrop-blur-md px-2 py-0.5 rounded text-[10px] font-mono text-lime border border-lime/30 shadow flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-lime animate-pulse" />
+                    Live 3D Viewport
+                  </div>
+
+                  <div className="absolute bottom-2 left-3 text-[10px] font-mono text-text-muted">
+                    cyber_rover.glb • 48.2k tris
                   </div>
                 </div>
 

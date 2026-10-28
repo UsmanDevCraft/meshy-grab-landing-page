@@ -1,18 +1,10 @@
-import dynamic from "next/dynamic";
 import { Suspense } from "react";
+import dynamic from "next/dynamic";
 import Navbar from "@/components/ui/Navbar";
 import Footer from "@/components/ui/Footer";
-import HeroShimmer from "@/components/sections/HeroShimmer";
-import PaddleInitializer from "@/components/PaddleInitializer";
-
-const HeroSection = dynamic(() => import("@/components/sections/HeroSection"), {
-  loading: () => <HeroShimmer />,
-});
+import HeroSection from "@/components/sections/HeroSection";
 import TrustStrip from "@/components/ui/TrustStrip";
 import ToolsOverviewSection from "@/components/sections/ToolsOverviewSection";
-import ViewerSection from "@/components/sections/ViewerSection";
-import ConverterSection from "@/components/sections/ConverterSection";
-import UpscalerSection from "@/components/sections/UpscalerSection";
 import IntegrationsSection from "@/components/sections/IntegrationsSection";
 import TextureExportSection from "@/components/sections/TextureExportSection";
 import ProblemSection from "@/components/sections/ProblemSection";
@@ -24,12 +16,20 @@ import PrivacySection from "@/components/sections/PrivacySection";
 import MoneySection from "@/components/sections/MoneySection";
 import FAQSection from "@/components/sections/FAQSection";
 import FinalCTA from "@/components/sections/FinalCTA";
-import PlansContent from "@/components/sections/PlansContent";
+
+const WorkSectionsCarousel = dynamic(
+  () => import("@/components/sections/WorkSectionsCarousel"),
+  { ssr: true },
+);
+
+const PlansContent = dynamic(
+  () => import("@/components/sections/PlansContent"),
+  { ssr: true },
+);
 
 export default function HomePage() {
   return (
     <>
-      <PaddleInitializer />
       <Navbar />
       <main id="main-content">
         {/* 1. All-in-one 3D toolkit hero */}
@@ -41,14 +41,8 @@ export default function HomePage() {
         {/* 2. Visual overview of the core tools */}
         <ToolsOverviewSection />
 
-        {/* 3. 3D workspace and model viewer */}
-        <ViewerSection />
-
-        {/* 4. Universal format converter */}
-        <ConverterSection />
-
-        {/* 5. 4K/8K PBR texture upscaler */}
-        <UpscalerSection />
+        {/* 3, 4 & 5. Combined Core 3D Work Carousel (Viewer, Converter & Upscaler) */}
+        <WorkSectionsCarousel />
 
         {/* 6 & 7. Meshy AI workspace & Discover integrations + Tripo3D Studio */}
         <IntegrationsSection />

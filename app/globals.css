@@ -15,6 +15,7 @@
 
   /* Keyframes & Animations (Tailwind CSS v4) */
   --animate-particle-drift: particle-drift 3s ease-in-out infinite;
+  --animate-gradient-shift: gradient-shift 6s ease-in-out infinite;
 
   @keyframes particle-drift {
     0% {
@@ -33,6 +34,20 @@
     100% {
       transform: translate(var(--dx), var(--dy));
       opacity: 0;
+    }
+  }
+
+  @keyframes gradient-shift {
+    0% {
+      background-position: 0% 50%;
+    }
+
+    50% {
+      background-position: 100% 50%;
+    }
+
+    100% {
+      background-position: 0% 50%;
     }
   }
 }
@@ -92,6 +107,10 @@
 /* Custom Utility Class for Direct Class Usage if needed */
 @utility particle-drift {
   animation: particle-drift 3s ease-in-out infinite;
+}
+
+@utility animate-gradient-shift {
+  animation: gradient-shift 6s ease-in-out infinite;
 }
 
 @layer base {

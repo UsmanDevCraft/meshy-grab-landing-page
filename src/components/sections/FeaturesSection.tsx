@@ -86,6 +86,45 @@ const featureIcons = [
   </svg>,
 ];
 
+const cardThemes = [
+  {
+    gradient: "from-indigo-500 via-purple-500 to-violet-600",
+    badge: "text-indigo-400 bg-indigo-500/10 border-indigo-500/25",
+    hoverBorder:
+      "hover:border-indigo-500/40 hover:shadow-[0_20px_60px_rgba(0,0,0,0.4),0_0_35px_rgba(99,102,241,0.2)]",
+  },
+  {
+    gradient: "from-emerald-400 via-teal-500 to-cyan-500",
+    badge: "text-emerald-400 bg-emerald-400/10 border-emerald-400/25",
+    hoverBorder:
+      "hover:border-emerald-500/40 hover:shadow-[0_20px_60px_rgba(0,0,0,0.4),0_0_35px_rgba(16,185,129,0.2)]",
+  },
+  {
+    gradient: "from-pink-500 via-rose-500 to-orange-500",
+    badge: "text-pink-400 bg-pink-500/10 border-pink-500/25",
+    hoverBorder:
+      "hover:border-pink-500/40 hover:shadow-[0_20px_60px_rgba(0,0,0,0.4),0_0_35px_rgba(244,63,94,0.2)]",
+  },
+  {
+    gradient: "from-cyan-500 via-sky-500 to-blue-500",
+    badge: "text-cyan-400 bg-cyan-500/10 border-cyan-500/25",
+    hoverBorder:
+      "hover:border-cyan-500/40 hover:shadow-[0_20px_60px_rgba(0,0,0,0.4),0_0_35px_rgba(6,182,212,0.2)]",
+  },
+  {
+    gradient: "from-amber-400 via-orange-500 to-yellow-500",
+    badge: "text-amber-400 bg-amber-500/10 border-amber-500/25",
+    hoverBorder:
+      "hover:border-amber-500/40 hover:shadow-[0_20px_60px_rgba(0,0,0,0.4),0_0_35px_rgba(245,158,11,0.2)]",
+  },
+  {
+    gradient: "from-lime via-emerald-400 to-teal-400",
+    badge: "text-lime bg-lime/10 border-lime/25",
+    hoverBorder:
+      "hover:border-lime/40 hover:shadow-[0_20px_60px_rgba(0,0,0,0.4),0_0_35px_rgba(197,249,85,0.2)]",
+  },
+];
+
 export default function FeaturesSection() {
   const headerRef = useScrollReveal<HTMLDivElement>();
 
@@ -110,9 +149,11 @@ export default function FeaturesSection() {
           {valueProps.map((vp, i) => (
             <FeatureCard
               key={vp.title}
+              index={i}
               title={vp.title}
               desc={vp.desc}
               icon={featureIcons[i]}
+              theme={cardThemes[i % cardThemes.length]}
               delay={i * 50}
             />
           ))}
@@ -123,14 +164,18 @@ export default function FeaturesSection() {
 }
 
 function FeatureCard({
+  index,
   title,
   desc,
   icon,
+  theme,
   delay,
 }: {
+  index: number;
   title: string;
   desc: string;
   icon: React.ReactNode;
+  theme: (typeof cardThemes)[0];
   delay: number;
 }) {
   const ref = useScrollReveal<HTMLDivElement>();
@@ -141,12 +186,34 @@ function FeatureCard({
       className="reveal h-full"
       style={{ transitionDelay: `${delay}ms` }}
     >
-      <div className="h-full relative p-8 bg-bg-card border border-border-subtle rounded-[20px] transition-all duration-200 ease-out hover:-translate-y-1 hover:border-lime/30 hover:shadow-[0_20px_60px_rgba(0,0,0,0.3),0_0_30px_rgba(197,249,85,0.12)] group">
-        <div className="w-12 h-12 bg-lime/5 rounded-xl flex items-center justify-center mb-5 group-hover:bg-lime/10 transition-colors">
-          <div className="w-6 h-6 text-lime">{icon}</div>
+      <div
+        className={`h-full relative p-8 bg-bg-card border border-border-subtle rounded-[24px] transition-all duration-300 ease-out hover:-translate-y-1.5 ${theme.hoverBorder} group overflow-hidden`}
+      >
+        {/* Subtle ambient colored glow on hover */}
+        <div
+          className={`absolute inset-0 bg-gradient-to-br ${theme.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-500 blur-xl pointer-events-none`}
+        />
+
+        <div className="relative z-10 flex items-center justify-between mb-6">
+          {/* Vivid Gradient Icon Container */}
+          <div
+            className={`w-12 h-12 rounded-xl bg-gradient-to-br ${theme.gradient} flex items-center justify-center text-white shadow-lg border border-white/15 group-hover:scale-110 transition-transform duration-300`}
+          >
+            <div className="w-6 h-6">{icon}</div>
+          </div>
+          <span
+            className={`text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border ${theme.badge}`}
+          >
+            Pillar 0{index + 1}
+          </span>
         </div>
-        <h3 className="text-lg font-bold mb-2.5">{title}</h3>
-        <p className="text-sm text-text-secondary leading-relaxed">{desc}</p>
+
+        <div className="relative z-10">
+          <h3 className="text-lg font-bold mb-2.5 text-text-primary group-hover:text-white transition-colors">
+            {title}
+          </h3>
+          <p className="text-sm text-text-secondary leading-relaxed">{desc}</p>
+        </div>
       </div>
     </div>
   );

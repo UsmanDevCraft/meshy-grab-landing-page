@@ -404,7 +404,7 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
       </div>
 
       {/* 5 Pricing Cards Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 lg:gap-3.5 xl:gap-3 2xl:gap-4 items-stretch mb-16">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5 lg:gap-5 xl:gap-5 2xl:gap-6 items-stretch mb-16">
         {effectivePlansList.map((plan) => {
           const isSelected = selectedPlanId === plan.id;
           const isActive = activePlanId === plan.id;
@@ -775,63 +775,87 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
       )}
 
       {/* Feature Comparison Table */}
-      <div className="bg-bg-card border border-border-subtle rounded-3xl p-6 sm:p-10 max-w-5xl mx-auto mb-16 overflow-hidden">
-        <div className="text-center max-w-xl mx-auto mb-8">
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-text-primary mb-2">
+      <div className="bg-bg-card border border-border-subtle rounded-3xl p-6 sm:p-10 lg:p-12 max-w-6xl mx-auto mb-16 overflow-hidden">
+        <div className="text-center max-w-xl mx-auto mb-10">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-lime/10 border border-lime/30 rounded-full text-xs font-bold text-lime mb-4 uppercase tracking-wider">
+            Side-by-Side Comparison
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-text-primary mb-3">
             Plan Feature Comparison
           </h2>
-          <p className="text-xs sm:text-sm text-text-secondary">
+          <p className="text-sm text-text-secondary leading-relaxed">
             Compare workspace export formats, Community model limits, and
             multi-account allowances side by side.
           </p>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs sm:text-sm border-collapse min-w-[640px]">
+        <div className="overflow-x-auto -mx-2 px-2">
+          <table className="w-full text-left text-xs sm:text-sm border-separate border-spacing-0 min-w-[740px]">
             <thead>
-              <tr className="border-b border-border-subtle text-text-muted">
-                <th className="pb-4 font-semibold w-1/4">Feature</th>
-                <th className="pb-4 font-semibold text-center">Free</th>
-                <th className="pb-4 font-semibold text-center">Pro Monthly</th>
-                <th className="pb-4 font-semibold text-center text-lime font-bold">
-                  Pro Max ⭐
+              <tr className="text-text-muted">
+                <th className="pb-5 pt-2 font-semibold text-text-secondary text-xs uppercase tracking-wider w-[28%] pr-4">
+                  Feature
                 </th>
-                <th className="pb-4 font-semibold text-center">Pro Annual</th>
-                <th className="pb-4 font-semibold text-center text-pink font-bold">
-                  Lifetime 🔥
+                <th className="pb-5 pt-2 font-semibold text-center text-xs uppercase tracking-wider">
+                  Free
+                </th>
+                <th className="pb-5 pt-2 font-semibold text-center text-xs uppercase tracking-wider">
+                  Pro Monthly
+                </th>
+                <th className="pb-5 pt-2 font-bold text-center text-xs uppercase tracking-wider text-lime bg-lime/[0.04] rounded-t-2xl border-x border-t border-lime/15">
+                  <span className="flex flex-col items-center gap-1">
+                    <span className="text-[10px] px-2 py-0.5 bg-lime/15 rounded-full">
+                      ⭐ Recommended
+                    </span>
+                    Pro Max
+                  </span>
+                </th>
+                <th className="pb-5 pt-2 font-semibold text-center text-xs uppercase tracking-wider">
+                  Pro Annual
+                </th>
+                <th className="pb-5 pt-2 font-bold text-center text-xs uppercase tracking-wider text-pink bg-pink/[0.04] rounded-t-2xl border-x border-t border-pink/15">
+                  <span className="flex flex-col items-center gap-1">
+                    <span className="text-[10px] px-2 py-0.5 bg-pink/15 rounded-full">
+                      🔥 Best Value
+                    </span>
+                    Lifetime
+                  </span>
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-border-subtle/50 text-text-secondary">
+            <tbody className="text-text-secondary">
               {/* Category: Price */}
-              <tr className="bg-bg-elevated/30">
-                <td className="py-3.5 font-bold text-text-primary" colSpan={6}>
-                  Pricing & Billing
+              <tr>
+                <td
+                  className="py-4 px-4 font-bold text-text-primary text-sm border-b border-border-subtle bg-bg-elevated/40 rounded-l-xl"
+                  colSpan={6}
+                >
+                  💰 Pricing & Billing
                 </td>
               </tr>
-              <tr>
-                <td className="py-3 font-medium text-text-primary pl-3">
+              <tr className="border-b border-border-subtle/40">
+                <td className="py-4 px-4 font-medium text-text-primary">
                   Price
                 </td>
-                <td className="py-3 text-center text-text-primary font-mono font-semibold">
+                <td className="py-4 px-3 text-center text-text-primary font-mono font-semibold">
                   $0
                 </td>
-                <td className="py-3 text-center text-text-primary font-mono font-semibold">
+                <td className="py-4 px-3 text-center text-text-primary font-mono font-semibold">
                   $0.99/mo
                 </td>
-                <td className="py-3 text-center text-lime font-mono font-bold">
+                <td className="py-4 px-3 text-center text-lime font-mono font-bold bg-lime/[0.04] border-x border-lime/15">
                   <span className="line-through text-text-muted text-xs block font-normal">
                     {isDiscounted ? "$4.99/mo" : "$5.99/mo"}
                   </span>
                   {isDiscounted ? "$2.99/mo" : "$3.99/mo"}
                 </td>
-                <td className="py-3 text-center text-text-primary font-mono font-semibold">
+                <td className="py-4 px-3 text-center text-text-primary font-mono font-semibold">
                   <span className="line-through text-text-muted text-xs block font-normal">
                     {isDiscounted ? "$9.99/yr" : "$12/yr"}
                   </span>
                   {isDiscounted ? "$5.99/yr" : "$9.99/yr"}
                 </td>
-                <td className="py-3 text-center text-pink font-mono font-bold">
+                <td className="py-4 px-3 text-center text-pink font-mono font-bold bg-pink/[0.04] border-x border-pink/15">
                   <span className="line-through text-text-muted text-xs block font-normal">
                     $29.99
                   </span>
@@ -842,374 +866,425 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
                       : "$19.99 once"}
                 </td>
               </tr>
-              <tr>
-                <td className="py-3 font-medium text-text-primary pl-3">
+              <tr className="border-b border-border-subtle/40">
+                <td className="py-4 px-4 font-medium text-text-primary">
                   Billing Type
                 </td>
-                <td className="py-3 text-center text-text-muted">
+                <td className="py-4 px-3 text-center text-text-muted">
                   Free forever
                 </td>
-                <td className="py-3 text-center">Monthly</td>
-                <td className="py-3 text-center font-medium text-lime/90">
+                <td className="py-4 px-3 text-center">Monthly</td>
+                <td className="py-4 px-3 text-center font-medium text-lime/90 bg-lime/[0.04] border-x border-lime/15">
                   Monthly
                 </td>
-                <td className="py-3 text-center">Annual</td>
-                <td className="py-3 text-center font-medium text-pink">
+                <td className="py-4 px-3 text-center">Annual</td>
+                <td className="py-4 px-3 text-center font-medium text-pink bg-pink/[0.04] border-x border-pink/15">
                   One-time purchase
                 </td>
               </tr>
 
               {/* Category: 3D Workspace & Model Viewer */}
-              <tr className="bg-bg-elevated/30">
-                <td className="py-3.5 font-bold text-text-primary" colSpan={6}>
+              <tr>
+                <td
+                  className="py-4 px-4 font-bold text-text-primary text-sm border-b border-border-subtle bg-bg-elevated/40 rounded-l-xl"
+                  colSpan={6}
+                >
                   🎨 3D Workspace &amp; Model Viewer
                 </td>
               </tr>
-              <tr>
-                <td className="py-3 font-medium text-text-primary pl-3">
+              <tr className="border-b border-border-subtle/40">
+                <td className="py-4 px-4 font-medium text-text-primary">
                   Interactive 3D Viewport &amp; Rendering
                 </td>
-                <td className="py-3 text-center text-text-muted">
+                <td className="py-4 px-3 text-center text-text-muted">
                   ❌ Not included
                 </td>
-                <td className="py-3 text-center text-emerald-400 font-semibold">
+                <td className="py-4 px-3 text-center text-emerald-400 font-semibold">
                   ✅ Included
                 </td>
-                <td className="py-3 text-center text-emerald-400 font-semibold">
+                <td className="py-4 px-3 text-center text-emerald-400 font-semibold bg-lime/[0.04] border-x border-lime/15">
                   ✅ Included
                 </td>
-                <td className="py-3 text-center text-emerald-400 font-semibold">
+                <td className="py-4 px-3 text-center text-emerald-400 font-semibold">
                   ✅ Included
                 </td>
-                <td className="py-3 text-center text-emerald-400 font-semibold">
+                <td className="py-4 px-3 text-center text-emerald-400 font-semibold bg-pink/[0.04] border-x border-pink/15">
                   ✅ Included
                 </td>
               </tr>
-              <tr>
-                <td className="py-3 font-medium text-text-primary pl-3">
+              <tr className="border-b border-border-subtle/40">
+                <td className="py-4 px-4 font-medium text-text-primary">
                   Inspection Modes (PBR, Wireframe, Normals, MatCap)
                 </td>
-                <td className="py-3 text-center text-text-muted">
+                <td className="py-4 px-3 text-center text-text-muted">
                   ❌ Not included
                 </td>
-                <td className="py-3 text-center text-emerald-400 font-semibold">
+                <td className="py-4 px-3 text-center text-emerald-400 font-semibold">
                   ✅ Included
                 </td>
-                <td className="py-3 text-center text-emerald-400 font-semibold">
+                <td className="py-4 px-3 text-center text-emerald-400 font-semibold bg-lime/[0.04] border-x border-lime/15">
                   ✅ Included
                 </td>
-                <td className="py-3 text-center text-emerald-400 font-semibold">
+                <td className="py-4 px-3 text-center text-emerald-400 font-semibold">
                   ✅ Included
                 </td>
-                <td className="py-3 text-center text-emerald-400 font-semibold">
+                <td className="py-4 px-3 text-center text-emerald-400 font-semibold bg-pink/[0.04] border-x border-pink/15">
                   ✅ Included
                 </td>
               </tr>
-              <tr>
-                <td className="py-3 font-medium text-text-primary pl-3">
+              <tr className="border-b border-border-subtle/40">
+                <td className="py-4 px-4 font-medium text-text-primary">
                   Import External 3D Files (GLB, OBJ, FBX, STL, 3MF)
                 </td>
-                <td className="py-3 text-center text-text-muted">
+                <td className="py-4 px-3 text-center text-text-muted">
                   ❌ Not included
                 </td>
-                <td className="py-3 text-center text-emerald-400 font-semibold">
+                <td className="py-4 px-3 text-center text-emerald-400 font-semibold">
                   ✅ Included
                 </td>
-                <td className="py-3 text-center text-emerald-400 font-semibold">
+                <td className="py-4 px-3 text-center text-emerald-400 font-semibold bg-lime/[0.04] border-x border-lime/15">
                   ✅ Included
                 </td>
-                <td className="py-3 text-center text-emerald-400 font-semibold">
+                <td className="py-4 px-3 text-center text-emerald-400 font-semibold">
                   ✅ Included
                 </td>
-                <td className="py-3 text-center text-emerald-400 font-semibold">
+                <td className="py-4 px-3 text-center text-emerald-400 font-semibold bg-pink/[0.04] border-x border-pink/15">
                   ✅ Included
                 </td>
               </tr>
 
               {/* Category: Universal 3D Format Converter */}
-              <tr className="bg-bg-elevated/30">
-                <td className="py-3.5 font-bold text-text-primary" colSpan={6}>
+              <tr>
+                <td
+                  className="py-4 px-4 font-bold text-text-primary text-sm border-b border-border-subtle bg-bg-elevated/40 rounded-l-xl"
+                  colSpan={6}
+                >
                   ⚡ Universal 3D Model Format Converter
                 </td>
               </tr>
-              <tr>
-                <td className="py-3 font-medium text-text-primary pl-3">
+              <tr className="border-b border-border-subtle/40">
+                <td className="py-4 px-4 font-medium text-text-primary">
                   Format Conversion (GLB, OBJ, FBX, STL, 3MF)
                 </td>
-                <td className="py-3 text-center text-text-muted">
+                <td className="py-4 px-3 text-center text-text-muted">
                   ❌ Not included
                 </td>
-                <td className="py-3 text-center text-text-muted">
+                <td className="py-4 px-3 text-center text-text-muted">
                   ❌ Not included
                 </td>
-                <td className="py-3 text-center text-lime font-bold">
+                <td className="py-4 px-3 text-center text-lime font-bold bg-lime/[0.04] border-x border-lime/15">
                   5 conversions / mo
                 </td>
-                <td className="py-3 text-center text-lime font-bold">
+                <td className="py-4 px-3 text-center text-lime font-bold">
                   75 conversions / yr
                 </td>
-                <td className="py-3 text-center text-pink font-black">
+                <td className="py-4 px-3 text-center text-pink font-black bg-pink/[0.04] border-x border-pink/15">
                   🔥 Unlimited
                 </td>
               </tr>
-              <tr>
-                <td className="py-3 font-medium text-text-primary pl-3">
+              <tr className="border-b border-border-subtle/40">
+                <td className="py-4 px-4 font-medium text-text-primary">
                   3D Printing Prep (STL &amp; 3MF Conversion)
                 </td>
-                <td className="py-3 text-center text-text-muted">
+                <td className="py-4 px-3 text-center text-text-muted">
                   ❌ Not included
                 </td>
-                <td className="py-3 text-center text-text-muted">
+                <td className="py-4 px-3 text-center text-text-muted">
                   ❌ Not included
                 </td>
-                <td className="py-3 text-center text-lime font-bold">
+                <td className="py-4 px-3 text-center text-lime font-bold bg-lime/[0.04] border-x border-lime/15">
                   5 conversions / mo
                 </td>
-                <td className="py-3 text-center text-lime font-bold">
+                <td className="py-4 px-3 text-center text-lime font-bold">
                   75 conversions / yr
                 </td>
-                <td className="py-3 text-center text-pink font-black">
+                <td className="py-4 px-3 text-center text-pink font-black bg-pink/[0.04] border-x border-pink/15">
                   🔥 Unlimited
                 </td>
               </tr>
 
               {/* Category: 4K & 8K PBR Texture Upscaler */}
-              <tr className="bg-bg-elevated/30">
-                <td className="py-3.5 font-bold text-text-primary" colSpan={6}>
+              <tr>
+                <td
+                  className="py-4 px-4 font-bold text-text-primary text-sm border-b border-border-subtle bg-bg-elevated/40 rounded-l-xl"
+                  colSpan={6}
+                >
                   ✨ 4K &amp; 8K PBR Texture Upscaler
                 </td>
               </tr>
-              <tr>
-                <td className="py-3 font-medium text-text-primary pl-3">
+              <tr className="border-b border-border-subtle/40">
+                <td className="py-4 px-4 font-medium text-text-primary">
                   AI Texture Upscaling Quota
                 </td>
-                <td className="py-3 text-center text-text-muted">
+                <td className="py-4 px-3 text-center text-text-muted">
                   Standard 2K Preview
                 </td>
-                <td className="py-3 text-center text-text-muted">
+                <td className="py-4 px-3 text-center text-text-muted">
                   Standard 2K Preview
                 </td>
-                <td className="py-3 text-center text-lime font-bold">
+                <td className="py-4 px-3 text-center text-lime font-bold bg-lime/[0.04] border-x border-lime/15">
                   3 upscales / mo
                 </td>
-                <td className="py-3 text-center text-lime font-bold">
+                <td className="py-4 px-3 text-center text-lime font-bold">
                   40 upscales / yr
                 </td>
-                <td className="py-3 text-center text-pink font-black">
+                <td className="py-4 px-3 text-center text-pink font-black bg-pink/[0.04] border-x border-pink/15">
                   🔥 Unlimited
                 </td>
               </tr>
-              <tr>
-                <td className="py-3 font-medium text-text-primary pl-3">
+              <tr className="border-b border-border-subtle/40">
+                <td className="py-4 px-4 font-medium text-text-primary">
                   Upscale Resolution Support
                 </td>
-                <td className="py-3 text-center text-text-muted">
+                <td className="py-4 px-3 text-center text-text-muted">
                   Standard 2K
                 </td>
-                <td className="py-3 text-center text-text-muted">
+                <td className="py-4 px-3 text-center text-text-muted">
                   Standard 2K
                 </td>
-                <td className="py-3 text-center text-lime font-semibold">
+                <td className="py-4 px-3 text-center text-lime font-semibold bg-lime/[0.04] border-x border-lime/15">
                   4K &amp; 8K (Priority)
                 </td>
-                <td className="py-3 text-center text-lime font-semibold">
+                <td className="py-4 px-3 text-center text-lime font-semibold">
                   4K &amp; 8K Upscaling
                 </td>
-                <td className="py-3 text-center text-pink font-bold">
+                <td className="py-4 px-3 text-center text-pink font-bold bg-pink/[0.04] border-x border-pink/15">
                   4K &amp; 8K (Top Priority)
                 </td>
               </tr>
-              <tr>
-                <td className="py-3 font-medium text-text-primary pl-3">
+              <tr className="border-b border-border-subtle/40">
+                <td className="py-4 px-4 font-medium text-text-primary">
                   Preserved PBR Maps (Albedo, Normal, Rough, Metal, AO)
                 </td>
-                <td className="py-3 text-center text-text-muted">2K Maps</td>
-                <td className="py-3 text-center text-text-muted">2K Maps</td>
-                <td className="py-3 text-center text-emerald-400 font-semibold">
+                <td className="py-4 px-3 text-center text-text-muted">
+                  2K Maps
+                </td>
+                <td className="py-4 px-3 text-center text-text-muted">
+                  2K Maps
+                </td>
+                <td className="py-4 px-3 text-center text-emerald-400 font-semibold bg-lime/[0.04] border-x border-lime/15">
                   Full 4K/8K Maps
                 </td>
-                <td className="py-3 text-center text-emerald-400 font-semibold">
+                <td className="py-4 px-3 text-center text-emerald-400 font-semibold">
                   Full 4K/8K Maps
                 </td>
-                <td className="py-3 text-center text-emerald-400 font-semibold">
+                <td className="py-4 px-3 text-center text-emerald-400 font-semibold bg-pink/[0.04] border-x border-pink/15">
                   Full 4K/8K Maps
                 </td>
               </tr>
 
               {/* Category: Workspace Exports */}
-              <tr className="bg-bg-elevated/30">
-                <td className="py-3.5 font-bold text-text-primary" colSpan={6}>
+              <tr>
+                <td
+                  className="py-4 px-4 font-bold text-text-primary text-sm border-b border-border-subtle bg-bg-elevated/40 rounded-l-xl"
+                  colSpan={6}
+                >
                   📦 Meshy AI Workspace Model &amp; Texture Exports
                 </td>
               </tr>
-              <tr>
-                <td className="py-3 font-medium text-text-primary pl-3">
+              <tr className="border-b border-border-subtle/40">
+                <td className="py-4 px-4 font-medium text-text-primary">
                   GLB, OBJ, FBX Workspace Exports
                 </td>
-                <td className="py-3 text-center text-text-muted">2 total</td>
-                <td className="py-3 text-center text-emerald-400 font-semibold">
+                <td className="py-4 px-3 text-center text-text-muted">
+                  2 total
+                </td>
+                <td className="py-4 px-3 text-center text-emerald-400 font-semibold">
                   Unlimited
                 </td>
-                <td className="py-3 text-center text-emerald-400 font-semibold">
+                <td className="py-4 px-3 text-center text-emerald-400 font-semibold bg-lime/[0.04] border-x border-lime/15">
                   Unlimited
                 </td>
-                <td className="py-3 text-center text-emerald-400 font-semibold">
+                <td className="py-4 px-3 text-center text-emerald-400 font-semibold">
                   Unlimited
                 </td>
-                <td className="py-3 text-center text-emerald-400 font-semibold">
+                <td className="py-4 px-3 text-center text-emerald-400 font-semibold bg-pink/[0.04] border-x border-pink/15">
                   Unlimited
                 </td>
               </tr>
-              <tr>
-                <td className="py-3 font-medium text-text-primary pl-3">
+              <tr className="border-b border-border-subtle/40">
+                <td className="py-4 px-4 font-medium text-text-primary">
                   STL &amp; 3MF (3D Printing)
                 </td>
-                <td className="py-3 text-center text-text-muted">2 total</td>
-                <td className="py-3 text-center text-emerald-400 font-semibold">
+                <td className="py-4 px-3 text-center text-text-muted">
+                  2 total
+                </td>
+                <td className="py-4 px-3 text-center text-emerald-400 font-semibold">
                   Unlimited
                 </td>
-                <td className="py-3 text-center text-emerald-400 font-semibold">
+                <td className="py-4 px-3 text-center text-emerald-400 font-semibold bg-lime/[0.04] border-x border-lime/15">
                   Unlimited
                 </td>
-                <td className="py-3 text-center text-emerald-400 font-semibold">
+                <td className="py-4 px-3 text-center text-emerald-400 font-semibold">
                   Unlimited
                 </td>
-                <td className="py-3 text-center text-emerald-400 font-semibold">
+                <td className="py-4 px-3 text-center text-emerald-400 font-semibold bg-pink/[0.04] border-x border-pink/15">
                   Unlimited
                 </td>
               </tr>
-              <tr>
-                <td className="py-3 font-medium text-text-primary pl-3">
+              <tr className="border-b border-border-subtle/40">
+                <td className="py-4 px-4 font-medium text-text-primary">
                   PBR Texture PNG Maps
                 </td>
-                <td className="py-3 text-center text-text-muted">8 total</td>
-                <td className="py-3 text-center text-emerald-400 font-semibold">
+                <td className="py-4 px-3 text-center text-text-muted">
+                  8 total
+                </td>
+                <td className="py-4 px-3 text-center text-emerald-400 font-semibold">
                   Unlimited
                 </td>
-                <td className="py-3 text-center text-emerald-400 font-semibold">
+                <td className="py-4 px-3 text-center text-emerald-400 font-semibold bg-lime/[0.04] border-x border-lime/15">
                   Unlimited
                 </td>
-                <td className="py-3 text-center text-emerald-400 font-semibold">
+                <td className="py-4 px-3 text-center text-emerald-400 font-semibold">
                   Unlimited
                 </td>
-                <td className="py-3 text-center text-emerald-400 font-semibold">
+                <td className="py-4 px-3 text-center text-emerald-400 font-semibold bg-pink/[0.04] border-x border-pink/15">
                   Unlimited
                 </td>
               </tr>
 
               {/* Category: Community Models */}
-              <tr className="bg-bg-elevated/30">
-                <td className="py-3.5 font-bold text-text-primary" colSpan={6}>
+              <tr>
+                <td
+                  className="py-4 px-4 font-bold text-text-primary text-sm border-b border-border-subtle bg-bg-elevated/40 rounded-l-xl"
+                  colSpan={6}
+                >
                   🌐 Community Model Downloads
                 </td>
               </tr>
-              <tr>
-                <td className="py-3 font-medium text-text-primary pl-3">
+              <tr className="border-b border-border-subtle/40">
+                <td className="py-4 px-4 font-medium text-text-primary">
                   Meshy Discover Community Downloads
                 </td>
-                <td className="py-3 text-center text-text-muted">1 total</td>
-                <td className="py-3 text-center font-medium">2 / month</td>
-                <td className="py-3 text-center font-bold text-lime">
+                <td className="py-4 px-3 text-center text-text-muted">
+                  1 total
+                </td>
+                <td className="py-4 px-3 text-center font-medium">2 / month</td>
+                <td className="py-4 px-3 text-center font-bold text-lime bg-lime/[0.04] border-x border-lime/15">
                   8 / month
                 </td>
-                <td className="py-3 text-center font-medium">40 / year</td>
-                <td className="py-3 text-center font-bold text-pink">
+                <td className="py-4 px-3 text-center font-medium">40 / year</td>
+                <td className="py-4 px-3 text-center font-bold text-pink bg-pink/[0.04] border-x border-pink/15">
                   Unlimited
                 </td>
               </tr>
-              <tr>
-                <td className="py-3 font-medium text-text-primary pl-3">
+              <tr className="border-b border-border-subtle/40">
+                <td className="py-4 px-4 font-medium text-text-primary">
                   Community Quota Refresh
                 </td>
-                <td className="py-3 text-center text-text-muted">One-time</td>
-                <td className="py-3 text-center font-medium">Every month</td>
-                <td className="py-3 text-center font-medium text-lime/90">
+                <td className="py-4 px-3 text-center text-text-muted">
+                  One-time
+                </td>
+                <td className="py-4 px-3 text-center font-medium">
                   Every month
                 </td>
-                <td className="py-3 text-center font-medium">Every year</td>
-                <td className="py-3 text-center font-medium text-pink">
+                <td className="py-4 px-3 text-center font-medium text-lime/90 bg-lime/[0.04] border-x border-lime/15">
+                  Every month
+                </td>
+                <td className="py-4 px-3 text-center font-medium">
+                  Every year
+                </td>
+                <td className="py-4 px-3 text-center font-medium text-pink bg-pink/[0.04] border-x border-pink/15">
                   Unlimited
                 </td>
               </tr>
 
               {/* Category: Additional Meshy Accounts */}
-              <tr className="bg-bg-elevated/30">
-                <td className="py-3.5 font-bold text-text-primary" colSpan={6}>
+              <tr>
+                <td
+                  className="py-4 px-4 font-bold text-text-primary text-sm border-b border-border-subtle bg-bg-elevated/40 rounded-l-xl"
+                  colSpan={6}
+                >
                   🔑 Multi-Account Meshy Linking
                 </td>
               </tr>
-              <tr>
-                <td className="py-3 font-medium text-text-primary pl-3">
+              <tr className="border-b border-border-subtle/40">
+                <td className="py-4 px-4 font-medium text-text-primary">
                   Additional Accounts
                 </td>
-                <td className="py-3 text-center text-text-muted">0</td>
-                <td className="py-3 text-center text-text-muted">0</td>
-                <td className="py-3 text-center font-bold text-lime">+2</td>
-                <td className="py-3 text-center text-text-muted">0</td>
-                <td className="py-3 text-center font-bold text-pink">+4</td>
+                <td className="py-4 px-3 text-center text-text-muted">0</td>
+                <td className="py-4 px-3 text-center text-text-muted">0</td>
+                <td className="py-4 px-3 text-center font-bold text-lime bg-lime/[0.04] border-x border-lime/15">
+                  +2
+                </td>
+                <td className="py-4 px-3 text-center text-text-muted">0</td>
+                <td className="py-4 px-3 text-center font-bold text-pink bg-pink/[0.04] border-x border-pink/15">
+                  +4
+                </td>
               </tr>
-              <tr>
-                <td className="py-3 font-medium text-text-primary pl-3">
+              <tr className="border-b border-border-subtle/40">
+                <td className="py-4 px-4 font-medium text-text-primary">
                   Total Accounts Under Subscription
                 </td>
-                <td className="py-3 text-center">1</td>
-                <td className="py-3 text-center">1</td>
-                <td className="py-3 text-center font-bold text-lime">3</td>
-                <td className="py-3 text-center">1</td>
-                <td className="py-3 text-center font-bold text-pink">5</td>
+                <td className="py-4 px-3 text-center">1</td>
+                <td className="py-4 px-3 text-center">1</td>
+                <td className="py-4 px-3 text-center font-bold text-lime bg-lime/[0.04] border-x border-lime/15">
+                  3
+                </td>
+                <td className="py-4 px-3 text-center">1</td>
+                <td className="py-4 px-3 text-center font-bold text-pink bg-pink/[0.04] border-x border-pink/15">
+                  5
+                </td>
               </tr>
 
               {/* Category: Platform Integrations & Priority */}
-              <tr className="bg-bg-elevated/30">
-                <td className="py-3.5 font-bold text-text-primary" colSpan={6}>
+              <tr>
+                <td
+                  className="py-4 px-4 font-bold text-text-primary text-sm border-b border-border-subtle bg-bg-elevated/40 rounded-l-xl"
+                  colSpan={6}
+                >
                   🔥 Platform Integrations &amp; Perks
                 </td>
               </tr>
-              <tr>
-                <td className="py-3 font-medium text-text-primary pl-3">
+              <tr className="border-b border-border-subtle/40">
+                <td className="py-4 px-4 font-medium text-text-primary">
                   Tripo 3D Studio Support ✨
                 </td>
-                <td className="py-3 text-center text-text-muted">❌</td>
-                <td className="py-3 text-center text-text-muted">❌</td>
-                <td className="py-3 text-center font-bold text-lime">
+                <td className="py-4 px-3 text-center text-text-muted">❌</td>
+                <td className="py-4 px-3 text-center text-text-muted">❌</td>
+                <td className="py-4 px-3 text-center font-bold text-lime bg-lime/[0.04] border-x border-lime/15">
                   ✅ Included
                 </td>
-                <td className="py-3 text-center font-bold text-lime">
+                <td className="py-4 px-3 text-center font-bold text-lime">
                   ✅ Included
                 </td>
-                <td className="py-3 text-center font-bold text-pink">
+                <td className="py-4 px-3 text-center font-bold text-pink bg-pink/[0.04] border-x border-pink/15">
                   ✅ Included
                 </td>
               </tr>
-              <tr>
-                <td className="py-3 font-medium text-text-primary pl-3">
+              <tr className="border-b border-border-subtle/40">
+                <td className="py-4 px-4 font-medium text-text-primary">
                   Expanded Community Download Formats
                 </td>
-                <td className="py-3 text-center text-text-muted">❌</td>
-                <td className="py-3 text-center text-text-muted">❌</td>
-                <td className="py-3 text-center font-bold text-lime">
+                <td className="py-4 px-3 text-center text-text-muted">❌</td>
+                <td className="py-4 px-3 text-center text-text-muted">❌</td>
+                <td className="py-4 px-3 text-center font-bold text-lime bg-lime/[0.04] border-x border-lime/15">
                   ✅ Included
                 </td>
-                <td className="py-3 text-center font-bold text-lime">
+                <td className="py-4 px-3 text-center font-bold text-lime">
                   ✅ Included
                 </td>
-                <td className="py-3 text-center font-bold text-pink">
+                <td className="py-4 px-3 text-center font-bold text-pink bg-pink/[0.04] border-x border-pink/15">
                   ✅ Included
                 </td>
               </tr>
               <tr>
-                <td className="py-3 font-medium text-text-primary pl-3">
+                <td className="py-4 px-4 font-medium text-text-primary">
                   Priority Beta Updates &amp; Support
                 </td>
-                <td className="py-3 text-center text-text-muted">Standard</td>
-                <td className="py-3 text-center text-text-muted">Standard</td>
-                <td className="py-3 text-center text-lime font-medium">
+                <td className="py-4 px-3 text-center text-text-muted">
+                  Standard
+                </td>
+                <td className="py-4 px-3 text-center text-text-muted">
+                  Standard
+                </td>
+                <td className="py-4 px-3 text-center text-lime font-medium bg-lime/[0.04] border-x border-b border-lime/15 rounded-b-2xl">
                   Early Access
                 </td>
-                <td className="py-3 text-center text-lime font-medium">
+                <td className="py-4 px-3 text-center text-lime font-medium">
                   Early Access
                 </td>
-                <td className="py-3 text-center font-bold text-pink">
+                <td className="py-4 px-3 text-center font-bold text-pink bg-pink/[0.04] border-x border-b border-pink/15 rounded-b-2xl">
                   ✅ Always Priority
                 </td>
               </tr>
@@ -1217,7 +1292,7 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
           </table>
         </div>
 
-        <p className="text-[11px] text-text-muted text-center mt-6 leading-relaxed">
+        <p className="text-[11px] text-text-muted text-center mt-8 leading-relaxed max-w-lg mx-auto">
           * MeshyGrab does not create, own, or manage your Meshy accounts.
           Additional slots allow you to attach extra existing Meshy accounts to
           your single MeshyGrab subscription or purchase entitlement.
