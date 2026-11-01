@@ -1,4 +1,6 @@
 import { PlanItem } from "@/types/types";
+import { SaleConfig } from "./salesConfig";
+import { getActiveSale } from "@/utils/saleHelpers";
 
 export const faqs = [
   {
@@ -315,24 +317,31 @@ export const plansList: PlanItem[] = [
 export function getPlansList(
   isDiscounted: boolean = false,
   isFavLifetime: boolean = false,
+  saleConfig?: SaleConfig | null,
 ): PlanItem[] {
+  const activeSale =
+    saleConfig ?? (isDiscounted ? getActiveSale().saleData : null);
+  const emoji = activeSale?.emoji ? `${activeSale.emoji} ` : "";
+  const saleBadge =
+    activeSale?.badgeText || activeSale?.title || "Special Sale";
+
   const basePlans = !isDiscounted
     ? plansList
     : plansList.map((plan) => {
         if (plan.id === "pro-max") {
           return {
             ...plan,
-            badge: "🍁 Fall Sale — 50% OFF 🔥",
+            badge: `${emoji}${saleBadge} — 50% OFF 🔥`,
             price: "$2.99",
             originalPrice: "$5.99/mo",
             savings: "Save ~50%",
-            cta: "Get Pro Max ($2.99) 🔥",
+            cta: `Get Pro Max ($2.99) ${activeSale?.emoji || "🔥"}`,
           };
         }
         if (plan.id === "pro-annual") {
           return {
             ...plan,
-            badge: "🍁 Fall Sale — 40% OFF",
+            badge: `${emoji}${saleBadge} — 40% OFF`,
             price: "$5.99",
             originalPrice: "$9.99/yr",
             savings: "Save 40%",
@@ -345,11 +354,11 @@ export function getPlansList(
         if (plan.id === "lifetime") {
           return {
             ...plan,
-            badge: "🍁 Fall Sale — 67% OFF 🔥",
+            badge: `${emoji}${saleBadge} — 67% OFF 🔥`,
             price: "$9.99",
             originalPrice: "$29.99",
             savings: "Save 67%",
-            cta: "Grab Lifetime\n($9.99) 🔥",
+            cta: `Grab Lifetime\n($9.99) ${activeSale?.emoji || "🔥"}`,
           };
         }
         return plan;
