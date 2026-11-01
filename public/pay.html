@@ -62,14 +62,25 @@
             document.body.innerHTML =
                 "<p style='color:#ef4444;'>No customer email found. Please return to MeshyGrab and try again.</p>";
         } else {
-            // 2. Set Sandbox mode
-            // Paddle.Environment.set("sandbox");
-            Paddle.Environment.set("production");
+            // 2. Strict environment check with production as the fail-safe default
+            const hostname = window.location.hostname;
 
-            // 3. Initialize with global checkout settings (Forces Dark Mode & One-Page)
+            // If it explicitly matches the dev URL, use sandbox. Otherwise, default to production.
+            const isDev = hostname === 'meshy-grab-landing-page-dev.vercel.app';
+
+            const paddleEnv = isDev ? "sandbox" : "production";
+
+            // Assign your respective tokens here
+            const paddleToken = isDev
+                ? "test_69cc07dca8101aba02511983576" // Sandbox Token
+                : "live_8f551bb035c369c0f3672bfa74a"; // Production Token (Fallback & Main domain)
+
+            // 3. Apply Environment
+            Paddle.Environment.set(paddleEnv);
+
+            // 4. Initialize Paddle with the correct token & settings
             Paddle.Initialize({
-                // token: "test_69cc07dca8101aba02511983576",
-                token: "live_8f551bb035c369c0f3672bfa74a",
+                token: paddleToken,
                 checkout: {
                     settings: {
                         displayMode: "overlay",
@@ -80,7 +91,7 @@
                 }
             });
 
-            // 4. Open transaction with pre-filled email
+            // 5. Open transaction with pre-filled email
             Paddle.Checkout.open({
                 transactionId: txnId,
                 customer: {

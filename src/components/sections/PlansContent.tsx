@@ -5,7 +5,9 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { getPlansList } from "@/constants/constants";
 import { PlanItem } from "@/types/types";
 import { isFavLifetimeUser as checkIsFavLifetimeUser } from "@/utils/allowlist";
-import FallSaleBanner from "./FallSaleBanner";
+import { useActiveSale } from "@/hooks/useActiveSale";
+import SeasonalSaleBanner from "./SeasonalSaleBanner";
+import HalloweenPricingDecor from "@/components/pricing/HalloweenPricingDecor";
 
 const CHROME_WEB_STORE_URL =
   "https://chromewebstore.google.com/detail/jkddfapkjenldpiacoccgheimcokhmcc?utm_source=item-share-cb";
@@ -42,10 +44,10 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
   const favLifetimePrice =
     process.env.NEXT_PUBLIC_FAV_LIFETIME_PRICE || "$4.99";
 
-  const isDiscounted = process.env.NEXT_PUBLIC_IS_DISCOUNTED_PRICES === "true";
+  const { isActive: isDiscounted, saleData } = useActiveSale();
   const effectivePlansList = useMemo(
-    () => getPlansList(isDiscounted, isFavLifetimeUser),
-    [isDiscounted, isFavLifetimeUser],
+    () => getPlansList(isDiscounted, isFavLifetimeUser, saleData),
+    [isDiscounted, isFavLifetimeUser, saleData],
   );
 
   // Keep a ref of current plans to avoid re-creating callbacks when plans list changes
@@ -277,30 +279,35 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
   return (
     <div
       id="pricing"
-      className={`container mx-auto max-w-7xl px-4 sm:px-6 pb-16 ${
+      className={`relative container mx-auto max-w-7xl px-4 sm:px-6 pb-16 ${
         isPlanPage ? "pt-2 sm:pt-4" : "pt-10 sm:pt-14"
       }`}
     >
+      {/* Halloween Exclusive Visual Overlay (active strictly during halloween_2026) */}
+      <HalloweenPricingDecor />
+
       {/* Hero Header */}
       <div className="text-center max-w-3xl mx-auto mb-4 sm:mb-6">
         <div className="inline-flex items-center gap-2 px-3 py-1 bg-lime/10 border border-lime/25 rounded-full text-xs font-semibold text-lime mb-2.5">
           <span className="w-2 h-2 rounded-full bg-lime animate-pulse" />
-          {isDiscounted ? "🍁 Limited Time Fall Sale" : "Plans & Pricing"}
+          {isDiscounted && saleData
+            ? `${saleData.emoji ? `${saleData.emoji} ` : ""}Limited Time ${saleData.title}`
+            : "Plans & Pricing"}
         </div>
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-text-primary mb-2 leading-tight">
-          {isDiscounted
-            ? "Fall Sale: Huge Discounts on 3D Export Plans!"
+          {isDiscounted && saleData
+            ? `${saleData.title}: Huge Discounts on 3D Export Plans!`
             : "Flexible plans for every 3D creator"}
         </h1>
         <p className="text-xs sm:text-sm text-text-secondary max-w-xl mx-auto leading-relaxed">
-          {isDiscounted
-            ? "Start free with 2 downloads, or grab limited-time Fall Sale discounts on Pro Max ($2.99), Annual ($5.99), and Lifetime ($9.99)!"
+          {isDiscounted && saleData
+            ? `Start free with 2 downloads, or grab limited-time discounts on Pro Max ($2.99), Annual ($5.99), and Lifetime ($9.99)! ${saleData.bannerText}`
             : "Start free with 2 workspace downloads, or upgrade for unlimited 3D exports, Community model allowances, and multi-account access."}
         </p>
       </div>
 
-      {/* Fall Sale Countdown Banner */}
-      {isDiscounted && <FallSaleBanner />}
+      {/* Seasonal Sale Countdown Banner */}
+      {isDiscounted && saleData && <SeasonalSaleBanner sale={saleData} />}
 
       {/* Missing InstallationId Warning State (Plans page only) */}
       {isPlanPage && !installationId && (
@@ -367,7 +374,10 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
           <span>
             Pro Max:{" "}
             <strong className="text-lime font-bold">
-              {isDiscounted ? "$2.99/mo 🍁" : "$3.99/mo"} (3 Upscales + 5 Conv)
+              {isDiscounted
+                ? `$2.99/mo ${saleData?.emoji || "🔥"}`
+                : "$3.99/mo"}{" "}
+              (3 Upscales + 5 Conv)
             </strong>
           </span>
         </div>
@@ -379,8 +389,10 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
           <span>
             Annual:{" "}
             <strong className="text-lime">
-              {isDiscounted ? "$5.99/yr 🍁" : "$9.99/yr"} (40 Upscales + 75
-              Conv)
+              {isDiscounted
+                ? `$5.99/yr ${saleData?.emoji || "🔥"}`
+                : "$9.99/yr"}{" "}
+              (40 Upscales + 75 Conv)
             </strong>
           </span>
         </div>
@@ -395,7 +407,7 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
               {isFavLifetimeUser
                 ? `${favLifetimePrice} ONE-TIME ⭐ FAV DEAL`
                 : isDiscounted
-                  ? "$9.99 ONE-TIME 🍁 67% OFF"
+                  ? `$9.99 ONE-TIME ${saleData?.emoji || "🔥"} 67% OFF`
                   : "$19.99 ONE-TIME 🔥"}{" "}
               (Unlimited AI &amp; Conv)
             </strong>
