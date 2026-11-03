@@ -145,3 +145,40 @@
     outline-offset: 2px;
   }
 }
+
+/* Seasonal Halloween Cursor & Particles */
+.seasonal-halloween-cursor {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Ctext y='18' font-size='18'%3E🎃%3C/text%3E%3C/svg%3E") 2 2, pointer;
+}
+
+@keyframes halloween-particle-pop {
+  0% {
+    opacity: 0;
+    transform: translate3d(-50%, -50%, 0) scale(0.3) rotate(0deg);
+  }
+
+  20% {
+    opacity: 1;
+    transform: translate3d(calc(-50% + var(--drift-x) * 0.25), calc(-50% - 10px), 0) scale(1.15) rotate(calc(var(--rotate) * 0.4));
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(calc(-50% + var(--drift-x)), calc(-50% + var(--drift-y)), 0) scale(0.65) rotate(var(--rotate));
+  }
+}
+
+.halloween-particle {
+  animation: halloween-particle-pop 750ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .seasonal-halloween-cursor {
+    cursor: auto !important;
+  }
+
+  .halloween-particle {
+    display: none !important;
+  }
+}
