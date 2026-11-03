@@ -8,6 +8,15 @@ import { isFavLifetimeUser as checkIsFavLifetimeUser } from "@/utils/allowlist";
 import { useActiveSale } from "@/hooks/useActiveSale";
 import SeasonalSaleBanner from "./SeasonalSaleBanner";
 import HalloweenPricingDecor from "@/components/pricing/HalloweenPricingDecor";
+import HalloweenCardInteraction from "@/components/pricing/HalloweenCardInteraction";
+import {
+  Sparkles,
+  Download,
+  Layers,
+  Globe,
+  Box,
+  CheckCircle2,
+} from "lucide-react";
 
 const CHROME_WEB_STORE_URL =
   "https://chromewebstore.google.com/detail/jkddfapkjenldpiacoccgheimcokhmcc?utm_source=item-share-cb";
@@ -24,7 +33,7 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
   const urlUserId = isPlanPage ? searchParams.get("userId") : null;
   const urlEmail = isPlanPage ? searchParams.get("email") : null;
 
-  const [selectedPlanId, setSelectedPlanId] = useState<string>("free");
+  const [selectedPlanId, setSelectedPlanId] = useState<string>("pro-max");
   const [activePlanId, setActivePlanId] = useState<string>("free");
   const [userId, setUserId] = useState<string | null>(urlUserId);
   const [email, setEmail] = useState<string | null>(urlEmail);
@@ -49,6 +58,87 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
     () => getPlansList(isDiscounted, isFavLifetimeUser, saleData),
     [isDiscounted, isFavLifetimeUser, saleData],
   );
+
+  // 4 Subscription plans for the pricing cards (Free remains in comparison table)
+  const subscriptionPlans = useMemo(
+    () => effectivePlansList.filter((plan) => plan.id !== "free"),
+    [effectivePlansList],
+  );
+
+  // Consistent card header helpers
+  const getTopLabel = (plan: PlanItem) => {
+    if (plan.id === "pro") {
+      return {
+        text: "Monthly",
+        style: "bg-lime/10 text-lime border border-lime/25",
+      };
+    }
+    if (plan.id === "pro-max") {
+      return {
+        text: "⭐ Recommended",
+        style:
+          "bg-lime text-deep-black font-extrabold shadow-[0_0_15px_rgba(197,249,85,0.4)]",
+      };
+    }
+    if (plan.id === "pro-annual") {
+      return {
+        text: "Annual Savings",
+        style: "bg-lime/15 text-lime border border-lime/30",
+      };
+    }
+    return {
+      text: "⚡ Lifetime Deal",
+      style:
+        "bg-[linear-gradient(135deg,#c5f955_0%,#00f2fe_25%,#a855f7_50%,#ff3e8f_75%,#fbbf24_90%,#c5f955_100%)] bg-[length:300%_300%] text-white font-extrabold shadow-[0_0_18px_rgba(168,85,247,0.4)] animate-gradient-shift",
+    };
+  };
+
+  const getSaleBadge = (plan: PlanItem) => {
+    const saleEmoji = saleData?.emoji || "🎃";
+    const saleTitle = saleData?.badgeText || "Halloween Special";
+
+    if (plan.id === "pro") {
+      return {
+        text: "Flat Rate · Core Plan",
+        style: "bg-white/[0.06] text-text-secondary border border-white/10",
+      };
+    }
+    if (plan.id === "pro-max") {
+      return {
+        text: isDiscounted
+          ? `${saleEmoji} ${saleTitle} · 50% OFF`
+          : "🔥 Best Value · Save ~33%",
+        style:
+          "bg-lime/15 text-lime border border-lime/30 shadow-[0_0_10px_rgba(197,249,85,0.15)]",
+      };
+    }
+    if (plan.id === "pro-annual") {
+      return {
+        text: isDiscounted
+          ? `${saleEmoji} ${saleTitle} · 40% OFF`
+          : "Annual Bundle · Save ~17%",
+        style:
+          "bg-lime/15 text-lime border border-lime/30 shadow-[0_0_10px_rgba(197,249,85,0.15)]",
+      };
+    }
+    return {
+      text: isFavLifetimeUser
+        ? "⭐ Fav Deal · 83% OFF"
+        : isDiscounted
+          ? `${saleEmoji} ${saleTitle} · 67% OFF`
+          : "🔥 Limited Offer · Save ~33%",
+      style:
+        "bg-purple-950/60 text-transparent bg-clip-text bg-[linear-gradient(135deg,#c5f955_0%,#00f2fe_25%,#a855f7_50%,#ff3e8f_75%,#fbbf24_90%,#c5f955_100%)] bg-[length:300%_300%] animate-gradient-shift border border-purple-500/40 shadow-[0_0_12px_rgba(168,85,247,0.25)]",
+    };
+  };
+
+  const getCleanPlanName = (plan: PlanItem) => {
+    if (plan.id === "pro") return "Pro Monthly";
+    if (plan.id === "pro-max") return "Pro Max";
+    if (plan.id === "pro-annual") return "Pro Annual";
+    if (plan.id === "lifetime") return "Lifetime";
+    return plan.name;
+  };
 
   // Keep a ref of current plans to avoid re-creating callbacks when plans list changes
   const plansRef = useRef(effectivePlansList);
@@ -349,435 +439,477 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
         </div>
       )}
 
-      {/* Visual Progression Strip */}
-      <div className="max-w-4xl mx-auto mb-6 sm:mb-8 p-2.5 sm:p-3 bg-bg-card border border-border-subtle rounded-2xl flex flex-wrap items-center justify-around gap-2 text-xs font-medium">
-        <div className="flex items-center gap-1.5 text-text-secondary">
-          <span className="w-2 h-2 rounded-full bg-lime" />
-          <span>
-            Free: <strong className="text-text-primary">2 Downloads</strong>
-          </span>
+      {/* Free Starter Showcase */}
+      <div className="max-w-3xl mx-auto mb-8 sm:mb-10 p-5 sm:p-6 bg-bg-card/90 border border-border-subtle rounded-3xl">
+        <div className="text-center mb-4">
+          <div className="inline-flex items-center gap-2 mb-2">
+            <Sparkles className="w-5 h-5 text-lime" />
+            <h3 className="text-sm sm:text-base font-extrabold text-text-primary uppercase tracking-wider">
+              Start Creating for Free
+            </h3>
+            <Sparkles className="w-5 h-5 text-lime" />
+          </div>
+          <p className="text-xs sm:text-sm text-text-secondary">
+            Everything you need to explore MeshyGrab.
+          </p>
         </div>
-        <span className="text-text-muted font-bold hidden sm:inline">
-          &rarr;
-        </span>
-        <div className="flex items-center gap-1.5 text-text-secondary">
-          <span className="w-2 h-2 rounded-full bg-lime" />
-          <span>
-            Pro: <strong className="text-lime">$0.99/mo Workspace</strong>
-          </span>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+          <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06]">
+            <Download className="w-4 h-4 text-lime flex-shrink-0" />
+            <span className="text-xs sm:text-sm text-text-secondary">
+              <strong className="text-text-primary">2</strong> Workspace Model
+              Downloads
+            </span>
+          </div>
+          <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06]">
+            <Layers className="w-4 h-4 text-lime flex-shrink-0" />
+            <span className="text-xs sm:text-sm text-text-secondary">
+              <strong className="text-text-primary">8</strong> Texture PNG
+              Downloads
+            </span>
+          </div>
+          <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06]">
+            <Globe className="w-4 h-4 text-lime flex-shrink-0" />
+            <span className="text-xs sm:text-sm text-text-secondary">
+              <strong className="text-text-primary">1</strong> Community Model
+              Download
+            </span>
+          </div>
+          <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06]">
+            <Box className="w-4 h-4 text-lime flex-shrink-0" />
+            <span className="text-xs sm:text-sm text-text-secondary">
+              Free <strong className="text-text-primary">3D Renderer</strong>
+            </span>
+          </div>
         </div>
-        <span className="text-text-muted font-bold hidden sm:inline">
-          &rarr;
-        </span>
-        <div className="flex items-center gap-1.5 text-text-secondary">
-          <span className="w-2 h-2 rounded-full bg-lime" />
-          <span>
-            Pro Max:{" "}
-            <strong className="text-lime font-bold">
-              {isDiscounted
-                ? `$2.99/mo ${saleData?.emoji || "🔥"}`
-                : "$3.99/mo"}{" "}
-              (3 Upscales + 5 Conv)
-            </strong>
-          </span>
-        </div>
-        <span className="text-text-muted font-bold hidden sm:inline">
-          &rarr;
-        </span>
-        <div className="flex items-center gap-1.5 text-text-secondary">
-          <span className="w-2 h-2 rounded-full bg-lime" />
-          <span>
-            Annual:{" "}
-            <strong className="text-lime">
-              {isDiscounted
-                ? `$5.99/yr ${saleData?.emoji || "🔥"}`
-                : "$9.99/yr"}{" "}
-              (40 Upscales + 75 Conv)
-            </strong>
-          </span>
-        </div>
-        <span className="text-text-muted font-bold hidden sm:inline">
-          &rarr;
-        </span>
-        <div className="flex items-center gap-1.5 text-text-secondary">
-          <span className="w-2 h-2 rounded-full bg-pink animate-pulse" />
-          <span className="bg-pink/15 px-2.5 py-0.5 rounded-full border border-pink/40 shadow-[0_0_10px_rgba(255,62,143,0.2)]">
-            Lifetime:{" "}
-            <strong className="text-pink font-extrabold">
-              {isFavLifetimeUser
-                ? `${favLifetimePrice} ONE-TIME ⭐ FAV DEAL`
-                : isDiscounted
-                  ? `$9.99 ONE-TIME ${saleData?.emoji || "🔥"} 67% OFF`
-                  : "$19.99 ONE-TIME 🔥"}{" "}
-              (Unlimited AI &amp; Conv)
-            </strong>
-          </span>
+        <div className="flex items-center justify-center gap-1.5 text-[11px] text-text-muted">
+          <CheckCircle2 className="w-3.5 h-3.5 text-lime/60" />
+          <span>No subscription required to get started.</span>
         </div>
       </div>
 
-      {/* 5 Pricing Cards Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5 lg:gap-5 xl:gap-5 2xl:gap-6 items-stretch mb-16">
-        {effectivePlansList.map((plan) => {
-          const isSelected = selectedPlanId === plan.id;
-          const isActive = activePlanId === plan.id;
-          const isLoadingThisPlan = submittingPlan === plan.id;
-          const isRecommended = plan.isBestValue || plan.isRecommended;
+      {/* 4 Subscription Cards Grid with Seasonal Halloween Cursor & Emojis */}
+      <HalloweenCardInteraction
+        isActive={isDiscounted && saleData?.id === "halloween_2026"}
+      >
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 items-stretch mb-16">
+          {subscriptionPlans.map((plan) => {
+            const isSelected = selectedPlanId === plan.id;
+            const isActive = activePlanId === plan.id;
+            const isLoadingThisPlan = submittingPlan === plan.id;
+            const isRecommended = plan.isBestValue || plan.isRecommended;
 
-          return (
-            <div
-              key={plan.id}
-              onClick={() => setSelectedPlanId(plan.id)}
-              className={`relative rounded-3xl p-4 sm:p-5 xl:p-4 2xl:p-5 flex flex-col justify-between cursor-pointer transition-all duration-300 min-w-0 overflow-hidden ${
-                isSelected
-                  ? "bg-bg-card ring-2 ring-lime shadow-[0_0_35px_rgba(197,249,85,0.18)] scale-[1.02]"
-                  : "bg-bg-card/80 hover:bg-bg-card hover:-translate-y-1 border border-border-subtle hover:border-lime/30"
-              } ${
-                isRecommended
-                  ? "border-lime/60 bg-gradient-to-b from-lime/10 via-bg-card to-bg-card shadow-[0_0_40px_rgba(197,249,85,0.18)] ring-1 ring-lime/40"
-                  : ""
-              } ${
-                plan.isPremium
-                  ? "border-pink/40 bg-gradient-to-b from-pink/10 via-bg-card to-bg-card shadow-[0_0_45px_rgba(255,62,143,0.2)] ring-1 ring-pink/50"
-                  : ""
-              }`}
-            >
-              {/* Highlight Gradient Borders */}
-              {isRecommended && (
-                <div
-                  className="absolute inset-0 rounded-3xl p-px pointer-events-none"
-                  style={{
-                    background:
-                      "linear-gradient(135deg, rgba(197,249,85,0.6), rgba(197,249,85,0.15))",
-                    WebkitMask:
-                      "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                    WebkitMaskComposite: "xor",
-                    maskComposite: "exclude",
-                  }}
-                />
-              )}
+            const topLabel = getTopLabel(plan);
+            const saleBadge = getSaleBadge(plan);
+            const planDisplayName = getCleanPlanName(plan);
 
-              {plan.isPremium && (
-                <div
-                  className="absolute inset-0 rounded-3xl p-px pointer-events-none"
-                  style={{
-                    background:
-                      "linear-gradient(135deg, rgba(255,62,143,0.6), rgba(197,249,85,0.25))",
-                    WebkitMask:
-                      "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                    WebkitMaskComposite: "xor",
-                    maskComposite: "exclude",
-                  }}
-                />
-              )}
-
-              <div className="min-w-0">
-                {/* Header Row: Badge, Activated & Selected Indicators */}
-                <div className="flex items-center justify-between gap-1.5 mb-2.5 flex-wrap min-w-0">
-                  <span
-                    className={`inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold max-w-full break-words ${
-                      plan.id === "lifetime"
-                        ? "bg-gradient-to-r from-pink to-rose-500 text-white shadow-[0_0_18px_rgba(255,62,143,0.4)] animate-pulse"
-                        : isRecommended
-                          ? "bg-lime text-deep-black shadow-[0_0_15px_rgba(197,249,85,0.4)]"
-                          : "bg-lime/10 text-lime border border-lime/20"
-                    }`}
-                  >
-                    {plan.badge}
-                  </span>
-
-                  <div className="flex items-center gap-1 flex-wrap justify-end">
-                    {isActive && (
-                      <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-400 bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.2)]">
-                        <svg
-                          className="w-3 h-3 text-emerald-400"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="3"
-                        >
-                          <polyline points="20 6 9 17 4 12" />
-                        </svg>
-                        Activated
-                      </span>
-                    )}
-
-                    {isSelected ? (
-                      <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-lime bg-lime/10 border border-lime/30 px-2 py-0.5 rounded-full">
-                        <svg
-                          className="w-3 h-3 text-lime"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="3"
-                        >
-                          <polyline points="20 6 9 17 4 12" />
-                        </svg>
-                        Selected
-                      </span>
-                    ) : (
-                      plan.savings && (
-                        <span
-                          className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                            plan.id === "lifetime"
-                              ? "text-pink bg-pink/15 border border-pink/30 shadow-[0_0_10px_rgba(255,62,143,0.2)]"
-                              : "text-lime bg-lime/10 border border-lime/20"
-                          }`}
-                        >
-                          {plan.savings}
-                        </span>
-                      )
-                    )}
-                  </div>
-                </div>
-
-                {/* Plan Name */}
-                <h3 className="text-xl sm:text-2xl font-extrabold text-text-primary mb-1 break-words">
-                  {plan.name}
-                </h3>
-                {plan.subtitle && (
-                  <p className="text-xs text-text-muted mb-3 min-h-[32px] leading-relaxed break-words">
-                    {plan.subtitle}
-                  </p>
+            return (
+              <div
+                key={plan.id}
+                onClick={() => setSelectedPlanId(plan.id)}
+                className={`relative rounded-3xl p-5 sm:p-6 xl:p-5 2xl:p-6 flex flex-col justify-between cursor-pointer transition-all duration-300 min-w-0 overflow-hidden ${
+                  isSelected
+                    ? "bg-bg-card ring-2 ring-lime shadow-[0_0_35px_rgba(197,249,85,0.18)] scale-[1.01]"
+                    : "bg-bg-card/85 hover:bg-bg-card hover:-translate-y-1 border border-border-subtle hover:border-lime/30"
+                } ${
+                  isRecommended
+                    ? "border-lime/60 bg-gradient-to-b from-lime/10 via-bg-card to-bg-card shadow-[0_0_40px_rgba(197,249,85,0.18)] ring-1 ring-lime/40"
+                    : ""
+                } ${
+                  plan.isPremium
+                    ? "border-purple-500/30 bg-gradient-to-b from-purple-500/10 via-bg-card to-bg-card shadow-[0_0_50px_rgba(168,85,247,0.18),0_0_25px_rgba(197,249,85,0.12)] ring-1 ring-purple-500/40"
+                    : ""
+                }`}
+              >
+                {/* Highlight Gradient Borders */}
+                {isRecommended && (
+                  <div
+                    className="absolute inset-0 rounded-3xl p-px pointer-events-none"
+                    style={{
+                      background:
+                        "linear-gradient(135deg, rgba(197,249,85,0.6), rgba(197,249,85,0.15))",
+                      WebkitMask:
+                        "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                      WebkitMaskComposite: "xor",
+                      maskComposite: "exclude",
+                    }}
+                  />
                 )}
 
-                {/* Price Display */}
-                <div className="mb-4 pt-2 border-t border-border-subtle/50">
-                  {plan.originalPrice && (
-                    <div className="flex items-center gap-1.5 mb-1 flex-wrap">
-                      <span className="line-through text-text-muted text-xs font-semibold">
-                        {plan.originalPrice}
-                      </span>
-                      {plan.savings && (
-                        <span
-                          className={`text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded ${
-                            plan.id === "lifetime"
-                              ? "text-pink bg-pink/15 border border-pink/30"
-                              : "text-lime bg-lime/15"
-                          }`}
-                        >
-                          {plan.savings}
+                {plan.isPremium && (
+                  <>
+                    <div
+                      className="absolute inset-0 rounded-3xl p-px pointer-events-none animate-gradient-shift bg-[length:300%_300%]"
+                      style={{
+                        background:
+                          "linear-gradient(135deg, rgba(197,249,85,0.5), rgba(0,242,254,0.4), rgba(168,85,247,0.5), rgba(255,62,143,0.4), rgba(251,191,36,0.4), rgba(197,249,85,0.5))",
+                        backgroundSize: "300% 300%",
+                        WebkitMask:
+                          "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                        WebkitMaskComposite: "xor",
+                        maskComposite: "exclude",
+                        animation: "gradient-shift 6s ease-in-out infinite",
+                      }}
+                    />
+                    {/* Ambient glow */}
+                    <div className="absolute -inset-4 rounded-full bg-gradient-to-br from-purple-500/15 via-pink-500/10 to-lime-500/10 blur-3xl pointer-events-none" />
+                  </>
+                )}
+
+                <div className="flex flex-col flex-grow min-w-0">
+                  {/* 1. Top label row */}
+                  <div className="flex items-center justify-between gap-1.5 h-7 mb-2.5">
+                    <span
+                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold ${topLabel.style}`}
+                    >
+                      {topLabel.text}
+                    </span>
+
+                    <div className="flex items-center gap-1 flex-wrap justify-end">
+                      {isActive && (
+                        <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-400 bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.2)]">
+                          <svg
+                            className="w-3 h-3 text-emerald-400"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="3"
+                          >
+                            <polyline points="20 6 9 17 4 12" />
+                          </svg>
+                          Activated
+                        </span>
+                      )}
+
+                      {isSelected ? (
+                        <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-lime bg-lime/10 border border-lime/30 px-2 py-0.5 rounded-full">
+                          <svg
+                            className="w-3 h-3 text-lime"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="3"
+                          >
+                            <polyline points="20 6 9 17 4 12" />
+                          </svg>
+                          Selected
+                        </span>
+                      ) : null}
+                    </div>
+                  </div>
+
+                  {/* 2. Plan name row */}
+                  <div className="h-8 flex items-center mb-1.5">
+                    <h3 className="text-xl sm:text-2xl font-black text-text-primary tracking-tight leading-none">
+                      {planDisplayName}
+                    </h3>
+                  </div>
+
+                  {/* 3. Sale badge row */}
+                  <div className="h-7 flex items-center mb-3">
+                    <span
+                      className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold ${saleBadge.style}`}
+                    >
+                      {saleBadge.text}
+                    </span>
+                  </div>
+
+                  {/* 4. Description row */}
+                  <div className="h-11 sm:h-12 flex items-start text-xs sm:text-[13px] text-text-secondary leading-relaxed mb-4 overflow-hidden">
+                    <p className="line-clamp-2">{plan.subtitle}</p>
+                  </div>
+
+                  {/* 5. Pricing and remaining plan details */}
+                  <div className="pt-3 border-t border-border-subtle/50 mb-4">
+                    {/* Strikethrough / original price row */}
+                    <div className="h-6 flex items-center gap-1.5 mb-1">
+                      {plan.originalPrice ? (
+                        <>
+                          <span className="line-through text-text-muted text-xs font-semibold">
+                            {plan.originalPrice}
+                          </span>
+                          {plan.savings && (
+                            <span
+                              className={`text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded ${
+                                plan.id === "lifetime"
+                                  ? "bg-clip-text text-transparent bg-[linear-gradient(135deg,#c5f955_0%,#00f2fe_25%,#a855f7_50%,#ff3e8f_75%,#fbbf24_90%,#c5f955_100%)] bg-[length:300%_300%] animate-gradient-shift border border-purple-500/30"
+                                  : "text-lime bg-lime/15"
+                              }`}
+                            >
+                              {plan.savings}
+                            </span>
+                          )}
+                        </>
+                      ) : (
+                        <span className="text-[11px] text-text-muted font-medium">
+                          Standard all-year flat rate
                         </span>
                       )}
                     </div>
-                  )}
 
-                  <div className="flex items-baseline gap-1 font-mono flex-wrap">
-                    <span className="text-3xl sm:text-4xl font-black text-text-primary tracking-tight">
-                      {plan.price}
-                    </span>
-                    {plan.period && plan.id !== "lifetime" && (
-                      <span className="text-xs sm:text-sm font-sans font-medium text-text-secondary">
-                        {plan.period}
+                    {/* Main Price display */}
+                    <div className="h-10 flex items-baseline gap-1.5 font-mono">
+                      <span
+                        className={`text-3xl sm:text-4xl font-black tracking-tight ${
+                          plan.isPremium
+                            ? "bg-[linear-gradient(135deg,#c5f955_0%,#00f2fe_25%,#a855f7_50%,#ff3e8f_75%,#fbbf24_90%,#c5f955_100%)] bg-[length:300%_300%] bg-clip-text text-transparent animate-gradient-shift"
+                            : "text-text-primary"
+                        }`}
+                      >
+                        {plan.price}
                       </span>
-                    )}
-                  </div>
-
-                  {/* Prominent One-Time Payment Badge for Lifetime Plan */}
-                  {plan.id === "lifetime" ? (
-                    <div className="mt-2 flex flex-col items-start gap-1">
-                      <span className="inline-flex items-center gap-1.5 text-xs font-extrabold text-pink bg-pink/20 border border-pink/40 px-2.5 py-0.5 rounded-full shadow-[0_0_12px_rgba(255,62,143,0.3)] animate-pulse">
-                        <span>⚡</span>
-                        <span className="uppercase tracking-wider">
-                          ONE-TIME PAYMENT
+                      {plan.period && plan.id !== "lifetime" && (
+                        <span className="text-xs sm:text-sm font-sans font-medium text-text-secondary">
+                          {plan.period}
                         </span>
-                      </span>
-                      <p className="text-[11px] font-semibold text-text-secondary mt-0.5 leading-snug">
-                        Pay once, keep forever. Priority updates & zero renewal
-                        fees.
-                      </p>
+                      )}
                     </div>
-                  ) : null}
-                </div>
 
-                {/* Prominent Multi-Account Highlight Banner (Pro Max & Lifetime only) */}
-                {plan.accountsAdditional > 0 && (
-                  <div
-                    className={`mb-3 p-2.5 rounded-xl border text-xs font-semibold leading-tight ${
-                      plan.id === "pro-max"
-                        ? "bg-lime/10 border-lime/30 text-lime shadow-[0_0_10px_rgba(197,249,85,0.1)]"
-                        : "bg-pink/15 border-pink/40 text-pink shadow-[0_0_12px_rgba(255,62,143,0.15)]"
-                    }`}
-                  >
-                    <div className="font-extrabold mb-0.5 flex items-center gap-1.5 text-text-primary">
-                      <span>🔑</span>
-                      <span>
-                        +{plan.accountsAdditional} Extra Meshy{" "}
-                        {plan.accountsAdditional === 1 ? "Account" : "Accounts"}
-                      </span>
-                    </div>
-                    <div className="text-[11px] opacity-90 break-words">
-                      {plan.accountsBenefit ||
-                        (plan.id === "pro-max"
-                          ? "3 total Meshy accounts under 1 subscription"
-                          : "5 total Meshy accounts under 1 purchase")}
+                    {/* Cadence & Commitment note */}
+                    <div className="min-h-[50px] mt-2 flex flex-col justify-start">
+                      {plan.id === "lifetime" ? (
+                        <div className="flex flex-col items-start gap-1">
+                          <span className="inline-flex items-center gap-1.5 text-xs font-extrabold border border-purple-500/40 px-2.5 py-0.5 rounded-full shadow-[0_0_12px_rgba(168,85,247,0.3)] bg-purple-950/40">
+                            <span>⚡</span>
+                            <span className="uppercase tracking-wider bg-[linear-gradient(135deg,#c5f955_0%,#00f2fe_25%,#a855f7_50%,#ff3e8f_75%,#fbbf24_90%,#c5f955_100%)] bg-[length:300%_300%] bg-clip-text text-transparent animate-gradient-shift">
+                              ONE-TIME PAYMENT
+                            </span>
+                          </span>
+                          <p className="text-[11px] font-semibold text-text-secondary mt-0.5 leading-snug">
+                            Pay once, keep forever. Priority updates & zero
+                            renewal fees.
+                          </p>
+                        </div>
+                      ) : plan.id === "pro-max" ? (
+                        <div className="flex flex-col items-start gap-1">
+                          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-lime bg-lime/10 border border-lime/25 px-2.5 py-0.5 rounded-full">
+                            <span>🔄</span>
+                            <span className="uppercase tracking-wider">
+                              Billed Monthly
+                            </span>
+                          </span>
+                          <p className="text-[11px] text-text-secondary mt-0.5 leading-snug">
+                            Cancel anytime with 1 click. Instant feature
+                            activation.
+                          </p>
+                        </div>
+                      ) : plan.id === "pro-annual" ? (
+                        <div className="flex flex-col items-start gap-1">
+                          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-lime bg-lime/10 border border-lime/25 px-2.5 py-0.5 rounded-full">
+                            <span>📅</span>
+                            <span className="uppercase tracking-wider">
+                              Billed Annually
+                            </span>
+                          </span>
+                          <p className="text-[11px] text-text-secondary mt-0.5 leading-snug">
+                            {isDiscounted
+                              ? "$5.99 billed annually (~$0.50/mo). Cancel anytime."
+                              : "$9.99 billed annually. Cancel anytime."}
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="flex flex-col items-start gap-1">
+                          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-text-secondary bg-white/5 border border-white/10 px-2.5 py-0.5 rounded-full">
+                            <span>🔄</span>
+                            <span className="uppercase tracking-wider">
+                              Billed Monthly
+                            </span>
+                          </span>
+                          <p className="text-[11px] text-text-secondary mt-0.5 leading-snug">
+                            Cancel anytime with 1 click. Full workspace export
+                            rights.
+                          </p>
+                        </div>
+                      )}
                     </div>
                   </div>
-                )}
 
-                {/* Compact AI Upscaler & Converter Label (Pro Max, Annual & Lifetime) */}
-                {plan.upscalerAllowance && plan.converterAllowance && (
-                  <div className="mb-3 flex items-center">
-                    <span
-                      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold tracking-wide border shadow-sm ${
-                        plan.id === "lifetime"
-                          ? "bg-pink/15 text-pink border-pink/40 shadow-[0_0_12px_rgba(255,62,143,0.2)]"
-                          : "bg-lime/10 text-lime border-lime/30 shadow-[0_0_10px_rgba(197,249,85,0.1)]"
+                  {/* Multi-Account Highlight Banner (Pro Max & Lifetime only) */}
+                  {plan.accountsAdditional > 0 && (
+                    <div
+                      className={`mb-3 p-2.5 rounded-xl border text-xs font-semibold leading-tight ${
+                        plan.id === "pro-max"
+                          ? "bg-lime/10 border-lime/30 text-lime shadow-[0_0_10px_rgba(197,249,85,0.1)]"
+                          : "bg-purple-950/40 border-purple-500/30 text-purple-300 shadow-[0_0_12px_rgba(168,85,247,0.15)]"
                       }`}
                     >
-                      <span>⚡</span>
-                      <span>AI Upscaler &amp; Converter</span>
-                      {plan.id === "lifetime" && (
-                        <span className="text-[9px] uppercase font-black px-1.5 py-0.5 rounded bg-pink/25 text-pink">
-                          Unlimited
+                      <div className="font-extrabold mb-0.5 flex items-center gap-1.5 text-text-primary">
+                        <span>🔑</span>
+                        <span>
+                          +{plan.accountsAdditional} Extra Meshy{" "}
+                          {plan.accountsAdditional === 1
+                            ? "Account"
+                            : "Accounts"}
                         </span>
-                      )}
-                    </span>
-                  </div>
-                )}
-
-                {/* 3D Workspace & Model Renderer Feature Box (Pro Monthly Only) */}
-                {plan.id === "pro" && (
-                  <div className="mb-3.5 p-2.5 sm:p-3 rounded-2xl border border-lime/25 bg-lime/[0.06] text-xs font-semibold leading-tight">
-                    <div className="font-extrabold mb-1 flex items-center gap-1.5 text-text-primary text-[11px] uppercase tracking-wider">
-                      <span>🎨</span>
-                      <span>3D Renderer &amp; Workspace</span>
+                      </div>
+                      <div className="text-[11px] opacity-90 break-words">
+                        {plan.accountsBenefit ||
+                          (plan.id === "pro-max"
+                            ? "3 total Meshy accounts under 1 subscription"
+                            : "5 total Meshy accounts under 1 purchase")}
+                      </div>
                     </div>
-                    <div className="text-[11px] text-text-secondary font-normal leading-snug">
-                      Interactive 3D model viewport &amp; rendering included for
-                      all your 3D files.
-                    </div>
-                  </div>
-                )}
+                  )}
 
-                {/* Hot Additions Callout Box (Pro Max, Annual & Lifetime) */}
-                {plan.hasUpcomingPerks && (
-                  <div
-                    className={`mb-3 p-2.5 rounded-xl border text-xs font-semibold leading-tight ${
-                      plan.id === "lifetime"
-                        ? "border-pink/40 bg-pink/10 text-pink shadow-[0_0_12px_rgba(255,62,143,0.12)]"
-                        : "border-lime/30 bg-lime/10 text-lime shadow-[0_0_10px_rgba(197,249,85,0.1)]"
-                    }`}
-                  >
-                    <div className="font-bold mb-0.5 flex items-center gap-1.5 text-text-primary">
-                      <span className="text-xs">🔥</span>
-                      <span className="tracking-wide">
-                        Hot Features Included
+                  {/* 3D Workspace & Model Renderer Feature Box (Pro Monthly Only) */}
+                  {plan.id === "pro" && (
+                    <div className="mb-3.5 p-2.5 sm:p-3 rounded-2xl border border-lime/25 bg-lime/[0.06] text-xs font-semibold leading-tight">
+                      <div className="font-extrabold mb-1 flex items-center gap-1.5 text-text-primary text-[11px] uppercase tracking-wider">
+                        <span>🎨</span>
+                        <span>3D Renderer &amp; Workspace</span>
+                      </div>
+                      <div className="text-[11px] text-text-secondary font-normal leading-snug">
+                        Interactive 3D model viewport &amp; rendering included
+                        for all your 3D files.
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Compact AI Upscaler & Converter Label (Pro Max, Annual & Lifetime) */}
+                  {plan.upscalerAllowance && plan.converterAllowance && (
+                    <div className="mb-3 flex items-center">
+                      <span
+                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold tracking-wide border shadow-sm ${
+                          plan.id === "lifetime"
+                            ? "bg-purple-950/40 text-purple-300 border-purple-500/30 shadow-[0_0_12px_rgba(168,85,247,0.2)]"
+                            : "bg-lime/10 text-lime border-lime/30 shadow-[0_0_10px_rgba(197,249,85,0.1)]"
+                        }`}
+                      >
+                        <span>⚡</span>
+                        <span>AI Upscaler &amp; Converter</span>
+                        {plan.id === "lifetime" && (
+                          <span className="text-[9px] uppercase font-black px-1.5 py-0.5 rounded bg-[linear-gradient(135deg,#c5f955_0%,#00f2fe_25%,#a855f7_50%,#ff3e8f_75%,#fbbf24_90%,#c5f955_100%)] bg-[length:300%_300%] bg-clip-text text-transparent animate-gradient-shift border border-purple-500/30">
+                            Unlimited
+                          </span>
+                        )}
                       </span>
                     </div>
-                    <div className="text-[11px] text-text-secondary leading-snug font-normal break-words">
-                      <strong
-                        className={
-                          plan.id === "lifetime"
-                            ? "text-pink font-bold"
-                            : "text-lime font-bold"
-                        }
-                      >
-                        ✨ Tripo 3D Support
-                      </strong>{" "}
-                      &amp; expanded community formats included!
+                  )}
+
+                  {/* Hot Additions Callout Box (Pro Max, Annual & Lifetime) */}
+                  {plan.hasUpcomingPerks && (
+                    <div
+                      className={`mb-3 p-2.5 rounded-xl border text-xs font-semibold leading-tight ${
+                        plan.id === "lifetime"
+                          ? "border-purple-500/30 bg-purple-950/40 text-purple-300 shadow-[0_0_12px_rgba(168,85,247,0.12)]"
+                          : "border-lime/30 bg-lime/10 text-lime shadow-[0_0_10px_rgba(197,249,85,0.1)]"
+                      }`}
+                    >
+                      <div className="font-bold mb-0.5 flex items-center gap-1.5 text-text-primary">
+                        <span className="text-xs">🔥</span>
+                        <span className="tracking-wide">
+                          Hot Features Included
+                        </span>
+                      </div>
+                      <div className="text-[11px] text-text-secondary leading-snug font-normal break-words">
+                        <strong
+                          className={
+                            plan.id === "lifetime"
+                              ? "font-bold bg-[linear-gradient(135deg,#c5f955_0%,#00f2fe_25%,#a855f7_50%,#ff3e8f_75%,#fbbf24_90%,#c5f955_100%)] bg-[length:300%_300%] bg-clip-text text-transparent animate-gradient-shift"
+                              : "text-lime font-bold"
+                          }
+                        >
+                          ✨ Tripo 3D Support
+                        </strong>{" "}
+                        &amp; expanded community formats included!
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Features list */}
+                  <div className="space-y-2 mb-6 text-xs sm:text-sm min-w-0">
+                    <div className="space-y-2 pt-1">
+                      {plan.features.map((feature, idx) => (
+                        <div
+                          key={idx}
+                          className="flex items-start gap-2 text-xs text-text-secondary leading-snug min-w-0"
+                        >
+                          <svg
+                            className={`w-3.5 h-3.5 mt-0.5 flex-shrink-0 ${
+                              plan.isPremium
+                                ? "text-purple-400"
+                                : isRecommended
+                                  ? "text-lime"
+                                  : "text-lime/80"
+                            }`}
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <polyline points="20 6 9 17 4 12" />
+                          </svg>
+                          <span
+                            className={`min-w-0 break-words ${
+                              feature.includes("Tripo 3D") ||
+                              feature.includes("Multi-Account") ||
+                              feature.includes("AI texture") ||
+                              feature.includes("AI Texture") ||
+                              feature.includes("format conversion") ||
+                              feature.includes("Format Conversion") ||
+                              feature.includes("UNLIMITED")
+                                ? "font-bold text-text-primary"
+                                : ""
+                            }`}
+                          >
+                            {feature}
+                          </span>
+                        </div>
+                      ))}
                     </div>
                   </div>
-                )}
+                </div>
 
-                {/* Features list */}
-                <div className="space-y-2 mb-6 text-xs sm:text-sm min-w-0">
-                  <div className="space-y-2 pt-1">
-                    {plan.features.map((feature, idx) => (
-                      <div
-                        key={idx}
-                        className="flex items-start gap-2 text-xs text-text-secondary leading-snug min-w-0"
-                      >
+                {/* Action CTA Button */}
+                <div className="mt-auto pt-4">
+                  <button
+                    type="button"
+                    disabled={Boolean(submittingPlan) || isResolvingIdentity}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handlePlanClick(plan);
+                    }}
+                    className={`btn w-full text-center text-xs sm:text-sm font-bold py-3 rounded-xl transition-all duration-300 whitespace-pre-line disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer ${
+                      isRecommended
+                        ? "btn-primary shadow-[0_4px_20px_rgba(197,249,85,0.3)]"
+                        : plan.isPremium
+                          ? "bg-gradient-to-r from-pink via-rose-500 to-purple-600 text-white shadow-[0_4px_25px_rgba(255,62,143,0.4)] hover:brightness-110 hover:scale-[1.02]"
+                          : isSelected
+                            ? "btn-primary"
+                            : "btn-secondary"
+                    }`}
+                  >
+                    {isLoadingThisPlan ? (
+                      <span className="inline-flex items-center gap-2">
                         <svg
-                          className={`w-3.5 h-3.5 mt-0.5 flex-shrink-0 ${
-                            plan.isPremium
-                              ? "text-pink"
-                              : isRecommended
-                                ? "text-lime"
-                                : "text-lime/80"
-                          }`}
+                          className="w-4 h-4 animate-spin text-current"
                           viewBox="0 0 24 24"
                           fill="none"
                           stroke="currentColor"
-                          strokeWidth="2.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
+                          strokeWidth="3"
                         >
-                          <polyline points="20 6 9 17 4 12" />
+                          <circle
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            strokeDasharray="32"
+                            strokeDashoffset="12"
+                          />
                         </svg>
-                        <span
-                          className={`min-w-0 break-words ${
-                            feature.includes("Tripo 3D") ||
-                            feature.includes("Multi-Account") ||
-                            feature.includes("AI texture") ||
-                            feature.includes("AI Texture") ||
-                            feature.includes("format conversion") ||
-                            feature.includes("Format Conversion") ||
-                            feature.includes("UNLIMITED")
-                              ? "font-bold text-text-primary"
-                              : ""
-                          }`}
-                        >
-                          {feature}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
+                        Preparing...
+                      </span>
+                    ) : (
+                      plan.cta
+                    )}
+                  </button>
                 </div>
               </div>
-
-              {/* Action CTA Button */}
-              <div>
-                <button
-                  type="button"
-                  disabled={Boolean(submittingPlan) || isResolvingIdentity}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handlePlanClick(plan);
-                  }}
-                  className={`btn w-full text-center text-xs sm:text-sm font-bold py-3 rounded-xl transition-all duration-300 whitespace-pre-line disabled:opacity-50 disabled:cursor-not-allowed ${
-                    isRecommended
-                      ? "btn-primary shadow-[0_4px_20px_rgba(197,249,85,0.3)]"
-                      : plan.isPremium
-                        ? "bg-gradient-to-r from-pink via-rose-500 to-purple-600 text-white shadow-[0_4px_25px_rgba(255,62,143,0.4)] hover:brightness-110 hover:scale-[1.02]"
-                        : isSelected
-                          ? "btn-primary"
-                          : "btn-secondary"
-                  }`}
-                >
-                  {isLoadingThisPlan ? (
-                    <span className="inline-flex items-center gap-2">
-                      <svg
-                        className="w-4 h-4 animate-spin text-current"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="3"
-                      >
-                        <circle
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          strokeDasharray="32"
-                          strokeDashoffset="12"
-                        />
-                      </svg>
-                      Preparing...
-                    </span>
-                  ) : (
-                    plan.cta
-                  )}
-                </button>
-
-                {plan.id === "free" && (
-                  <p className="text-[10px] text-center text-text-muted mt-2">
-                    Default free tier — No card required
-                  </p>
-                )}
-              </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      </HalloweenCardInteraction>
 
       {/* Homepage upgrade hint */}
       {!isPlanPage && (
