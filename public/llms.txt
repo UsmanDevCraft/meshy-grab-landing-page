@@ -1,0 +1,22 @@
+# MeshyGrab
+
+> MeshyGrab is an all-in-one browser extension and 3D asset toolkit for Chrome, Edge, and Brave that lets creators download 3D models and PBR textures from Meshy AI and Tripo3D Studio without consuming AI generation credits, alongside interactive 3D rendering, format conversion, and 4K/8K texture upscaling.
+
+MeshyGrab starts with a free tier (no subscription required) and scales for power users and studios needing multi-account support and unlimited processing.
+
+## Core Capabilities
+- AI Credit Saver & Model Downloader: Export and download already-generated 3D models and community assets from Meshy.ai and Tripo3D Studio without spending generation credits.
+- Interactive 3D Renderer & Workspace: Inspect 3D assets directly in the browser with full PBR shading, wireframe, and normal map inspection modes.
+- Universal 3D Format Converter: Convert and export 3D files across GLB, OBJ, FBX, STL, and 3MF formats for Blender, Unity, Unreal Engine, and 3D printing workflows.
+- 4K & 8K AI PBR Texture Upscaler: Upscale Base Color and PBR texture maps up to 4K and 8K resolutions with lossless PNG texture export support.
+- Multi-Account Management: Link and manage up to 5 Meshy accounts under a single subscription or lifetime license.
+- Browser Extension Integration: Works natively inside Chromium browsers (Google Chrome, Microsoft Edge, Brave) with zero heavy desktop installation.
+
+## Core Pages
+- [MeshyGrab Home](https://meshygrab.com): Overview of the 3D model downloader, interactive viewer, universal file converter (GLB, OBJ, FBX, STL, 3MF), and 4K/8K PBR texture upscaler.
+- [Plans & Feature Tiers](https://meshygrab.com/plans): Detailed comparison of Free, Pro Monthly, Pro Max, Pro Annual, and Lifetime plans, including export allowances, AI upscaling quotas, format conversions, Tripo3D support, and multi-account limits.
+
+## Optional
+- [Privacy Policy](https://meshygrab.com/privacy-policy): Data handling, browser extension permissions, and user privacy commitments.
+- [Terms of Service](https://meshygrab.com/terms): Usage guidelines and licensing terms for MeshyGrab.
+- [Refund Policy](https://meshygrab.com/refund-policy): Billing, cancellation, and refund terms for subscriptions and one-time licenses.

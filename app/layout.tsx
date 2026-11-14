@@ -8,18 +8,20 @@ const inter = Inter({
   display: "swap",
 });
 
-const siteUrl = "https://meshygrab.vercel.app";
+// 🚀 Switched to your official custom domain
+const siteUrl = "https://meshygrab.com";
+// const siteUrl = "https://meshygrab.vercel.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
 
   title: {
-    default: "MeshyGrab — 3D Model Viewer, Converter & Texture Upscaler",
+    default: "MeshyGrab — 3D Model Downloader, Viewer, Converter & Upscaler",
     template: "%s | MeshyGrab",
   },
 
   description:
-    "View and render 3D models, convert files between GLB, OBJ, FBX, STL, and 3MF, upscale PBR textures to 4K and 8K, and export models and textures from Meshy AI and supported community sources.",
+    "Download 3D models from Meshy AI & Tripo3D without wasting credits. View and render 3D models, convert GLB, OBJ, FBX, STL & 3MF, and upscale PBR textures to 4K/8K.",
 
   applicationName: "MeshyGrab",
 
@@ -36,6 +38,9 @@ export const metadata: Metadata = {
   keywords: [
     "MeshyGrab",
     "Meshy",
+    "Meshy alternative",
+    "save AI credits",
+    "unlimited 3D model downloads",
     "Meshy model downloader",
     "Meshy 3D model downloader",
     "download Meshy models",
@@ -55,6 +60,9 @@ export const metadata: Metadata = {
     "Meshy export",
     "Meshy Chrome extension",
     "Meshy browser extension",
+    "Tripo3D downloader",
+    "download Tripo3D models",
+    "Tripo3D alternative",
     "3D model downloader",
     "3D model GLB OBJ FBX 3MF STL download",
     "AI 3D model downloader",
@@ -86,7 +94,7 @@ export const metadata: Metadata = {
   ],
 
   alternates: {
-    canonical: siteUrl,
+    canonical: "./",
   },
 
   openGraph: {
@@ -94,9 +102,9 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: siteUrl,
     siteName: "MeshyGrab",
-    title: "MeshyGrab — 3D Model Viewer, Converter & Texture Upscaler",
+    title: "MeshyGrab — 3D Model Downloader, Viewer, Converter & Upscaler",
     description:
-      "All-in-one 3D asset toolkit: 3D model viewing & rendering, universal format conversion (GLB, OBJ, FBX, STL, 3MF), 4K & 8K PBR texture upscaling, and seamless Meshy & Tripo3D exports.",
+      "All-in-one 3D asset toolkit: download Meshy AI & Tripo3D models without wasting generation credits, view & render 3D models, convert GLB, OBJ, FBX, STL & 3MF, and upscale PBR textures to 4K & 8K.",
     images: [
       {
         url: "/og-image.png",
@@ -113,9 +121,9 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "MeshyGrab — 3D Model Viewer, Converter & Texture Upscaler",
+    title: "MeshyGrab — 3D Model Downloader, Viewer, Converter & Upscaler",
     description:
-      "All-in-one 3D asset toolkit: 3D model viewing, format conversion (GLB, OBJ, FBX, STL, 3MF), 4K/8K texture upscaling, and Meshy & Tripo3D exports.",
+      "All-in-one 3D asset toolkit: download Meshy AI & Tripo3D models without wasting generation credits, view & render 3D models, convert GLB, OBJ, FBX, STL & 3MF, and upscale PBR textures to 4K & 8K.",
     images: ["/og-image.png"],
   },
 
@@ -146,7 +154,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Structured Data (JSON-LD) for Search Engines
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
@@ -179,7 +186,7 @@ export default function RootLayout({
       ],
     },
     description:
-      "MeshyGrab is an all-in-one 3D asset toolkit featuring interactive 3D model viewing, universal file conversion (GLB, OBJ, FBX, STL, 3MF), 4K & 8K PBR texture upscaling, and model/texture exports from Meshy AI and Tripo3D.",
+      "MeshyGrab is an all-in-one 3D asset toolkit featuring interactive 3D model viewing, universal file conversion (GLB, OBJ, FBX, STL, 3MF), 4K & 8K PBR texture upscaling, and model/texture exports from Meshy AI and Tripo3D without wasting generation credits.",
     url: siteUrl,
   };
 
