@@ -41,10 +41,10 @@ export default function TermsPage() {
                 1. Acceptance of Terms
               </h2>
               <p className="mb-4 leading-relaxed text-text-secondary">
-                By accessing or using MeshyGrab (https://meshygrab.vercel.app/)
-                and its associated browser extension, you agree to be bound by
-                these Terms of Service. If you do not agree to these terms,
-                please do not use our service.
+                By accessing or using MeshyGrab (https://meshygrab.com) and its
+                associated browser extension, you agree to be bound by these
+                Terms of Service. If you do not agree to these terms, please do
+                not use our service.
               </p>
 
               <h2 className="mb-4 mt-10 text-xl font-bold text-text-primary">

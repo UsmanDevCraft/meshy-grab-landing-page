@@ -1,7 +1,8 @@
 import { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = "https://meshygrab.vercel.app";
+  const baseUrl = "https://meshygrab.com";
+  // const baseUrl = "https://meshygrab.vercel.app";
 
   return {
     rules: {
