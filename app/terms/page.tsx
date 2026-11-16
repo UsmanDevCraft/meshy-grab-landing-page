@@ -6,6 +6,9 @@ import Image from "next/image";
 export const metadata: Metadata = {
   title: "Terms of Service — MeshyGrab",
   description: "Terms of Service for MeshyGrab.",
+  alternates: {
+    canonical: "/terms",
+  },
 };
 
 export default function TermsPage() {

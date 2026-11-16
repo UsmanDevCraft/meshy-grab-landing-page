@@ -21,6 +21,9 @@ export function generateMetadata(): Metadata {
   return {
     title,
     description,
+    alternates: {
+      canonical: "/plans",
+    },
     openGraph: {
       title,
       description,

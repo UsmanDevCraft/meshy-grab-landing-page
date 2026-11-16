@@ -94,7 +94,7 @@ export const metadata: Metadata = {
   ],
 
   alternates: {
-    canonical: "./",
+    canonical: "/",
   },
 
   openGraph: {
@@ -160,12 +160,17 @@ export default function RootLayout({
     name: "MeshyGrab",
     applicationCategory: "DesignApplication",
     operatingSystem: "Web, Chrome, Edge, Brave",
+    url: siteUrl,
+    sameAs: [
+      "https://chromewebstore.google.com/detail/meshygrab-—-3d-model-down/jkddfapkjenldpiacoccgheimcokhmcc",
+      "https://www.youtube.com/@MeshyGrab",
+    ],
     offers: {
       "@type": "AggregateOffer",
       lowPrice: "0",
       highPrice: "19.99",
       priceCurrency: "USD",
-      offerCount: "5",
+      offerCount: "2",
       offers: [
         {
           "@type": "Offer",
@@ -187,7 +192,6 @@ export default function RootLayout({
     },
     description:
       "MeshyGrab is an all-in-one 3D asset toolkit featuring interactive 3D model viewing, universal file conversion (GLB, OBJ, FBX, STL, 3MF), 4K & 8K PBR texture upscaling, and model/texture exports from Meshy AI and Tripo3D without wasting generation credits.",
-    url: siteUrl,
   };
 
   return (

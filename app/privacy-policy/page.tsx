@@ -4,6 +4,9 @@ import Footer from "@/components/ui/Footer";
 export const metadata: Metadata = {
   title: "Privacy Policy — MeshyGrab",
   description: "How MeshyGrab handles your data.",
+  alternates: {
+    canonical: "/privacy-policy",
+  },
 };
 
 export default function PrivacyPage() {

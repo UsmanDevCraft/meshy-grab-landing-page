@@ -6,6 +6,9 @@ import Image from "next/image";
 export const metadata: Metadata = {
   title: "Refund and Cancellation Policy — MeshyGrab",
   description: "Refund and Cancellation Policy for MeshyGrab.",
+  alternates: {
+    canonical: "/refund-policy",
+  },
 };
 
 export default function RefundPolicyPage() {
