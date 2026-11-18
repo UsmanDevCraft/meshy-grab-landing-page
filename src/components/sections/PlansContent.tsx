@@ -29,9 +29,17 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const installationId = isPlanPage ? searchParams.get("installationId") : null;
+  const urlInstallationId = isPlanPage
+    ? searchParams.get("installationId")
+    : null;
   const urlUserId = isPlanPage ? searchParams.get("userId") : null;
   const urlEmail = isPlanPage ? searchParams.get("email") : null;
+  const trimmedEmail = urlEmail ? urlEmail.trim() : "";
+
+  const [resolvedInstallationId, setResolvedInstallationId] = useState<
+    string | null
+  >(null);
+  const installationId = urlInstallationId || resolvedInstallationId;
 
   const [selectedPlanId, setSelectedPlanId] = useState<string>("pro-max");
   const [activePlanId, setActivePlanId] = useState<string>("free");
@@ -42,6 +50,8 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
   const [isResolvingIdentity, setIsResolvingIdentity] =
     useState<boolean>(false);
+  const [isResolvingEmail, setIsResolvingEmail] = useState<boolean>(false);
+  const [emailLookupError, setEmailLookupError] = useState<string | null>(null);
 
   const [entitlementEmail, setEntitlementEmail] = useState<string | null>(null);
 
@@ -148,6 +158,16 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
 
   // Track fetched installationId to guarantee entitlement API is called at most once per installationId
   const fetchedInstallationIdRef = useRef<string | null>(null);
+  // Track looked up email to guarantee account status API is called at most once per email
+  const lookedUpEmailRef = useRef<string | null>(null);
+  const isMountedRef = useRef<boolean>(true);
+
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
 
   const getPriceIdForPlan = (planId: string) => {
     if (planId === "lifetime" && isFavLifetimeUser) {
@@ -190,8 +210,9 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
   const resolveIdentity = useCallback(async (targetInstallationId: string) => {
     setIsResolvingIdentity(true);
     try {
-      const baseUrl =
-        process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+      const baseUrl = (
+        process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"
+      ).replace(/\/+$/, "");
       const version = process.env.NEXT_PUBLIC_API_VERSION || "v3";
       const endpoint = `${baseUrl}/${version}/entitlement?installationId=${encodeURIComponent(
         targetInstallationId,
@@ -237,17 +258,111 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
     return { userId: null, email: null };
   }, []);
 
-  // Fetch identity on mount if installationId exists and userId/email are not in URL
+  // Fetch identity on mount if installationId exists in URL and userId/email are not in URL
   useEffect(() => {
-    if (isPlanPage && installationId && (!urlUserId || !urlEmail)) {
-      if (fetchedInstallationIdRef.current !== installationId) {
-        fetchedInstallationIdRef.current = installationId;
+    if (isPlanPage && urlInstallationId && (!urlUserId || !urlEmail)) {
+      if (fetchedInstallationIdRef.current !== urlInstallationId) {
+        fetchedInstallationIdRef.current = urlInstallationId;
         queueMicrotask(() => {
-          resolveIdentity(installationId);
+          resolveIdentity(urlInstallationId);
         });
       }
     }
-  }, [isPlanPage, installationId, urlUserId, urlEmail, resolveIdentity]);
+  }, [isPlanPage, urlInstallationId, urlUserId, urlEmail, resolveIdentity]);
+
+  // Resolve installationId via email lookup when installationId is missing from URL
+  useEffect(() => {
+    if (!isPlanPage || urlInstallationId || !trimmedEmail) {
+      return;
+    }
+
+    if (lookedUpEmailRef.current === trimmedEmail) {
+      return;
+    }
+    lookedUpEmailRef.current = trimmedEmail;
+
+    const performEmailLookup = async () => {
+      setIsResolvingEmail(true);
+      setEmailLookupError(null);
+
+      try {
+        const baseUrl = (
+          process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"
+        ).replace(/\/+$/, "");
+        const version = process.env.NEXT_PUBLIC_API_VERSION || "v3";
+
+        const endpoint = `${baseUrl.replace(/\/+$/, "")}/${version}/api/user/status?email=${encodeURIComponent(
+          trimmedEmail,
+        )}`;
+
+        const res = await fetch(endpoint, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+
+        if (!isMountedRef.current) return;
+
+        if (!res.ok) {
+          setEmailLookupError(
+            "We couldn't identify an account associated with this email. Please open the Plans & Pricing page directly from your MeshyGrab extension or contact support.",
+          );
+          return;
+        }
+
+        const data = await res.json().catch(() => ({}));
+        const returnedInstallationId =
+          (typeof data?.installationId === "string" &&
+            data.installationId.trim()) ||
+          (typeof data?.user?.installationId === "string" &&
+            data.user.installationId.trim()) ||
+          null;
+
+        if (!returnedInstallationId) {
+          setEmailLookupError(
+            "We couldn't identify an account associated with this email. Please open the Plans & Pricing page directly from your MeshyGrab extension or contact support.",
+          );
+          return;
+        }
+
+        setResolvedInstallationId(returnedInstallationId);
+
+        const returnedUserId =
+          (typeof data?.userId === "string" && data.userId.trim()) ||
+          (typeof data?.user?.id === "string" && data.user.id.trim()) ||
+          (typeof data?.id === "string" && data.id.trim()) ||
+          null;
+        if (returnedUserId) {
+          setUserId(returnedUserId);
+        }
+
+        const returnedEmail =
+          (typeof data?.email === "string" && data.email.trim()) ||
+          (typeof data?.user?.email === "string" && data.user.email.trim()) ||
+          trimmedEmail;
+        if (returnedEmail) {
+          setEmail(returnedEmail);
+          setEntitlementEmail(returnedEmail);
+        }
+
+        if (fetchedInstallationIdRef.current !== returnedInstallationId) {
+          fetchedInstallationIdRef.current = returnedInstallationId;
+          await resolveIdentity(returnedInstallationId);
+        }
+      } catch (err: unknown) {
+        if (!isMountedRef.current) return;
+        console.warn("Failed to lookup account by email:", err);
+        setEmailLookupError(
+          "We couldn't identify an account associated with this email. Please open the Plans & Pricing page directly from your MeshyGrab extension or contact support.",
+        );
+      } finally {
+        if (isMountedRef.current) {
+          setIsResolvingEmail(false);
+        }
+      }
+    };
+
+    performEmailLookup();
+  }, [isPlanPage, urlInstallationId, trimmedEmail, resolveIdentity]);
 
   // Handle plan purchase CTA click
   const handlePlanClick = async (plan: PlanItem) => {
@@ -274,9 +389,17 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
 
     // Require installationId
     if (!installationId) {
-      setCheckoutError(
-        "Installation ID is missing. The Plans & Pricing page must be opened directly from your MeshyGrab Chrome Extension.",
-      );
+      if (emailLookupError) {
+        setCheckoutError(emailLookupError);
+      } else if (trimmedEmail) {
+        setCheckoutError(
+          "We couldn't identify an account associated with this email. Please open the Plans & Pricing page directly from your MeshyGrab extension or contact support.",
+        );
+      } else {
+        setCheckoutError(
+          "Installation ID is missing. The Plans & Pricing page must be opened directly from your MeshyGrab Chrome Extension.",
+        );
+      }
       return;
     }
 
@@ -302,8 +425,9 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
     setSubmittingPlan(plan.id);
 
     try {
-      const baseUrl =
-        process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+      const baseUrl = (
+        process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"
+      ).replace(/\/+$/, "");
       const endpoint = `${baseUrl}/api/checkout`;
 
       const targetPriceId = getPriceIdForPlan(plan.id);
@@ -399,8 +523,56 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
       {/* Seasonal Sale Countdown Banner */}
       {isDiscounted && saleData && <SeasonalSaleBanner sale={saleData} />}
 
+      {/* Email Account Lookup In-Progress Banner */}
+      {isPlanPage &&
+        !urlInstallationId &&
+        Boolean(trimmedEmail) &&
+        isResolvingEmail && (
+          <div className="max-w-2xl mx-auto mb-6 p-4 bg-lime/10 border border-lime/30 rounded-2xl text-center">
+            <div className="flex items-center justify-center gap-2 text-lime font-bold mb-1 text-xs sm:text-sm">
+              <div className="w-4 h-4 border-2 border-lime border-t-transparent rounded-full animate-spin flex-shrink-0" />
+              Verifying MeshyGrab Account
+            </div>
+            <p className="text-xs text-text-secondary leading-relaxed">
+              Please wait while we locate your installation details...
+            </p>
+          </div>
+        )}
+
+      {/* Email Account Lookup Error Banner */}
+      {isPlanPage && emailLookupError && (
+        <div className="max-w-2xl mx-auto mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-2xl text-center">
+          <div className="flex items-center justify-center gap-2 text-red-400 font-bold mb-1 text-xs sm:text-sm">
+            <svg
+              className="w-4 h-4 flex-shrink-0"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+            Account Not Found
+          </div>
+          <p className="text-xs text-text-secondary leading-relaxed mb-2">
+            {emailLookupError}
+          </p>
+          <div className="text-xs text-text-muted">
+            Need help? Contact{" "}
+            <a
+              href="mailto:support.meshygrab@gmail.com"
+              className="text-lime underline hover:text-lime/80 font-medium"
+            >
+              support.meshygrab@gmail.com
+            </a>
+          </div>
+        </div>
+      )}
+
       {/* Missing InstallationId Warning State (Plans page only) */}
-      {isPlanPage && !installationId && (
+      {isPlanPage && !installationId && !trimmedEmail && !emailLookupError && (
         <div className="max-w-2xl mx-auto mb-6 p-4 bg-amber-500/10 border border-amber-500/30 rounded-2xl text-center">
           <div className="flex items-center justify-center gap-2 text-amber-400 font-bold mb-1 text-xs sm:text-sm">
             <svg
@@ -866,7 +1038,11 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
                 <div className="mt-auto pt-4">
                   <button
                     type="button"
-                    disabled={Boolean(submittingPlan) || isResolvingIdentity}
+                    disabled={
+                      Boolean(submittingPlan) ||
+                      isResolvingIdentity ||
+                      isResolvingEmail
+                    }
                     onClick={(e) => {
                       e.stopPropagation();
                       handlePlanClick(plan);
