@@ -508,11 +508,19 @@ export default function PlansContent({ isPlanPage = true }: PlansContentProps) {
             ? `${saleData.emoji ? `${saleData.emoji} ` : ""}Limited Time ${saleData.title}`
             : "Plans & Pricing"}
         </div>
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-text-primary mb-2 leading-tight">
-          {isDiscounted && saleData
-            ? `${saleData.title}: Huge Discounts on 3D Export Plans!`
-            : "Flexible plans for every 3D creator"}
-        </h1>
+        {isPlanPage ? (
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-text-primary mb-2 leading-tight">
+            {isDiscounted && saleData
+              ? `${saleData.title}: Huge Discounts on 3D Export Plans!`
+              : "Flexible plans for every 3D creator"}
+          </h1>
+        ) : (
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-text-primary mb-2 leading-tight">
+            {isDiscounted && saleData
+              ? `${saleData.title}: Huge Discounts on 3D Export Plans!`
+              : "Flexible plans for every 3D creator"}
+          </h2>
+        )}
         <p className="text-xs sm:text-sm text-text-secondary max-w-xl mx-auto leading-relaxed">
           {isDiscounted && saleData
             ? `Start free with 2 downloads, or grab limited-time discounts on Pro Max ($2.99), Annual ($5.99), and Lifetime ($9.99)! ${saleData.bannerText}`

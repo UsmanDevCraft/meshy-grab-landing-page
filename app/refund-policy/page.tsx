@@ -4,7 +4,7 @@ import Footer from "@/components/ui/Footer";
 import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: "Refund and Cancellation Policy — MeshyGrab",
+  title: "Refund and Cancellation Policy",
   description: "Refund and Cancellation Policy for MeshyGrab.",
   alternates: {
     canonical: "/refund-policy",

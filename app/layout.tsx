@@ -170,7 +170,7 @@ export default function RootLayout({
       lowPrice: "0",
       highPrice: "19.99",
       priceCurrency: "USD",
-      offerCount: "2",
+      offerCount: "5",
       offers: [
         {
           "@type": "Offer",
@@ -186,7 +186,31 @@ export default function RootLayout({
           price: "0.99",
           priceCurrency: "USD",
           description:
-            "Unlimited 3D model exports, unlimited texture PNG exports, 2 community downloads/mo.",
+            "Unlimited 3D model exports, unlimited texture PNG exports, and 2 community downloads/mo.",
+        },
+        {
+          "@type": "Offer",
+          name: "Pro Max",
+          price: "3.99",
+          priceCurrency: "USD",
+          description:
+            "Unlimited workspace model & texture exports, Tripo3D support, and up to 3 attached accounts.",
+        },
+        {
+          "@type": "Offer",
+          name: "Pro Annual",
+          price: "9.99",
+          priceCurrency: "USD",
+          description:
+            "Annual plan with all Pro Max features, higher community allowance, and prioritized conversions.",
+        },
+        {
+          "@type": "Offer",
+          name: "Lifetime",
+          price: "19.99",
+          priceCurrency: "USD",
+          description:
+            "One-time purchase with permanent access, 5 attached accounts, and zero recurring fees.",
         },
       ],
     },
@@ -197,11 +221,6 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <head>
-        <link
-          rel="preconnect"
-          href="https://i.ytimg.com"
-          crossOrigin="anonymous"
-        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

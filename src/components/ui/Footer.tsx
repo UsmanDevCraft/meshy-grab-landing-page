@@ -83,7 +83,13 @@ export default function Footer({ minimal = false }: FooterProps) {
                 href="/#pricing"
                 className="text-sm text-text-secondary hover:text-lime transition-colors"
               >
-                Pricing &amp; Plans
+                Pricing &amp; Deals
+              </Link>
+              <Link
+                href="/plans"
+                className="text-sm text-text-secondary hover:text-lime transition-colors"
+              >
+                All Plans &amp; Pricing
               </Link>
             </div>
           </div>

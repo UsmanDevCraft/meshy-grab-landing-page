@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @theme {
+  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
   --color-lime: #c5f955;
   --color-pink: #ff3e8f;
   --color-deep-black: #181818;
@@ -16,6 +17,30 @@
   /* Keyframes & Animations (Tailwind CSS v4) */
   --animate-particle-drift: particle-drift 3s ease-in-out infinite;
   --animate-gradient-shift: gradient-shift 6s ease-in-out infinite;
+  --animate-marquee-left: marquee-left 42s linear infinite;
+  --animate-marquee-right: marquee-right 42s linear infinite;
+  --animate-mesh-rotate: mesh-rotate 25s linear infinite;
+  --animate-pulse-glow: pulse-glow 4s ease-in-out infinite;
+
+  @keyframes mesh-rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      opacity: 0.35;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.65;
+      transform: scale(1.04);
+    }
+  }
 
   @keyframes particle-drift {
     0% {
@@ -48,6 +73,26 @@
 
     100% {
       background-position: 0% 50%;
+    }
+  }
+
+  @keyframes marquee-left {
+    0% {
+      transform: translate3d(0, 0, 0);
+    }
+
+    100% {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+
+  @keyframes marquee-right {
+    0% {
+      transform: translate3d(-50%, 0, 0);
+    }
+
+    100% {
+      transform: translate3d(0, 0, 0);
     }
   }
 }
@@ -98,6 +143,14 @@
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
 @utility visible {
   &.reveal {
     @apply opacity-100 translate-y-0;
@@ -111,6 +164,39 @@
 
 @utility animate-gradient-shift {
   animation: gradient-shift 6s ease-in-out infinite;
+}
+
+@utility animate-marquee-left {
+  animation: marquee-left 48s linear infinite;
+}
+
+@utility animate-marquee-right {
+  animation: marquee-right 48s linear infinite;
+}
+
+@utility animate-marquee-left-slow {
+  animation: marquee-left 78s linear infinite;
+}
+
+@utility animate-mesh-rotate {
+  animation: mesh-rotate 25s linear infinite;
+}
+
+@utility animate-pulse-glow {
+  animation: pulse-glow 4s ease-in-out infinite;
+}
+
+@utility bg-gradient-radial-lime {
+  background-image: radial-gradient(circle, rgba(197, 249, 85, 0.28) 0%, rgba(197, 249, 85, 0.08) 45%, transparent 70%);
+}
+
+@utility bg-gradient-radial-pink {
+  background-image: radial-gradient(circle, rgba(255, 62, 143, 0.28) 0%, rgba(255, 62, 143, 0.08) 45%, transparent 70%);
+}
+
+.pause-on-hover:hover,
+.pause-on-hover:hover * {
+  animation-play-state: paused !important;
 }
 
 @layer base {

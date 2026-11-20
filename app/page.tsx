@@ -12,6 +12,7 @@ import StepsSection from "@/components/sections/StepsSection";
 import PreviewSection from "@/components/sections/PreviewSection";
 import FeaturesSection from "@/components/sections/FeaturesSection";
 import AudienceSection from "@/components/sections/AudienceSection";
+import TestimonialsSection from "@/components/sections/TestimonialsSection";
 import PrivacySection from "@/components/sections/PrivacySection";
 import MoneySection from "@/components/sections/MoneySection";
 import FAQSection from "@/components/sections/FAQSection";
@@ -64,6 +65,9 @@ export default function HomePage() {
 
         {/* 11. Target audiences and use cases */}
         <AudienceSection />
+
+        {/* Creator Reviews & Community Testimonials Marquee */}
+        <TestimonialsSection />
 
         {/* 10. Pricing and feature comparison */}
         <Suspense
