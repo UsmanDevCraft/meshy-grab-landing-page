@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Footer from "@/components/ui/Footer";
+import Navbar from "@/components/ui/Navbar";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — MeshyGrab",
+  title: "Privacy Policy",
   description: "How MeshyGrab handles your data.",
   alternates: {
     canonical: "/privacy-policy",
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
 export default function PrivacyPage() {
   return (
     <>
+      <Navbar />
       <main id="main-content">
         <section className="pt-36 pb-16">
           <div className="container mx-auto max-w-3xl px-6">

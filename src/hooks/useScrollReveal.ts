@@ -56,7 +56,15 @@ export function useScrollReveal<T extends HTMLElement>() {
     observedElements.add(el);
     observer.observe(el);
 
+    // Fallback safety timeout: ensure content is never stuck hidden if intersection doesn't fire
+    const fallbackTimer = setTimeout(() => {
+      if (el && !el.classList.contains("visible")) {
+        el.classList.add("visible");
+      }
+    }, 1200);
+
     return () => {
+      clearTimeout(fallbackTimer);
       if (sharedObserver) {
         sharedObserver.unobserve(el);
         observedElements.delete(el);

@@ -4,7 +4,7 @@ import Footer from "@/components/ui/Footer";
 import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: "Terms of Service — MeshyGrab",
+  title: "Terms of Service",
   description: "Terms of Service for MeshyGrab.",
   alternates: {
     canonical: "/terms",

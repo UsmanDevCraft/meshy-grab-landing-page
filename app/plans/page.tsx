@@ -10,8 +10,8 @@ export function generateMetadata(): Metadata {
 
   const title =
     isActive && saleData
-      ? `${saleData.title}: Plans & Pricing — MeshyGrab`
-      : "Plans & Pricing — MeshyGrab";
+      ? `${saleData.title}: Plans & Pricing`
+      : "Plans & Pricing";
 
   const description =
     isActive && saleData
